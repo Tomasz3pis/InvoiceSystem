@@ -10,4 +10,8 @@ class InvoiceApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void applicationStarts() {
+        InvoiceApplication.main(new String[] {});
+    }
 }
