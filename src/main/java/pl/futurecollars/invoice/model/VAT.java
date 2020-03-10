@@ -12,9 +12,8 @@ public enum VAT {
     private BigDecimal value;
 
 
-
     VAT(BigDecimal value) {
-    this.value = value;
+        this.value = value;
     }
 
     public BigDecimal getValue() {

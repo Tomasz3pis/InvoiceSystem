@@ -2,6 +2,7 @@ package pl.futurecollars.invoice.model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class Invoice {
     private String id;
@@ -54,9 +55,33 @@ public class Invoice {
         return entries;
     }
 
-    public void setEntries(List<InvoiceEntry> entries) {
+    public void setEntries(final List<InvoiceEntry> entries) {
         this.entries = entries;
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Invoice invoice = (Invoice) o;
+        return Objects.equals(id, invoice.id) &&
+                Objects.equals(issueDate, invoice.issueDate) &&
+                Objects.equals(seller, invoice.seller) &&
+                Objects.equals(buyer, invoice.buyer) &&
+                Objects.equals(entries, invoice.entries);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, issueDate, seller, buyer, entries);
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" + "id='" + id + '\'' + ", issueDate=" + issueDate + ", seller=" + seller + ", buyer=" + buyer + ", entries=" + entries + '}';
+    }
 }

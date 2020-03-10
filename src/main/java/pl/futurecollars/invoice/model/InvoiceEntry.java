@@ -58,9 +58,9 @@ public class InvoiceEntry {
             return false;
         }
         InvoiceEntry that = (InvoiceEntry) o;
-        return productName.equals(that.productName) &&
-                amount.equals(that.amount) &&
-                cost.equals(that.cost) &&
+        return Objects.equals(productName, that.productName) &&
+                Objects.equals(amount, that.amount) &&
+                Objects.equals(cost, that.cost) &&
                 vat == that.vat;
     }
 
