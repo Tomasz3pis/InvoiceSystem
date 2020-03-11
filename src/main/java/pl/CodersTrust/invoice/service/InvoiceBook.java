@@ -1,18 +1,22 @@
 package pl.CodersTrust.invoice.service;
 
+
+import pl.CodersTrust.invoice.database.Database;
+import pl.CodersTrust.invoice.database.InMemoryDatabase;
 import pl.CodersTrust.invoice.model.Invoice;
 
 
-import java.util.UUID;
-//implementacja Database
 public class InvoiceBook {
 
-    public void saveInvoiceInDatabase(Invoice invoice) {
+    private Database database = new InMemoryDatabase();
 
+
+    public void saveInvoiceInDatabase(Invoice invoice) {
+        database.saveInvoice(invoice);
     }
 
     private Invoice searchInvoiceById(int id) {
-        return null;
+        return database.getInvoiceById(id);
     }
 
     private void filter() {
