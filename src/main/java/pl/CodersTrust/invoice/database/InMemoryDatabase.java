@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class InMemoryDatabase implements Database {
 
-    private Map<UUID, Invoice> invoices = new HashMap();
+    private Map<Integer, Invoice> invoices = new HashMap();
 
     @Override
     public void saveInvoice(Invoice invoice) {
@@ -21,10 +20,11 @@ public class InMemoryDatabase implements Database {
     @Override
     public boolean updateInvoice(Invoice invoice) {
         return false;
+        //zmiana pozycji w tym samym id
     }
 
     @Override
-    public boolean deleteInvoice(UUID id) {
+    public boolean deleteInvoice(int id) {
         if (invoices.get(id) == null) {
             return false;
         }
@@ -33,7 +33,7 @@ public class InMemoryDatabase implements Database {
     }
 
     @Override
-    public Invoice getInvoiceById(UUID id) {
+    public Invoice getInvoiceById(int id) {
         return invoices.get(id);
     }
 

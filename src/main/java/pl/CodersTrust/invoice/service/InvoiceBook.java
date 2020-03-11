@@ -4,14 +4,14 @@ import pl.CodersTrust.invoice.model.Invoice;
 
 
 import java.util.UUID;
-
+//implementacja Database
 public class InvoiceBook {
 
     public void saveInvoiceInDatabase(Invoice invoice) {
 
     }
 
-    private Invoice searchInvoiceById(UUID id) {
+    private Invoice searchInvoiceById(int id) {
         return null;
     }
 
