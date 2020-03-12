@@ -21,6 +21,6 @@ public class InvoiceBook {
 
     private void filter() {
         database.getInvoices();
-        //stream().filter()??
+        //stream().filter().collect(Collectors.toList)??
     }
 }

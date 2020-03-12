@@ -4,17 +4,18 @@ package pl.CodersTrust.invoice.model;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Invoice {
-    private static int idCount;
-    private int id;
+    private static final AtomicLong idCount = new AtomicLong();
+    private long id;
     private Company seller;
     private Company buyer;
     private List<InvoiceEntry> entries;
     private LocalDate data;
 
     public Invoice(Company seller, Company buyer, LocalDate data, List<InvoiceEntry> entries) {
-        id = ++idCount;
+        id = idCount.getAndIncrement();
         this.seller = seller;
         this.buyer = buyer;
         this.data = data;
@@ -27,11 +28,11 @@ public class Invoice {
 //                .reduce(BigDecimal.ZERO, BigDecimal::add);
 //    }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
