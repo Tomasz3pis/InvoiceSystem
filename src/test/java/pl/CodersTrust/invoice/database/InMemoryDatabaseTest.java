@@ -9,7 +9,6 @@ import pl.CodersTrust.invoice.model.Company;
 import pl.CodersTrust.invoice.model.Invoice;
 
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ import static org.hamcrest.Matchers.is;
 class InMemoryDatabaseTest {
 
     @Test
-    void saveInvoice() {
+    void shouldSaveInvoiceInDatabase() {
         //given
         Company seller = new Company(789123324, "Test st.", "CrownCH");
         Company buyer = new Company(749123324, "TestDouble st.", "Virsus");
@@ -31,7 +30,7 @@ class InMemoryDatabaseTest {
         imd.saveInvoice(invoice);
 
         //then
-
+        Assert.assertTrue(imd.getInvoices().contains(invoice));
 
     }
 
@@ -40,7 +39,20 @@ class InMemoryDatabaseTest {
     }
 
     @Test
-    void deleteInvoice() {
+    void shouldDeleteGivenInvoiceFromDatabase() {
+        //given
+        Company company1 = new Company(789123324, "Test st.", "CrownCH");
+        Company company2 = new Company(749123324, "TestDouble st.", "Virsus");
+        Invoice invoice = new Invoice(company1, company2, LocalDate.now(), new ArrayList<>());
+        InMemoryDatabase imd = new InMemoryDatabase();
+        imd.saveInvoice(invoice);
+
+        //when
+        boolean actual = imd.deleteInvoice(invoice.getId());
+
+        //then
+        Assert.assertTrue(actual);
+
     }
 
     @Test
@@ -54,13 +66,14 @@ class InMemoryDatabaseTest {
         //when
         imd.saveInvoice(invoice);
         Invoice actual = imd.getInvoiceById(1);
+
         //then
         Assert.assertEquals(actual, invoice);
 
     }
 
     @Test
-    void getInvoices() {
+    void shouldReturnListOfInvoices() {
         //given
         Company company1 = new Company(789123324, "Test st.", "CrownCH");
         Company company2 = new Company(749123324, "TestDouble st.", "Virsus");
@@ -75,6 +88,7 @@ class InMemoryDatabaseTest {
         ArrayList<Invoice> expected = new ArrayList<>();
         expected.add(invoice1);
         expected.add(invoice2);
+
         //then
         Assert.assertThat(actual, is(expected));
     }

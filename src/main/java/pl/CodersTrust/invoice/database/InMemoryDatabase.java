@@ -16,6 +16,7 @@ public class InMemoryDatabase implements Database {
     public void saveInvoice(Invoice invoice) {
         invoices.put(invoice.getId(), invoice);
     }
+
 // jak zaimpelentowac modyfikacje zmiany. (konstruktor) Skad wziac dane do nowej faktury?!
     @Override
     public boolean updateInvoice(Invoice invoice, Invoice newInvoice) {

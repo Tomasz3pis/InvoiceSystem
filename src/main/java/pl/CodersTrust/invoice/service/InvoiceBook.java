@@ -11,11 +11,11 @@ public class InvoiceBook {
     private Database database = new InMemoryDatabase();
 
 
-    private void saveInvoiceInDatabase(Invoice invoice) {
+    public void saveInvoiceInDatabase(Invoice invoice) {
         database.saveInvoice(invoice);
     }
 
-    private Invoice searchInvoiceById(int id) {
+    public Invoice searchInvoiceById(int id) {
         return database.getInvoiceById(id);
     }
 
