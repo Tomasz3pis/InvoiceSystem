@@ -11,7 +11,7 @@ public class InvoiceBook {
     private Database database = new InMemoryDatabase();
 
 
-    public void saveInvoiceInDatabase(Invoice invoice) {
+    private void saveInvoiceInDatabase(Invoice invoice) {
         database.saveInvoice(invoice);
     }
 
@@ -20,6 +20,7 @@ public class InvoiceBook {
     }
 
     private void filter() {
-
+        database.getInvoices();
+        //stream().filter()??
     }
 }
