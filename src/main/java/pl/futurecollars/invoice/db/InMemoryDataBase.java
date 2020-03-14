@@ -1,21 +1,25 @@
 package pl.futurecollars.invoice.db;
 
 import pl.futurecollars.invoice.model.Invoice;
-
 import java.util.List;
 
 public class InMemoryDataBase implements DataBase {
-    private List<Invoice> invoices;
+    private DataBase dataBase;  /// This should be arrayList
+
+    public InMemoryDataBase(DataBase dataBase) {
+        this.dataBase = dataBase;
+    }
 
     @Override
-    public void saveInvoice(final Invoice invoice) {
-        invoices.add(invoice);
-
+    public void saveInvoice(Invoice invoice) {
+        dataBase.saveInvoice(invoice);
     }
 
     @Override
     public List<Invoice> getInvoices() {
-        return invoices;
+        return dataBase.getInvoices();
     }
 
 }
+// Add list instead of Database class - database = arrayList
+//

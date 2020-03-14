@@ -4,33 +4,33 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class InvoiceEntry {
-
-    private String productName;
-    private String amount;
+    private String entityName;
+    private String quantity;
     private BigDecimal cost;
     private VAT vat;
 
-    public InvoiceEntry(String productName, String amount, BigDecimal cost, VAT vat) {
-        this.productName = productName;
-        this.amount = amount;
+    public InvoiceEntry(String entityName, String quantity, BigDecimal cost, VAT vat) {
+        this.entityName = entityName;
+        this.quantity = quantity;
         this.cost = cost;
         this.vat = vat;
     }
 
-    public String getProductName() {
-        return productName;
+
+    public String getEntityName() {
+        return entityName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
     }
 
     public String getAmount() {
-        return amount;
+        return quantity;
     }
 
     public void setAmount(String amount) {
-        this.amount = amount;
+        this.quantity = amount;
     }
 
     public BigDecimal getCost() {
@@ -58,14 +58,20 @@ public class InvoiceEntry {
             return false;
         }
         InvoiceEntry that = (InvoiceEntry) o;
-        return Objects.equals(productName, that.productName) &&
-                Objects.equals(amount, that.amount) &&
+        return Objects.equals(entityName, that.entityName) &&
+                Objects.equals(quantity, that.quantity) &&
                 Objects.equals(cost, that.cost) &&
                 vat == that.vat;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productName, amount, cost, vat);
+        return Objects.hash(entityName, quantity, cost, vat);
     }
+
+    @Override
+    public String toString() {
+        return "InvoiceEntry{" + "productName='" + entityName + '\'' + ", amount='" + quantity + '\'' + ", cost=" + cost + ", vat=" + vat + '}';
+    }
+
 }

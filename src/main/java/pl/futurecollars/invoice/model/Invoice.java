@@ -55,12 +55,12 @@ public class Invoice {
         return entries;
     }
 
-    public void setEntries(final List<InvoiceEntry> entries) {
+    public void setEntries(List<InvoiceEntry> entries) {
         this.entries = entries;
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
