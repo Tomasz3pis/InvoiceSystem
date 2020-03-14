@@ -4,12 +4,20 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import pl.CodersTrust.invoice.model.Company;
+import org.mockito.Mockito;
+import pl.CodersTrust.invoice.database.Database;
 import pl.CodersTrust.invoice.model.Invoice;
 
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.in;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 class InvoiceBookTest {
@@ -17,33 +25,31 @@ class InvoiceBookTest {
     @Test
     void shouldSaveInvoiceInDatabase() {
         //given
-        Company seller = new Company(789123324, "Test st.", "CrownCH");
-        Company buyer = new Company(749123324, "TestDouble st.", "Virsus");
-        Invoice invoice = new Invoice(seller, buyer, LocalDate.now(), new ArrayList<>());
-        InvoiceBook ib = new InvoiceBook();
+        Invoice invoice = Mockito.mock(Invoice.class);
+        Database database = Mockito.mock(Database.class);
+        doNothing().when(database).saveInvoice(invoice);
 
         //when
-        ib.saveInvoiceInDatabase(invoice);
+        database.saveInvoice(invoice);
 
         //then
+        verify(database, times(1)).saveInvoice(invoice);
 
 
     }
 
     @Test
-    void shouldReturnInvoice() {
+    void shouldReturnInvoiceById() {
         //given
-        Company company1 = new Company(789123324, "Test st.", "CrownCH");
-        Company company2 = new Company(749123324, "TestDouble st.", "Virsus");
-        Invoice invoice = new Invoice(company1, company2, LocalDate.now(), new ArrayList<>());
-        InvoiceBook ib = new InvoiceBook();
+        Invoice invoice = Mockito.mock(Invoice.class);
+        Database database = Mockito.mock(Database.class);
+        when(database.getInvoiceById(invoice.getId())).thenReturn(invoice);
 
         //when
-        ib.saveInvoiceInDatabase(invoice);
-        Invoice actual = ib.searchInvoiceById(1);
+        Invoice actual = database.getInvoiceById(invoice.getId());
 
         //then
-        Assert.assertEquals(actual, invoice);
+        Assert.assertEquals(invoice, actual);
 
     }
 

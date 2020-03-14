@@ -12,36 +12,27 @@ public class InMemoryDatabase implements Database {
     private Map<Long, Invoice> invoices = new HashMap();
 
     @Override
-    public void saveInvoice(Invoice invoice) {
+    public final void saveInvoice(final Invoice invoice) {
         invoices.put(invoice.getId(), invoice);
     }
 
-    // jak zaimpelentowac modyfikacje zmiany. (konstruktor) Skad wziac dane do nowej faktury?!
     @Override
-    public boolean updateInvoice(Invoice invoice, Invoice newInvoice) {
-        if (invoices.get(invoice.getId()) == null) {
-            return false;
-        }
+    public final void updateInvoice(final Invoice invoice, final Invoice newInvoice) {
         invoices.put(invoice.getId(), newInvoice);
-        return true;
     }
 
     @Override
-    public boolean deleteInvoice(Invoice invoice) {
-        if (invoices.get(invoice.getId()) == null) {
-            return false;
-        }
+    public final void deleteInvoice(final Invoice invoice) {
         invoices.remove(invoice.getId());
-        return true;
     }
 
     @Override
-    public Invoice getInvoiceById(long id) {
+    public final Invoice getInvoiceById(final long id) {
         return invoices.get(id);
     }
 
     @Override
-    public Collection<Invoice> getInvoices() {
+    public final Collection<Invoice> getInvoices() {
         return invoices.values();
     }
 }

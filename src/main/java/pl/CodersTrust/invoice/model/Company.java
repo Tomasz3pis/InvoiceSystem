@@ -1,37 +1,37 @@
 package pl.CodersTrust.invoice.model;
 
 public class Company {
-    private int taxIdentificationNumber;
+    private long taxIdentificationNumber;
     private String address;
     private String name;
 
-    public Company(int taxIdentificationNumber, String address, String name) {
+    public Company(final long taxIdentificationNumber, final String address, final String name) {
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.address = address;
         this.name = name;
     }
 
-    public int getTaxIdentificationNumber() {
+    public final long getTaxIdentificationNumber() {
         return taxIdentificationNumber;
     }
 
-    public void setTaxIdentificationNumber(int taxIdentificationNumber) {
+    public final void setTaxIdentificationNumber(final long taxIdentificationNumber) {
         this.taxIdentificationNumber = taxIdentificationNumber;
     }
 
-    public String getAddress() {
+    public final String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public final void setAddress(final String address) {
         this.address = address;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public final void setName(final String name) {
         this.name = name;
     }
 }

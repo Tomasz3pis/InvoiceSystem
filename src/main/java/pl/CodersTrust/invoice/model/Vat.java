@@ -5,7 +5,7 @@ public enum Vat {
 
     private int vat;
 
-    Vat(int vat) {
+    Vat(final int vat) {
         this.vat = vat;
     }
 

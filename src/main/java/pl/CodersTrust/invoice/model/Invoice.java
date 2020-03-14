@@ -14,7 +14,7 @@ public class Invoice {
     private List<InvoiceEntry> entries;
     private LocalDate data;
 
-    public Invoice(Company seller, Company buyer, LocalDate data, List<InvoiceEntry> entries) {
+    public Invoice(final Company seller, final Company buyer, final LocalDate data, final List<InvoiceEntry> entries) {
         id = idCount.getAndIncrement();
         this.seller = seller;
         this.buyer = buyer;
@@ -22,61 +22,55 @@ public class Invoice {
         this.entries = entries;
     }
 
-//    public BigDecimal totalValue() {
-//        return entries.stream()
-//                .map(InvoiceEntry::getValue)
-//                .reduce(BigDecimal.ZERO, BigDecimal::add);
-//    }
-
-    public long getId() {
+    public final long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public final void setId(final long id) {
         this.id = id;
     }
 
-    public Company getSeller() {
+    public final Company getSeller() {
         return seller;
     }
 
-    public void setSeller(Company seller) {
+    public final void setSeller(final Company seller) {
         this.seller = seller;
     }
 
-    public Company getBuyer() {
+    public final Company getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(Company buyer) {
+    public final void setBuyer(final Company buyer) {
         this.buyer = buyer;
     }
 
-    public void setEntries(List<InvoiceEntry> entries) {
+    public final void setEntries(final List<InvoiceEntry> entries) {
         this.entries = entries;
     }
 
-    public LocalDate getData() {
+    public final LocalDate getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public final void setData(final LocalDate data) {
         this.data = data;
     }
 
     @Override
-    public String toString() {
-        return "Invoice{" +
-                "id=" + id +
-                ", seller=" + seller +
-                ", buyer=" + buyer +
-                ", entries=" + entries +
-                ", data=" + data +
-                '}';
+    public final String toString() {
+        return "Invoice{"
+                + "id=" + id
+                + ", seller=" + seller
+                + ", buyer=" + buyer
+                + ", entries=" + entries
+                + ", data=" + data
+                + '}';
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -84,15 +78,15 @@ public class Invoice {
             return false;
         }
         Invoice invoice = (Invoice) o;
-        return Objects.equals(id, invoice.id) &&
-                Objects.equals(seller, invoice.seller) &&
-                Objects.equals(buyer, invoice.buyer) &&
-                Objects.equals(entries, invoice.entries) &&
-                Objects.equals(data, invoice.data);
+        return Objects.equals(id, invoice.id)
+                && Objects.equals(seller, invoice.seller)
+                && Objects.equals(buyer, invoice.buyer)
+                && Objects.equals(entries, invoice.entries)
+                && Objects.equals(data, invoice.data);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return Objects.hash(id, seller, buyer, entries, data);
     }
 }
