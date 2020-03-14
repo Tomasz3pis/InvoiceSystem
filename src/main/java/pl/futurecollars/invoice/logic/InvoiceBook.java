@@ -19,6 +19,16 @@ public class InvoiceBook implements DataBase {
         return database.getInvoices();
     }
 
+    @Override
+    public void getInvoiceById(String id) {
+
+    }
+
+    @Override
+    public void updateInvoice(Invoice invoice) {
+
+    }
+
 }
 
 

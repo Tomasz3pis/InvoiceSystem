@@ -14,10 +14,20 @@ public class InFileDatabase implements DataBase {
     public List<Invoice> getInvoices() {
         return null;
     }
+
+    @Override
+    public void getInvoiceById(String id) {
+
+    }
+
+    @Override
+    public void updateInvoice(Invoice invoice) {
+
+    }
 }
 
 
-//Rozszerzamy inMemory - faktura ma być zapisana na pliku zamiast w Liscie jak w klasie InMemory
+// Rozszerzamy inMemory - faktura ma być zapisana na pliku zamiast w Liscie jak w klasie InMemory
 // Musimy móc ustawić przełączenie się w bazach danych w propertisach. Nie zmieniamy nic w kodzie ustawiamy properity
 // SQL detabase
-// Wszystkie klasy z pakietu DB powinny mieć metody saveInvoice, getInvoiceById, getInvoices, updateInvoice
+

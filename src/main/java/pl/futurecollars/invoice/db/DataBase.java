@@ -6,4 +6,7 @@ import java.util.List;
 public interface DataBase {
     void saveInvoice(Invoice invoice);
     List<Invoice> getInvoices();
+    void getInvoiceById(String id);
+    void updateInvoice(Invoice invoice);
+
 }
