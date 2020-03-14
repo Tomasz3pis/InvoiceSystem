@@ -7,6 +7,5 @@ public interface DataBase {
     void saveInvoice(Invoice invoice);
     List<Invoice> getInvoices();
     void getInvoiceById(String id);
-    void updateInvoice(Invoice invoice);
-
+    void updateInvoice(Invoice invoice, String Id);
 }
