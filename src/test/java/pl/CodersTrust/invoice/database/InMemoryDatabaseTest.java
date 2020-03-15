@@ -4,18 +4,16 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.mockito.Mockito;
 import pl.CodersTrust.invoice.model.Invoice;
 
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.mock;
 
 @RunWith(JUnit4.class)
 class InMemoryDatabaseTest {
@@ -24,7 +22,7 @@ class InMemoryDatabaseTest {
     @Test
     void shouldSaveInvoiceInDatabase() {
         //given
-        Invoice invoice = mock(Invoice.class);
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
         InMemoryDatabase imd = new InMemoryDatabase();
 
         //when
@@ -38,8 +36,8 @@ class InMemoryDatabaseTest {
     @Test
     void shouldPutNewInvoiceInPlaceOfOldInvoice() {
         //given
-        Invoice invoice = mock(Invoice.class);
-        Invoice newInvoice = mock(Invoice.class);
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
+        Invoice newInvoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
         InMemoryDatabase imd = new InMemoryDatabase();
         imd.saveInvoice(invoice);
 
@@ -47,13 +45,15 @@ class InMemoryDatabaseTest {
         imd.updateInvoice(invoice, newInvoice);
 
         //then
-        Assert.assertThat(imd.getInvoices(), contains(invoice));
+        Assert.assertThat(imd.getInvoiceById(invoice.getId()), is(newInvoice));
+        Assert.assertThat(imd.getInvoices().size(), is(1));
+
     }
 
     @Test
     void shouldDeleteGivenInvoiceFromDatabase() {
         //given
-        Invoice invoice = mock(Invoice.class);
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
         InMemoryDatabase imd = new InMemoryDatabase();
         imd.saveInvoice(invoice);
 
@@ -68,7 +68,7 @@ class InMemoryDatabaseTest {
     @Test
     void shouldReturnInvoice() {
         //given
-        Invoice invoice = mock(Invoice.class);
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
         InMemoryDatabase imd = new InMemoryDatabase();
 
         //when
@@ -86,18 +86,19 @@ class InMemoryDatabaseTest {
         InMemoryDatabase imd = new InMemoryDatabase();
 
         //when
-       Collection<Invoice> actual = imd.getInvoices();
+        Collection<Invoice> actual = imd.getInvoices();
 
         //then
         Assert.assertThat(actual, is(empty()));
 
     }
+
     @Test
     void shouldReturnListOfInvoices() {
         //given
         InMemoryDatabase imd = new InMemoryDatabase();
-        Invoice invoice = mock(Invoice.class);
-        Invoice invoice2 = mock(Invoice.class);
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
+        Invoice invoice2 = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
 
         //when
         imd.saveInvoice(invoice);

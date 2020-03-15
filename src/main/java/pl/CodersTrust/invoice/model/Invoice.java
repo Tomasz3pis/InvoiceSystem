@@ -15,7 +15,7 @@ public class Invoice {
     private LocalDate data;
 
     public Invoice(final Company seller, final Company buyer, final LocalDate data, final List<InvoiceEntry> entries) {
-        id = idCount.getAndIncrement();
+        id = idCount.incrementAndGet();
         this.seller = seller;
         this.buyer = buyer;
         this.data = data;
@@ -26,10 +26,6 @@ public class Invoice {
         return id;
     }
 
-    public final void setId(final long id) {
-        this.id = id;
-    }
-
     public final Company getSeller() {
         return seller;
     }
@@ -38,16 +34,20 @@ public class Invoice {
         this.seller = seller;
     }
 
+    public final List<InvoiceEntry> getEntries() {
+        return entries;
+    }
+
+    public final void setEntries(final List<InvoiceEntry> entries) {
+        this.entries = entries;
+    }
+
     public final Company getBuyer() {
         return buyer;
     }
 
     public final void setBuyer(final Company buyer) {
         this.buyer = buyer;
-    }
-
-    public final void setEntries(final List<InvoiceEntry> entries) {
-        this.entries = entries;
     }
 
     public final LocalDate getData() {
@@ -78,7 +78,7 @@ public class Invoice {
             return false;
         }
         Invoice invoice = (Invoice) o;
-        return Objects.equals(id, invoice.id)
+        return id == invoice.id
                 && Objects.equals(seller, invoice.seller)
                 && Objects.equals(buyer, invoice.buyer)
                 && Objects.equals(entries, invoice.entries)

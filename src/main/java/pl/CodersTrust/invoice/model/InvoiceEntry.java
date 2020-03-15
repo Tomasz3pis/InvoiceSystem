@@ -38,33 +38,4 @@ public class InvoiceEntry {
     public final void setVatRate(final Vat vatRate) {
         this.vatRate = vatRate;
     }
-
-
-    @Override
-    public final String toString() {
-        return "InvoiceEntry{"
-                + "description='" + description + '\''
-                + ", value=" + value
-                + ", vatRate=" + vatRate
-                + '}';
-    }
-
-    @Override
-    public final boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        InvoiceEntry that = (InvoiceEntry) o;
-        return Objects.equals(description, that.description)
-                && Objects.equals(value, that.value)
-                && vatRate == that.vatRate;
-    }
-
-    @Override
-    public final int hashCode() {
-        return Objects.hash(description, value, vatRate);
-    }
 }

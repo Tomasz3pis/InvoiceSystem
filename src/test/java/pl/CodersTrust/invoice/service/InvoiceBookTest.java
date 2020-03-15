@@ -9,12 +9,7 @@ import pl.CodersTrust.invoice.database.Database;
 import pl.CodersTrust.invoice.model.Invoice;
 
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.in;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,9 +23,10 @@ class InvoiceBookTest {
         Invoice invoice = Mockito.mock(Invoice.class);
         Database database = Mockito.mock(Database.class);
         doNothing().when(database).saveInvoice(invoice);
+        InvoiceBook ib = new InvoiceBook(database);
 
         //when
-        database.saveInvoice(invoice);
+        ib.saveInvoiceInDatabase(invoice);
 
         //then
         verify(database, times(1)).saveInvoice(invoice);
@@ -43,13 +39,15 @@ class InvoiceBookTest {
         //given
         Invoice invoice = Mockito.mock(Invoice.class);
         Database database = Mockito.mock(Database.class);
+        InvoiceBook ib = new InvoiceBook(database);
         when(database.getInvoiceById(invoice.getId())).thenReturn(invoice);
 
         //when
-        Invoice actual = database.getInvoiceById(invoice.getId());
+        Invoice actual = ib.searchInvoiceById(invoice.getId());
 
         //then
         Assert.assertEquals(invoice, actual);
+        verify(database, times(1)).getInvoiceById(invoice.getId());
 
     }
 

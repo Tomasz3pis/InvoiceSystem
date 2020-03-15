@@ -2,13 +2,16 @@ package pl.CodersTrust.invoice.service;
 
 
 import pl.CodersTrust.invoice.database.Database;
-import pl.CodersTrust.invoice.database.InMemoryDatabase;
 import pl.CodersTrust.invoice.model.Invoice;
 
 
 public class InvoiceBook {
 
-    private Database database = new InMemoryDatabase();
+    private Database database;
+
+    public InvoiceBook(Database database) {
+        this.database = database;
+    }
 
     public final void saveInvoiceInDatabase(final Invoice invoice) {
         database.saveInvoice(invoice);
