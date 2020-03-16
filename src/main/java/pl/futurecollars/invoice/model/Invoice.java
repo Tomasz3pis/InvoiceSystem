@@ -11,6 +11,9 @@ public class Invoice {
     private Company buyer;
     private List<InvoiceEntry> entries;
 
+    public Invoice() {
+    }
+
     public Invoice(String id, LocalDate issueDate, Company seller, Company buyer, List<InvoiceEntry> entries) {
         this.id = id;
         this.issueDate = issueDate;

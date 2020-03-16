@@ -9,6 +9,7 @@ public class InvoiceBook implements DataBase {
     private List<Invoice> invoices;
     private InMemoryDataBase database;
 
+
     @Override
     public void saveInvoice(final Invoice invoice) {
     invoices.add(invoice);
@@ -20,17 +21,26 @@ public class InvoiceBook implements DataBase {
     }
 
     @Override
-    public void getInvoiceById(String id) {
-
+    public Invoice getInvoiceById(String id) {
+        for (Invoice invoice : invoices) {
+            if (invoice.getId().equals(id)) {
+                return invoice;
+            }
+        }
+        throw new IllegalArgumentException("Invoice id: " + id + " not found in Database");
     }
 
     @Override
-    public void updateInvoice(Invoice invoice) {
+    public void updateInvoice(Invoice invoice, int updatedIndex) {
+        if(updatedIndex > invoices.size()) {
+            throw new IndexOutOfBoundsException ("List of invoices is between : 0 to  " + invoices.size() + " Please pass correct index.");
+        }
+        invoices.set(updatedIndex,invoice);
+    }
 
+    @Override
+    public void deleteInvoice(String id) {
+        invoices.remove(getInvoiceById(id));
     }
 
 }
-
-
-
-// save invoice,  delete, update invoice, searchInvoices

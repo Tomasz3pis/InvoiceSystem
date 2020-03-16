@@ -9,6 +9,9 @@ public class Company {
     private String postCode; // Postal Code verification using regex
     private String Town;
 
+    public Company() {
+    }
+
     public Company(String name, String taxIdentificationNumber, String streetName, String postCode, String town) {
         this.name = name;
         this.taxIdentificationNumber = taxIdentificationNumber;
@@ -58,14 +61,14 @@ public class Company {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object providedObject) {
+        if (this == providedObject) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (providedObject == null || getClass() != providedObject.getClass()) {
             return false;
         }
-        Company company = (Company) o;
+        Company company = (Company) providedObject;
         return Objects.equals(name, company.name) &&
                 Objects.equals(taxIdentificationNumber, company.taxIdentificationNumber) &&
                 Objects.equals(streetName, company.streetName) &&

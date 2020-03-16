@@ -4,25 +4,27 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class InvoiceEntry {
-    private String entityName;
+    private String description;
     private String quantity;
     private BigDecimal cost;
     private VAT vat;
 
+    public InvoiceEntry() {
+    }
+
     public InvoiceEntry(String entityName, String quantity, BigDecimal cost, VAT vat) {
-        this.entityName = entityName;
+        this.description = entityName;
         this.quantity = quantity;
         this.cost = cost;
         this.vat = vat;
     }
 
-
     public String getEntityName() {
-        return entityName;
+        return description;
     }
 
     public void setEntityName(String entityName) {
-        this.entityName = entityName;
+        this.description = entityName;
     }
 
     public String getAmount() {
@@ -58,7 +60,7 @@ public class InvoiceEntry {
             return false;
         }
         InvoiceEntry that = (InvoiceEntry) o;
-        return Objects.equals(entityName, that.entityName) &&
+        return Objects.equals(description, that.description) &&
                 Objects.equals(quantity, that.quantity) &&
                 Objects.equals(cost, that.cost) &&
                 vat == that.vat;
@@ -66,12 +68,12 @@ public class InvoiceEntry {
 
     @Override
     public int hashCode() {
-        return Objects.hash(entityName, quantity, cost, vat);
+        return Objects.hash(description, quantity, cost, vat);
     }
 
     @Override
     public String toString() {
-        return "InvoiceEntry{" + "productName='" + entityName + '\'' + ", amount='" + quantity + '\'' + ", cost=" + cost + ", vat=" + vat + '}';
+        return "InvoiceEntry{" + "productName='" + description + '\'' + ", amount='" + quantity + '\'' + ", cost=" + cost + ", vat=" + vat + '}';
     }
 
 }

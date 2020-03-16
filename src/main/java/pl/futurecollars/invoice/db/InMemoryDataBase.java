@@ -1,6 +1,5 @@
 package pl.futurecollars.invoice.db;
 
-import pl.futurecollars.invoice.model.Company;
 import pl.futurecollars.invoice.model.Invoice;
 
 import java.util.ArrayList;
@@ -21,17 +20,17 @@ public class InMemoryDataBase implements DataBase {
 
     @Override
     public Invoice getInvoiceById(String id) {
-        for (Invoice invoice : invoices) {
-            if (invoice.getId().equals(id)) {
-                return invoice;
-            }
-        }
-
-        throw new IllegalArgumentException("Passed id: " + id + " not found in Database");
+        return null;
     }
 
     @Override
-    public void updateInvoice(Invoice invoice, String Id) {
+    public void updateInvoice(Invoice invoice, int updatedIndex) {
 
     }
+
+    @Override
+    public void deleteInvoice(String id) {
+
+    }
+
 }
