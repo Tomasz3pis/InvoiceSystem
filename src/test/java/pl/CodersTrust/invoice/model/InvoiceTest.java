@@ -1,12 +1,16 @@
 package pl.CodersTrust.invoice.model;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
@@ -18,116 +22,55 @@ class InvoiceTest {
     InvoiceEntry entry = mock(InvoiceEntry.class);
 
 
-    @Test
-    void shouldReturnSeller() {
-        //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnSetSeller(Invoice invoice) {
 
-        //when
-        Company actual = invoice.getSeller();
+        invoice.setSeller(company);
 
-        //then
-        Assert.assertEquals(company, actual);
+        Assert.assertEquals(invoice.getSeller(), company);
     }
 
-    @Test
-    void shouldSetSellerToAnother() {
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnSetBuyer(Invoice invoice) {
         //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
-        Company company2 = mock(Company.class);
+        Company company = mock(Company.class);
 
         //when
-        invoice.setSeller(company2);
+        invoice.setBuyer(company);
 
         //then
-        Assert.assertThat(invoice.getSeller(), is(company2));
+        Assert.assertThat(invoice.getBuyer(), is(company));
     }
 
-    @Test
-    void shouldReturnBuyer() {
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnSetEntries(Invoice invoice) {
         //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
+        InvoiceEntry entry = mock(InvoiceEntry.class);
 
         //when
-        Company actual = invoice.getBuyer();
+        invoice.setEntries(List.of(entry));
 
         //then
-        Assert.assertThat(actual, is(company));
-
+        Assert.assertThat(invoice.getEntries(), is(List.of(entry)));
     }
 
-    @Test
-    void shouldSetBuyerToAnother() {
-        //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
-        Company company2 = mock(Company.class);
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnSetDate(Invoice invoice) {
 
-        //when
-        invoice.setBuyer(company2);
-
-        //then
-        Assert.assertThat(invoice.getBuyer(), is(company2));
-    }
-
-    @Test
-    void shouldReturnListOfEntries() {
-        //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
-
-        //when
-        List<InvoiceEntry> actual = invoice.getEntries();
-
-        //then
-        Assert.assertThat(actual, is(List.of(entry)));
-    }
-
-    @Test
-    void shouldSetEntriesToAnother() {
-        //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
-        InvoiceEntry entry2 = mock(InvoiceEntry.class);
-        //when
-        invoice.setEntries(List.of(entry2));
-
-        //then
-        Assert.assertThat(invoice.getEntries(), is(List.of(entry2)));
-    }
-
-    @Test
-    void shouldReturnDate() {
-        //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
-
-        //when
-        LocalDate actual = invoice.getData();
-
-        //then
-        Assert.assertThat(actual, is(LocalDate.of(2020, 3, 14)));
-
-    }
-
-    @Test
-    void shouldSetDateTo2015y12m14d() {
-        //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
-
-        //when
         invoice.setData(LocalDate.of(2015, 12, 14));
 
-        //then
         Assert.assertThat(invoice.getData(), is(LocalDate.of(2015, 12, 14)));
     }
 
-    @Test
-    void shouldReturnStringRepresentationOfInvoice() {
-        //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnStringRepresentationOfInvoice(Invoice invoice) {
 
-        //when
-        String actual = invoice.toString();
-
-        //then
-        Assert.assertThat(actual, is("Invoice{"
+        Assert.assertThat(invoice.toString(), is("Invoice{"
                 + "id=" + invoice.getId()
                 + ", seller=" + invoice.getSeller()
                 + ", buyer=" + invoice.getBuyer()
@@ -136,42 +79,45 @@ class InvoiceTest {
                 + '}'));
     }
 
-    @Test
-    void shouldReturnHashCode() {
-        //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnHashCode(Invoice invoice) {
 
-        //when
-        int actual = invoice.hashCode();
-
-        //then
-        Assert.assertThat(actual, is( Objects.hash(invoice.getId(), invoice.getSeller(), invoice.getBuyer(), invoice.getEntries(), invoice.getData())));
+        Assert.assertThat(invoice.hashCode(), is(Objects.hash(invoice.getId(), invoice.getSeller(), invoice.getBuyer(), invoice.getEntries(), invoice.getData())));
 
     }
 
-    @Test
-    void shouldReturnFalse() {
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnFalse(Invoice invoice, Invoice invoice2) {
         //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
-        Invoice invoice2 = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
-
+        invoice2.setData(LocalDate.of(2015, 12, 12));
         //when
         boolean actual = invoice.equals(invoice2);
-
         //then
         Assert.assertFalse(actual);
     }
 
-    @Test
-    void shouldReturnTrue() {
-        //given
-        Invoice invoice = new Invoice(company, company, LocalDate.of(2020, 3, 14), List.of(entry));
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnTrue(Invoice invoice, Invoice invoice2) {
 
-        //when
-        boolean actual = invoice.equals(invoice);
+        Assert.assertTrue(invoice.equals(invoice2));
 
-        //then
-        Assert.assertTrue(actual);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnFalseWhenArgIsNull(Invoice invoice) {
+
+        Assert.assertFalse(invoice.equals(null));
+
+    }
+
+    private static Stream<Arguments> invoiceProvider() {
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
+        Invoice invoice1 = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
+        return Stream.of(Arguments.of(invoice, invoice1));
     }
 }
 

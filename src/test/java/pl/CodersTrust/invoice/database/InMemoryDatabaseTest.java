@@ -2,6 +2,9 @@ package pl.CodersTrust.invoice.database;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import pl.CodersTrust.invoice.model.Invoice;
@@ -10,6 +13,7 @@ import pl.CodersTrust.invoice.model.Invoice;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItems;
@@ -19,10 +23,10 @@ import static org.hamcrest.Matchers.is;
 class InMemoryDatabaseTest {
 
 
-    @Test
-    void shouldSaveInvoiceInDatabase() {
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldSaveInvoiceInDatabase(Invoice invoice) {
         //given
-        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
         InMemoryDatabase imd = new InMemoryDatabase();
 
         //when
@@ -33,16 +37,15 @@ class InMemoryDatabaseTest {
 
     }
 
-    @Test
-    void shouldPutNewInvoiceInPlaceOfOldInvoice() {
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldPutNewInvoiceInPlaceOfOldInvoice(Invoice invoice, Invoice newInvoice) {
         //given
-        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
-        Invoice newInvoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
         InMemoryDatabase imd = new InMemoryDatabase();
         imd.saveInvoice(invoice);
 
         //when
-        imd.updateInvoice(invoice, newInvoice);
+        imd.updateInvoice(invoice.getId(), newInvoice);
 
         //then
         Assert.assertThat(imd.getInvoiceById(invoice.getId()), is(newInvoice));
@@ -50,25 +53,25 @@ class InMemoryDatabaseTest {
 
     }
 
-    @Test
-    void shouldDeleteGivenInvoiceFromDatabase() {
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldDeleteGivenInvoiceFromDatabase(Invoice invoice) {
         //given
-        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
         InMemoryDatabase imd = new InMemoryDatabase();
         imd.saveInvoice(invoice);
 
         //when
-        imd.deleteInvoice(invoice);
+        imd.deleteInvoice(invoice.getId());
 
         //then
         Assert.assertThat(imd.getInvoices(), is(empty()));
 
     }
 
-    @Test
-    void shouldReturnInvoice() {
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnInvoice(Invoice invoice) {
         //given
-        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
         InMemoryDatabase imd = new InMemoryDatabase();
 
         //when
@@ -93,12 +96,11 @@ class InMemoryDatabaseTest {
 
     }
 
-    @Test
-    void shouldReturnListOfInvoices() {
+    @ParameterizedTest
+    @MethodSource("invoiceProvider")
+    void shouldReturnListOfInvoices(Invoice invoice, Invoice invoice2) {
         //given
         InMemoryDatabase imd = new InMemoryDatabase();
-        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
-        Invoice invoice2 = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
 
         //when
         imd.saveInvoice(invoice);
@@ -107,6 +109,13 @@ class InMemoryDatabaseTest {
 
         //then
         Assert.assertThat(actual, hasItems(invoice, invoice2));
+        Assert.assertThat(actual.size(), is(2));
 
+    }
+
+    private static Stream<Arguments> invoiceProvider() {
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
+        Invoice invoice1 = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
+        return Stream.of(Arguments.of(invoice, invoice1));
     }
 }

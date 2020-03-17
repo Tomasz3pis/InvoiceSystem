@@ -1,90 +1,61 @@
 package pl.CodersTrust.invoice.model;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 
 import java.math.BigDecimal;
+import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.is;
 
 
 class InvoiceEntryTest {
 
-    @Test
-    void shouldReturnDescription() {
-        //given
-        InvoiceEntry entry = new InvoiceEntry("Test describcion", new BigDecimal(1500L), Vat.VAT_23);
 
-        //when
-        String actual = entry.getDescription();
+    @ParameterizedTest
+    @MethodSource("entriesProvider")
+    void shouldReturnSetDescription(InvoiceEntry entry) {
 
-        //then
-        Assert.assertThat(actual, is("Test describcion"));
-
-    }
-
-    @Test
-    void shouldSetNewDescription() {
-        //given
-        InvoiceEntry entry = new InvoiceEntry("Test description", new BigDecimal(1500L), Vat.VAT_23);
-
-        //when
         entry.setDescription("New test descri");
 
-        //then
         Assert.assertThat(entry.getDescription(), is("New test descri"));
     }
 
-    @Test
-    void shouldReturnValue() {
-        //given
-        InvoiceEntry entry = new InvoiceEntry("Test describcion", new BigDecimal(1500L), Vat.VAT_23);
 
-        //when
-        BigDecimal actual = entry.getValue();
+    @ParameterizedTest
+    @MethodSource("entriesProvider")
+    void shouldReturnSetValue(InvoiceEntry entry) {
 
-        //then
-        Assert.assertThat(actual, is(new BigDecimal(1500L)));
-
-    }
-
-    @Test
-    void shouldSetValueTo100() {
-        //given
-        InvoiceEntry entry = new InvoiceEntry("Test describcion", new BigDecimal(1500L), Vat.VAT_23);
-
-        //when
         entry.setValue(new BigDecimal(100L));
 
-        //then
         Assert.assertThat(entry.getValue(), is(new BigDecimal(100)));
-
     }
 
-    @Test
-    void shouldReturnVatRate() {
-        //given
-        InvoiceEntry entry = new InvoiceEntry("Test describcion", new BigDecimal(1500L), Vat.VAT_23);
 
-        //when
-        Vat actual = entry.getVatRate();
+    @ParameterizedTest
+    @MethodSource("entriesProvider")
+    void shouldReturnSetVatRate(InvoiceEntry entry) {
 
-        //then
-        Assert.assertThat(actual, is(Vat.VAT_23));
-
-    }
-
-    @Test
-    void shouldSetVatRateToVat8() {
-        //given
-        InvoiceEntry entry = new InvoiceEntry("Test describcion", new BigDecimal(1500L), Vat.VAT_23);
-
-        //when
         entry.setVatRate(Vat.VAT_8);
 
-        //then
         Assert.assertThat(entry.getVatRate(), is(Vat.VAT_8));
+    }
 
+    @ParameterizedTest
+    @MethodSource("entriesProvider")
+    void shouldReturnFalseWhenArgIsNull(InvoiceEntry entry) {
+
+        Assert.assertFalse(entry.equals(null));
+
+    }
+
+    private static Stream<Arguments> entriesProvider() {
+        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0);
+        InvoiceEntry entry2 = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0);
+
+        return Stream.of(Arguments.of(entry, entry2));
     }
 }

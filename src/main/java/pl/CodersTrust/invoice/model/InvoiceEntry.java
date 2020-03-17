@@ -2,7 +2,6 @@ package pl.CodersTrust.invoice.model;
 
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 public class InvoiceEntry {
     private String description;

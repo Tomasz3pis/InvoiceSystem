@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Invoice {
-    private static final AtomicLong idCount = new AtomicLong();
+    public static final AtomicLong idCount = new AtomicLong();
     private long id;
     private Company seller;
     private Company buyer;
@@ -15,7 +15,6 @@ public class Invoice {
     private LocalDate data;
 
     public Invoice(final Company seller, final Company buyer, final LocalDate data, final List<InvoiceEntry> entries) {
-        id = idCount.incrementAndGet();
         this.seller = seller;
         this.buyer = buyer;
         this.data = data;
@@ -24,6 +23,10 @@ public class Invoice {
 
     public final long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public final Company getSeller() {

@@ -3,6 +3,7 @@ package pl.CodersTrust.invoice.database;
 import pl.CodersTrust.invoice.model.Invoice;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,17 +14,19 @@ public class InMemoryDatabase implements Database {
 
     @Override
     public final void saveInvoice(final Invoice invoice) {
+        invoice.setId(Invoice.idCount.incrementAndGet());
         invoices.put(invoice.getId(), invoice);
     }
 
     @Override
-    public final void updateInvoice(final Invoice invoice, final Invoice newInvoice) {
-        invoices.put(invoice.getId(), newInvoice);
+    public final void updateInvoice(final long id, final Invoice newInvoice) {
+        newInvoice.setId(id);
+        invoices.put(id, newInvoice);
     }
 
     @Override
-    public final void deleteInvoice(final Invoice invoice) {
-        invoices.remove(invoice.getId());
+    public final void deleteInvoice(final long id) {
+        invoices.remove(id);
     }
 
     @Override
@@ -33,6 +36,6 @@ public class InMemoryDatabase implements Database {
 
     @Override
     public final Collection<Invoice> getInvoices() {
-        return invoices.values();
+        return new ArrayList<>(invoices.values());
     }
 }

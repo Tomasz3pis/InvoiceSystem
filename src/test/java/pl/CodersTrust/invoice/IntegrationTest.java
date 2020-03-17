@@ -23,19 +23,19 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
 
-class InvoiceApplicationTests {
+class IntegrationTest {
 
     private static Database database = new InMemoryDatabase();
     private static InvoiceBook invoiceBook = new InvoiceBook(database);
 
     @BeforeEach
-     void init() {
-
+    public void cleanup() {
+        database.getInvoices().forEach(invoice -> database.deleteInvoice(invoice.getId()));
     }
 
     @ParameterizedTest
     @MethodSource("dataProvider")
-    void save(Invoice invoice1, Invoice invoice2) {
+    void shouldSaveInvoiceInDatabase(Invoice invoice1, Invoice invoice2) {
 
 
         invoiceBook.saveInvoiceInDatabase(invoice1);
@@ -49,14 +49,14 @@ class InvoiceApplicationTests {
 
     @ParameterizedTest
     @MethodSource("dataProvider")
-    void modify(Invoice invoice3, Invoice invoice4) {
+    void shouldChangeInvoice(Invoice invoice3, Invoice invoice4) {
 
         invoiceBook.saveInvoiceInDatabase(invoice3);
         invoice4.setData(LocalDate.of(2018, 6, 8));
         invoice4.setBuyer(new Company(8900988889L, "Monkey st", "Snek"));
         invoice4.setEntries(invoice3.getEntries());
         invoice4.setSeller(new Company(1233211223L, "Unknow", "Hash Corp"));
-        database.updateInvoice(invoice3, invoice4);
+        database.updateInvoice(invoice3.getId(), invoice4);
 
         Assert.assertThat(database.getInvoiceById(invoice3.getId()), is(invoice4));
         Assert.assertThat(invoice4.getData(), is(LocalDate.of(2018, 6, 8)));
@@ -66,11 +66,11 @@ class InvoiceApplicationTests {
 
     @ParameterizedTest
     @MethodSource("dataProvider")
-    void remove(Invoice invoice5, Invoice invoice6) {
+    void shouldRemoveInvoiceFromDatabase(Invoice invoice5, Invoice invoice6) {
 
         invoiceBook.saveInvoiceInDatabase(invoice5);
         invoiceBook.saveInvoiceInDatabase(invoice6);
-        database.deleteInvoice(invoice5);
+        database.deleteInvoice(invoice5.getId());
 
         Assert.assertThat(database.getInvoiceById(invoice5.getId()), nullValue());
         Assert.assertThat(database.getInvoices().size(), is(1));
