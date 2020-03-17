@@ -10,13 +10,12 @@ import java.util.List;
 public class InFileDatabase implements DataBase {
     private List<Invoice> invoices = new ArrayList<>();
     private ObjectMapper mapper = new ObjectMapper();
-    private Invoice invoiceFromJson;
     private String json;
 
     @Override
     public void saveInvoice(Invoice invoice) throws IOException {
         mapper.writeValue(new File("invoiceList.json"), invoice);
-        json = mapper.writeValueAsString(invoice);
+        json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(invoice);
     }
 
     @Override
@@ -42,9 +41,4 @@ public class InFileDatabase implements DataBase {
     }
 
 }
-
-
-// Rozszerzamy inFile - faktura ma być zapisana na pliku zamiast w Liscie jak w klasie InMemory
-// Musimy móc ustawić przełączenie się w bazach danych w propertisach. Nie zmieniamy nic w kodzie ustawiamy properity
-// SQL detabase
 

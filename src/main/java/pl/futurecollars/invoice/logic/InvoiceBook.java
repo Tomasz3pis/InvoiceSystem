@@ -27,7 +27,7 @@ public class InvoiceBook implements DataBase {
                 return invoice;
             }
         }
-        throw new IllegalArgumentException("Invoice id: " + id + " not found in Database");
+        throw new IllegalArgumentException("Invoice id: " + id + " not found in Database.");
     }
 
     @Override
@@ -40,6 +40,9 @@ public class InvoiceBook implements DataBase {
 
     @Override
     public void deleteInvoice(String id) {
+        if(!invoices.contains(id)){
+            throw new IllegalArgumentException("Invoice id: " + id + " not found in Database.");
+        }
         invoices.remove(getInvoiceById(id));
     }
 
