@@ -6,7 +6,8 @@ import static pl.futurecollars.invoices.helpers.CheckIdFormat.checkIdFormat;
 import pl.futurecollars.invoices.database.Database;
 import pl.futurecollars.invoices.model.Invoice;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class InvoiceService {
 
@@ -22,11 +23,11 @@ public class InvoiceService {
         database.saveInvoice(invoice);
     }
 
-    public List<Invoice> getInvoices() {
+    public Map<String, Invoice> getInvoices() {
         return database.getInvoices();
     }
 
-    public Invoice getInvoice(String id) {
+    public Optional<Invoice> getInvoice(String id) {
         checkForNull(id, "id");
         checkIdFormat(id);
         return database.getInvoiceById(id);

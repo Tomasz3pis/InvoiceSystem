@@ -1,7 +1,10 @@
 package pl.futurecollars.invoices.model;
 
 import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
-import static pl.futurecollars.invoices.model.Invoice.HASH_OFFSET;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.math.BigDecimal;
 
@@ -62,45 +65,24 @@ public class InvoiceEntry {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (object == null || getClass() != object.getClass()) {
             return false;
         }
-
-        InvoiceEntry that = (InvoiceEntry) o;
-
-        if (quantity != that.quantity) {
-            return false;
-        }
-        if (!itemName.equals(that.itemName)) {
-            return false;
-        }
-        if (!netPrice.equals(that.netPrice)) {
-            return false;
-        }
-        return vat == that.vat;
+        InvoiceEntry entry = (InvoiceEntry) object;
+        return EqualsBuilder.reflectionEquals(this, entry);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = itemName.hashCode();
-        result = HASH_OFFSET * result + quantity;
-        result = HASH_OFFSET * result + netPrice.hashCode();
-        result = HASH_OFFSET * result + vat.hashCode();
-        return result;
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public String toString() {
-        return "\n\t\t\t  InvoiceEntry{"
-                + "itemName='" + itemName + '\''
-                + ", quantity=" + quantity
-                + ", netPrice=" + netPrice
-                + ", vat=" + vat
-                + '}';
+        return ToStringBuilder.reflectionToString(this);
     }
 }

@@ -7,10 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 class InvoiceSystemApplicationTests {
 
     @Test
-    void contextLoads() {
-    }
-
-    @Test
     void applicationStarts() {
         InvoiceSystemApplication.main(new String[] {});
     }

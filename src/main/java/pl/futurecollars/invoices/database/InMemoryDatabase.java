@@ -5,55 +5,35 @@ import static pl.futurecollars.invoices.helpers.CheckIdFormat.checkIdFormat;
 
 import pl.futurecollars.invoices.model.Invoice;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryDatabase implements Database {
 
-    private List<Invoice> invoices = new ArrayList<>();
-    private LinkedList<String> idNumbers = new LinkedList<>();
+    private Map<String, Invoice> invoices = new HashMap<>();
+    private AtomicInteger idCounter = new AtomicInteger();
 
     @Override
     public void saveInvoice(Invoice invoice) {
         checkForNull(invoice, "invoice");
-        String id = invoice.getId();
-        checkIdFormat(id);
-        if (containsId(id)) {
-            throw new IllegalArgumentException("Invoice with id: "
-                    + id
-                    + " already exists in database. It can only be updated.");
-        }
-        invoices.add(invoice);
-        addId(id);
+        String id = generateId(invoice.getSaleDate());
+        invoice.setId(id);
+        invoices.put(id, invoice);
     }
 
     @Override
-    public List<Invoice> getInvoices() {
+    public Map<String, Invoice> getInvoices() {
         return invoices;
     }
 
     @Override
-    public Invoice getInvoiceById(String id) {
+    public Optional<Invoice> getInvoiceById(String id) {
         checkForNull(id, "id");
         checkIdFormat(id);
-        if (!containsId(id)) {
-            throw new IllegalArgumentException(
-                    "Provided id: "
-                            + id
-                            + " not found in Database.");
-        }
-        for (Invoice invoice : invoices) {
-            if (invoice.getId().equals(id)) {
-                return invoice;
-            }
-        }
-        throw new IllegalArgumentException(
-                "Provided id: "
-                        + id
-                        + " was found in Database without connected Invoice."
-                        + "Invoice with this id was never properly saved "
-                        + "or was not properly deleted from database");
+        return Optional.ofNullable(invoices.get(id));
     }
 
     @Override
@@ -61,46 +41,36 @@ public class InMemoryDatabase implements Database {
         checkForNull(updatedInvoice, "updatedInvoice");
         String updatedInvoiceId = updatedInvoice.getId();
         checkIdFormat(updatedInvoiceId);
-        if (!containsId(updatedInvoiceId)) {
+        Invoice originalInvoice = invoices
+                .replace(updatedInvoiceId, updatedInvoice);
+        if (originalInvoice == null) {
             throw new IllegalArgumentException(
                     "Provided updatedInvoice does not exist in database. "
                             + "Invoice id: " + updatedInvoiceId + " not found."
             );
         }
-        int updateIndex = invoices
-                .indexOf(getInvoiceById(updatedInvoiceId));
-        invoices.set(updateIndex, updatedInvoice);
     }
 
     @Override
     public void deleteInvoice(String id) {
         checkForNull(id, "id");
         checkIdFormat(id);
-        invoices.remove(getInvoiceById(id));
-        idNumbers.remove(id);
+        Invoice deletedInvoice = invoices.remove(id);
+        if (deletedInvoice == null) {
+            throw new IllegalArgumentException(
+                    "Provided id: "
+                            + id
+                            + " not found in Database.");
+        }
     }
 
-    @Override
-    public void addId(String id) {
-        checkForNull(id, "id");
-        checkIdFormat(id);
-        idNumbers.offer(id);
-    }
-
-    @Override
-    public List<String> getIdNumbers() {
-        return idNumbers;
-    }
-
-    @Override
-    public String getLastId() {
-        return idNumbers.peekLast();
-    }
-
-    @Override
-    public boolean containsId(String id) {
-        checkForNull(id, "id");
-        checkIdFormat(id);
-        return idNumbers.contains(id);
+    private String generateId(LocalDate saleDate) {
+        checkForNull(saleDate, "saleDate");
+        return String.format("%04d%02d%02d%1s%04d",
+                saleDate.getYear(),
+                saleDate.getMonthValue(),
+                saleDate.getDayOfMonth(),
+                "_",
+                idCounter.incrementAndGet());
     }
 }

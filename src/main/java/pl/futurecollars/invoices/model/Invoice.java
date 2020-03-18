@@ -3,12 +3,15 @@ package pl.futurecollars.invoices.model;
 import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
 import static pl.futurecollars.invoices.helpers.CheckIdFormat.checkIdFormat;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class Invoice {
-
-    static final int HASH_OFFSET = 31;
 
     private String id;
     private LocalDate issueDate;
@@ -17,19 +20,12 @@ public class Invoice {
     private Company buyer;
     private List<InvoiceEntry> entries;
 
-    public Invoice(
-            String id,
-            LocalDate issueDate,
-            Company seller,
-            Company buyer,
-            List<InvoiceEntry> entries) {
-        checkForNull(id, "id");
-        checkIdFormat(id);
+    public Invoice(LocalDate issueDate, Company seller, Company buyer,
+                   List<InvoiceEntry> entries) {
         checkForNull(issueDate, "issueDate");
         checkForNull(seller, "seller");
         checkForNull(buyer, "buyer");
         checkForNull(entries, "entries");
-        this.id = id;
         this.issueDate = issueDate;
         this.saleDate = issueDate;
         this.seller = seller;
@@ -37,20 +33,13 @@ public class Invoice {
         this.entries = entries;
     }
 
-    public Invoice(String id,
-                   LocalDate issueDate,
-                   LocalDate saleDate,
-                   Company seller,
-                   Company buyer,
-                   List<InvoiceEntry> entries) {
-        checkForNull(id, "id");
-        checkIdFormat(id);
+    public Invoice(LocalDate issueDate, LocalDate saleDate,
+                   Company seller, Company buyer, List<InvoiceEntry> entries) {
         checkForNull(issueDate, "issueDate");
         checkForNull(saleDate, "saleDate");
         checkForNull(seller, "seller");
         checkForNull(buyer, "buyer");
         checkForNull(entries, "entries");
-        this.id = id;
         this.issueDate = issueDate;
         this.saleDate = saleDate;
         this.seller = seller;
@@ -60,6 +49,12 @@ public class Invoice {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        checkForNull(id, "id");
+        checkIdFormat(id);
+        this.id = id;
     }
 
     public LocalDate getIssueDate() {
@@ -108,55 +103,25 @@ public class Invoice {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (object == null || getClass() != object.getClass()) {
             return false;
         }
-
-        Invoice invoice = (Invoice) o;
-
-        if (!id.equals(invoice.id)) {
-            return false;
-        }
-        if (!issueDate.equals(invoice.issueDate)) {
-            return false;
-        }
-        if (!saleDate.equals(invoice.saleDate)) {
-            return false;
-        }
-        if (!seller.equals(invoice.seller)) {
-            return false;
-        }
-        if (!buyer.equals(invoice.buyer)) {
-            return false;
-        }
-        return entries.equals(invoice.entries);
+        Invoice invoice = (Invoice) object;
+        return EqualsBuilder.reflectionEquals(this, invoice);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = id.hashCode();
-        result = HASH_OFFSET * result + issueDate.hashCode();
-        result = HASH_OFFSET * result + saleDate.hashCode();
-        result = HASH_OFFSET * result + seller.hashCode();
-        result = HASH_OFFSET * result + buyer.hashCode();
-        result = HASH_OFFSET * result + entries.hashCode();
-        return result;
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public String toString() {
-        return "\nInvoice{\n"
-                + "id        = " + id + ",\n"
-                + "issueDate = " + issueDate + ",\n"
-                + "saleDate  = " + saleDate + ",\n"
-                + "seller    = " + seller + ",\n"
-                + "buyer     = " + buyer + ",\n"
-                + "entries   = " + entries + "\n"
-                + '}';
+        return ToStringBuilder.reflectionToString(this,
+                ToStringStyle.MULTI_LINE_STYLE);
     }
 }

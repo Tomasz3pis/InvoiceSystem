@@ -13,8 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.futurecollars.invoices.database.Database;
 import pl.futurecollars.invoices.model.Invoice;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class InvoiceServiceTest {
@@ -31,8 +32,8 @@ class InvoiceServiceTest {
     @Test
     void shouldConstructInvoiceServiceGivenDatabase() {
         // Given
-        List<Invoice> expectedInvoices = new ArrayList<>();
-        expectedInvoices.add(invoice);
+        Map<String, Invoice> expectedInvoices = new HashMap<>();
+        expectedInvoices.put("key", invoice);
         when(database.getInvoices()).thenReturn(expectedInvoices);
 
         // When
@@ -46,13 +47,14 @@ class InvoiceServiceTest {
     void shouldSaveInvoiceGivenData() {
         // Given
         String id = "20200101_0001";
-        when(database.getInvoiceById(id)).thenReturn(invoice);
+        when(database.getInvoiceById(id)).thenReturn(Optional.of(invoice));
 
         // When
         injectedInvoiceService.saveInvoice(invoice);
 
         // Then
-        assertThat(injectedInvoiceService.getInvoice(id), is(invoice));
+        assertThat(injectedInvoiceService.getInvoice(id),
+                is(Optional.of(invoice)));
     }
 
     @Test

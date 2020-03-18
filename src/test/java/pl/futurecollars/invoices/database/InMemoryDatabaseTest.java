@@ -14,8 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.futurecollars.invoices.model.Invoice;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class InMemoryDatabaseTest {
@@ -36,36 +36,26 @@ class InMemoryDatabaseTest {
     void shouldSaveInvoice() {
         // Given
         String id = "20200101_0001";
-        when(invoice.getId()).thenReturn(id);
+        when(invoice.getSaleDate()).thenReturn(LocalDate.of(2020, 1, 1));
 
         // When
         database.saveInvoice(invoice);
 
         // Then
-        assertThat(database.getInvoiceById(id), is(invoice));
-        assertTrue(database.getIdNumbers().contains(id));
-        assertThat(database.getLastId(), is(id));
+        assertThat(database.getInvoiceById(id), is(Optional.of(invoice)));
+        assertTrue(database.getInvoices().containsKey(id));
     }
 
     @Test
     void shouldSaveManyInvoices() {
         // Given
         String id = "20200101_0001";
-        String secondId = "20200101_0002";
-        String thirdId = "20200101_0003";
-        when(invoice.getId()).thenReturn(id);
-        when(secondInvoice.getId()).thenReturn(secondId);
-        when(thirdInvoice.getId()).thenReturn(thirdId);
+        String secondId = "20200102_0002";
+        String thirdId = "20200103_0003";
 
-        List<Invoice> expectedInvoices = new ArrayList<>();
-        expectedInvoices.add(invoice);
-        expectedInvoices.add(secondInvoice);
-        expectedInvoices.add(thirdInvoice);
-
-        List<String> expectedIds = new ArrayList<>();
-        expectedIds.add(id);
-        expectedIds.add(secondId);
-        expectedIds.add(thirdId);
+        when(invoice.getSaleDate()).thenReturn(LocalDate.of(2020, 1, 1));
+        when(secondInvoice.getSaleDate()).thenReturn(LocalDate.of(2020, 1, 2));
+        when(thirdInvoice.getSaleDate()).thenReturn(LocalDate.of(2020, 1, 3));
 
         // When
         database.saveInvoice(invoice);
@@ -73,55 +63,16 @@ class InMemoryDatabaseTest {
         database.saveInvoice(thirdInvoice);
 
         // Then
-        assertThat(database.getInvoices(), is(expectedInvoices));
-        assertThat(database.getIdNumbers(), is(expectedIds));
-        assertThat(database.getLastId(), is(thirdId));
-    }
-
-    @Test
-    void shouldThrowExceptionSavingExistingInvoice() {
-        // Given
-        String id = "20200101_0001";
-        when(invoice.getId()).thenReturn(id);
-
-        // When
-        database.saveInvoice(invoice);
-
-        // Then
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                database.saveInvoice(invoice));
-        assertThat(exception.getMessage(), is("Invoice with id: "
-                + id
-                + " already exists in database. It can only be updated."));
-    }
-
-    @Test
-    void getInvoiceByIdShouldThrowExceptionGivenNotPresentId() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                database.getInvoiceById("20200101_0001"));
-        assertThat(exception.getMessage(), is("Provided id: "
-                + "20200101_0001"
-                + " not found in Database."));
-    }
-
-    @Test
-    void getInvoiceByIdShouldThrowExceptionGivenNotPresentInvoice() {
-        String id = "20200101_0001";
-        database.addId(id);
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                database.getInvoiceById(id));
-        assertThat(exception.getMessage(), is("Provided id: "
-                + id
-                + " was found in Database without connected Invoice."
-                + "Invoice with this id was never properly saved "
-                + "or was not properly deleted from database"));
+        assertThat(database.getInvoices().get(id), is(invoice));
+        assertThat(database.getInvoices().get(secondId), is(secondInvoice));
+        assertThat(database.getInvoices().get(thirdId), is(thirdInvoice));
     }
 
     @Test
     void shouldUpdateInvoiceGivenSameIdInvoice() {
         // Given
         String id = "20200101_0001";
-        when(invoice.getId()).thenReturn(id);
+        when(invoice.getSaleDate()).thenReturn(LocalDate.of(2020, 1, 1));
         when(secondInvoice.getId()).thenReturn(id);
         database.saveInvoice(invoice);
 
@@ -129,7 +80,7 @@ class InMemoryDatabaseTest {
         database.updateInvoice(secondInvoice);
 
         // Then
-        assertThat(database.getInvoiceById(id), is(secondInvoice));
+        assertThat(database.getInvoiceById(id), is(Optional.of(secondInvoice)));
     }
 
     @Test
@@ -148,15 +99,24 @@ class InMemoryDatabaseTest {
     void shouldDeleteInvoiceGivenId() {
         // Given
         String id = "20200101_0001";
-        when(invoice.getId()).thenReturn(id);
+        when(invoice.getSaleDate()).thenReturn(LocalDate.of(2020, 1, 1));
         database.saveInvoice(invoice);
-        assertThat(database.getInvoiceById(id), is(invoice));
-        assertTrue(database.containsId(id));
+        assertThat(database.getInvoiceById(id), is(Optional.of(invoice)));
 
         // When
         database.deleteInvoice(id);
 
         // Then
-        assertFalse(database.containsId(id));
+        assertFalse(database.getInvoices().containsKey(id));
+    }
+
+    @Test
+    void deleteInvoiceShouldThrowExceptionGivenNotExistingId() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                database.deleteInvoice("20200101_0001"));
+        assertThat(exception.getMessage(), is(
+                "Provided id: "
+                        + "20200101_0001"
+                        + " not found in Database."));
     }
 }

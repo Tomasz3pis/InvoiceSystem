@@ -1,7 +1,11 @@
 package pl.futurecollars.invoices.model;
 
 import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
-import static pl.futurecollars.invoices.model.Invoice.HASH_OFFSET;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -11,7 +15,6 @@ public class Company {
     private String taxIdentificationNumber;
     private String name;
     private PostalAddress address;
-    private Pattern postalCodePattern = Pattern.compile("(\\d){10}");
 
     public Company(
             String taxIdentificationNumber,
@@ -38,7 +41,8 @@ public class Company {
     }
 
     private void verifyTaxIdentificationNumber(String numberToVerify) {
-        if (!postalCodePattern.matcher(numberToVerify).matches()) {
+        Pattern taxIdentificationNumberPattern = Pattern.compile("(\\d){10}");
+        if (!taxIdentificationNumberPattern.matcher(numberToVerify).matches()) {
             throw new IllegalArgumentException(
                     "Provided taxIdentificationNumber: "
                             + numberToVerify
@@ -75,41 +79,25 @@ public class Company {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (object == null || getClass() != object.getClass()) {
             return false;
         }
-
-        Company company = (Company) o;
-
-        if (!taxIdentificationNumber
-                .equals(company.taxIdentificationNumber)) {
-            return false;
-        }
-        if (!name.equals(company.name)) {
-            return false;
-        }
-        return address.equals(company.address);
+        Company company = (Company) object;
+        return EqualsBuilder.reflectionEquals(this, company);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = taxIdentificationNumber.hashCode();
-        result = HASH_OFFSET * result + name.hashCode();
-        result = HASH_OFFSET * result + address.hashCode();
-        return result;
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public String toString() {
-        return "Company{\n"
-                + "\t\t\t  taxIdentificationNumber = "
-                + taxIdentificationNumber + ", "
-                + " name = " + name + ",\n"
-                + "\t\t\t  address = " + address + "}";
+        return ToStringBuilder.reflectionToString(this,
+                ToStringStyle.MULTI_LINE_STYLE);
     }
 }

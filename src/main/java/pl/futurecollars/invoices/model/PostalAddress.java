@@ -1,7 +1,10 @@
 package pl.futurecollars.invoices.model;
 
 import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
-import static pl.futurecollars.invoices.model.Invoice.HASH_OFFSET;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.regex.Pattern;
 
@@ -12,7 +15,6 @@ public class PostalAddress {
     private String apartmentNumber;
     private String postalCode;
     private String city;
-    private Pattern postalCodePattern = Pattern.compile("(\\d){2}-[\\d]{3}");
 
     public PostalAddress(
             String streetName,
@@ -34,6 +36,7 @@ public class PostalAddress {
     }
 
     private void verifyPostalCode(String codeToCheck) {
+        Pattern postalCodePattern = Pattern.compile("(\\d){2}-[\\d]{3}");
         if (!postalCodePattern.matcher(codeToCheck).matches()) {
             throw new IllegalArgumentException(
                     "Provided postalCode: "
@@ -89,50 +92,24 @@ public class PostalAddress {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object object) {
+        if (this == object) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (object == null || getClass() != object.getClass()) {
             return false;
         }
-
-        PostalAddress that = (PostalAddress) o;
-
-        if (!streetName.equals(that.streetName)) {
-            return false;
-        }
-        if (!streetNumber.equals(that.streetNumber)) {
-            return false;
-        }
-        if (!apartmentNumber.equals(that.apartmentNumber)) {
-            return false;
-        }
-        if (!postalCode.equals(that.postalCode)) {
-            return false;
-        }
-        return city.equals(that.city);
+        PostalAddress postalAddress = (PostalAddress) object;
+        return EqualsBuilder.reflectionEquals(this, postalAddress);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = streetName.hashCode();
-        result = HASH_OFFSET * result + streetNumber.hashCode();
-        result = HASH_OFFSET * result + apartmentNumber.hashCode();
-        result = HASH_OFFSET * result + postalCode.hashCode();
-        result = HASH_OFFSET * result + city.hashCode();
-        return result;
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
     @Override
     public String toString() {
-        return "PostalAddress{"
-                + "streetName = '" + streetName + '\''
-                + ", streetNumber = '" + streetNumber + '\''
-                + ", apartmentNumber = '" + apartmentNumber + '\''
-                + ", postalCode = '" + postalCode + '\''
-                + ", city = '" + city + '\''
-                + '}';
+        return ToStringBuilder.reflectionToString(this);
     }
 }

@@ -3,8 +3,8 @@ package pl.futurecollars.invoices.model;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static pl.futurecollars.invoices.model.Invoice.HASH_OFFSET;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -184,33 +184,28 @@ class CompanyTest {
                 taxIdentificationNumber,
                 name,
                 postalAddress);
+        Company secondCompany = new Company(
+                taxIdentificationNumber,
+                "someOtherName",
+                postalAddress);
 
-        int expectedHashCode = ((((
-                normalizedNumber.hashCode() * HASH_OFFSET)
-                + name.hashCode()) * HASH_OFFSET)
-                + postalAddress.hashCode());
-        assertThat(company.hashCode(), is(expectedHashCode));
+        assertNotEquals(0, company.hashCode());
+        assertNotEquals(company.hashCode(), secondCompany.hashCode());
     }
 
     @ParameterizedTest
     @MethodSource("companyConstructorArguments")
     void shouldReturnStringGivenCompany(
             String taxIdentificationNumber,
-            String name,
-            String normalizedNumber) {
+            String name) {
 
         Company company = new Company(
                 taxIdentificationNumber,
                 name,
                 postalAddress);
 
-        String expected = "Company{\n"
-                + "\t\t\t  taxIdentificationNumber = "
-                + normalizedNumber + ", "
-                + " name = " + name + ",\n"
-                + "\t\t\t  address = " + postalAddress + "}";
-
-        assertThat(company.toString(), is(expected));
+        assertNotEquals(null, company.toString());
+        assertNotEquals("", company.toString());
     }
 
     private static Stream<Arguments> companyConstructorArguments() {
