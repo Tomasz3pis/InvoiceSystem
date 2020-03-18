@@ -1,5 +1,6 @@
 package pl.futurecollars.invoice.db;
 
+import org.json.JSONException;
 import pl.futurecollars.invoice.model.Invoice;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ public interface DataBase {
 
     List<Invoice> getInvoices() throws IOException;
 
-    Invoice getInvoiceById(String id);
+    Invoice getInvoiceById(String id) throws JSONException, IOException;
 
     void updateInvoice(Invoice invoice, int updatedIndex);
 

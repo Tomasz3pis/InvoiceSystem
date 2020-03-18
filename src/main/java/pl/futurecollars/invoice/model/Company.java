@@ -6,7 +6,7 @@ public class Company {
     private String name;
     private String taxIdentificationNumber;
     private String streetName;
-    private String postCode; // Postal Code verification using regex
+    private String postCode;
     private String Town;
 
     public Company() {

@@ -9,7 +9,6 @@ public class InvoiceBook implements DataBase {
     private List<Invoice> invoices;
     private InMemoryDataBase database;
 
-
     @Override
     public void saveInvoice(final Invoice invoice) {
     invoices.add(invoice);

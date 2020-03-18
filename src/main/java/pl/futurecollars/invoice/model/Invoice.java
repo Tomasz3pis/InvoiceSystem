@@ -12,6 +12,7 @@ public class Invoice {
     private List<InvoiceEntry> entries;
 
     public Invoice() {
+
     }
 
     public Invoice(String id, LocalDate issueDate, Company seller, Company buyer, List<InvoiceEntry> entries) {

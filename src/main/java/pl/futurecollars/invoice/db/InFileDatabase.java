@@ -26,13 +26,20 @@ public class InFileDatabase implements DataBase {
     }
 
     @Override
-    public Invoice getInvoiceById(String id) {
-        return null;
+    public Invoice getInvoiceById(String id) throws IOException {
+        for (Invoice element : invoices) {
+            if (invoices.equals(id)) {
+                return element;
+            }
+        }
+        throw new IllegalArgumentException("Invoice id: " + id + " not found in Database.");
     }
 
     @Override
     public void updateInvoice(Invoice invoice, int updatedIndex) {
-
+        if(updatedIndex > invoices.size()) {
+            throw new IndexOutOfBoundsException ("List of invoices is between : 0 to  " + invoices.size() + " Please pass correct index.");
+        }
     }
 
     @Override

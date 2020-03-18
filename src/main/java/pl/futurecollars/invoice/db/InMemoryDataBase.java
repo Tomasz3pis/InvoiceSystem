@@ -1,7 +1,6 @@
 package pl.futurecollars.invoice.db;
 
 import pl.futurecollars.invoice.model.Invoice;
-
 import java.util.ArrayList;
 import java.util.List;
 
