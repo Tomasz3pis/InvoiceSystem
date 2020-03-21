@@ -1,4 +1,4 @@
-package pl.futurecollars.invoice.db;
+/*package pl.futurecollars.invoice.db;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.futurecollars.invoice.model.Invoice;
@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InFileDatabase implements DataBase {
+public class InFileDatabase implements Database {
+
+    //tutaj zapisujemy tylko w pliku. Nie powinno tu być Arraya. Array = temp/cache memory.
     private List<Invoice> invoices = new ArrayList<>();
     private ObjectMapper mapper = new ObjectMapper();
     private String json;
@@ -47,5 +49,13 @@ public class InFileDatabase implements DataBase {
 
     }
 
-}
+}*/
 
+/*
+passionate-software-engineer 3 days ago
+        why is that class field? I believe that it's incomplete implementation and that will be replaced with file
+
+@passionate-software-engineer
+        passionate-software-engineer 3 days ago
+        If that's for local cache then it does not make sense - keep cache as list of invoices -
+        like in inMemoryDatabase, in json it should be stored only in file */

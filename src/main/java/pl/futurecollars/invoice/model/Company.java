@@ -7,7 +7,7 @@ public class Company {
     private String taxIdentificationNumber;
     private String streetName;
     private String postCode;
-    private String Town;
+    private String town;
 
     public Company() {
     }
@@ -17,7 +17,7 @@ public class Company {
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.streetName = streetName;
         this.postCode = postCode;
-        Town = town;
+        this.town = town;
     }
 
     public String getName() {
@@ -53,11 +53,11 @@ public class Company {
     }
 
     public String getTown() {
-        return Town;
+        return town;
     }
 
     public void setTown(String town) {
-        Town = town;
+        this.town = town;
     }
 
     @Override
@@ -69,20 +69,38 @@ public class Company {
             return false;
         }
         Company company = (Company) providedObject;
-        return Objects.equals(name, company.name) &&
-                Objects.equals(taxIdentificationNumber, company.taxIdentificationNumber) &&
-                Objects.equals(streetName, company.streetName) &&
-                Objects.equals(postCode, company.postCode) &&
-                Objects.equals(Town, company.Town);
+        return Objects.equals(name, company.name)
+                && Objects.equals(taxIdentificationNumber,
+                company.taxIdentificationNumber)
+                && Objects.equals(streetName, company.streetName)
+                && Objects.equals(postCode, company.postCode)
+                && Objects.equals(town, company.town);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, taxIdentificationNumber, streetName, postCode, Town);
+        return Objects.hash(name,
+                taxIdentificationNumber,
+                streetName,
+                postCode,
+                town);
     }
 
     @Override
     public String toString() {
-        return "Company{" + "name='" + name + '\'' + ", taxIdentificationNumber='" + taxIdentificationNumber + '\'' + ", streetName='" + streetName + '\'' + ", postCode='" + postCode + '\'' + ", Town='" + Town + '\'' + '}';
+        return "Company{"
+                + "name='"
+                + name
+                + '\''
+                + ", taxIdentificationNumber='"
+                + taxIdentificationNumber
+                + '\'' + ", streetName='"
+                + streetName + '\''
+                + ", postCode='"
+                + postCode + '\''
+                + ", town='"
+                + town
+                + '\''
+                + '}';
     }
 }

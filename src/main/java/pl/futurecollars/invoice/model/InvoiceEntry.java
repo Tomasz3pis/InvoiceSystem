@@ -7,12 +7,12 @@ public class InvoiceEntry {
     private String description;
     private String quantity;
     private BigDecimal cost;
-    private VAT vat;
+    private Vat vat;
 
     public InvoiceEntry() {
     }
 
-    public InvoiceEntry(String entityName, String quantity, BigDecimal cost, VAT vat) {
+    public InvoiceEntry(String entityName, String quantity, BigDecimal cost, Vat vat) {
         this.description = entityName;
         this.quantity = quantity;
         this.cost = cost;
@@ -43,11 +43,11 @@ public class InvoiceEntry {
         this.cost = cost;
     }
 
-    public VAT getVat() {
+    public Vat getVat() {
         return vat;
     }
 
-    public void setVat(VAT vat) {
+    public void setVat(Vat vat) {
         this.vat = vat;
     }
 

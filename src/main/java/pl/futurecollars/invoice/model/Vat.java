@@ -2,7 +2,7 @@ package pl.futurecollars.invoice.model;
 
 import java.math.BigDecimal;
 
-public enum VAT {
+public enum Vat {
     VAT_23(BigDecimal.valueOf(0.23)),
     VAT_8(BigDecimal.valueOf(0.08)),
     VAT_5(BigDecimal.valueOf(0.05)),
@@ -10,7 +10,7 @@ public enum VAT {
 
     private BigDecimal value;
 
-    VAT(BigDecimal value) {
+    Vat(BigDecimal value) {
         this.value = value;
     }
 
