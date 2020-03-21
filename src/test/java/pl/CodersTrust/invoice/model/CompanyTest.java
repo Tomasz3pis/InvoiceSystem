@@ -1,94 +1,87 @@
 package pl.CodersTrust.invoice.model;
 
-import org.junit.Assert;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.junit.jupiter.api.Test;
 
 
-import java.util.Objects;
-import java.util.stream.Stream;
-
-import static org.hamcrest.Matchers.is;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CompanyTest {
 
+    @Test
+    void shouldReturnSetTaxIdentificationNumber() {
+        //given
+        Company company = new Company(0L, "", "");
 
-    @ParameterizedTest
-    @MethodSource("companyProvider")
-    void shouldReturnSetTaxIdentificationNumber(Company company) {
-
+        //when
         company.setTaxIdentificationNumber(1231234455L);
 
-        Assert.assertThat(company.getTaxIdentificationNumber(), is(1231234455L));
-
+        //then
+        assertEquals(company.getTaxIdentificationNumber(), 1231234455L);
     }
 
+    @Test
+    void shouldReturnSetAddress() {
+        //given
+        Company company = new Company(0L, "", "");
 
-    @ParameterizedTest
-    @MethodSource("companyProvider")
-    void shouldReturnSetAddress(Company company) {
-
+        //when
         company.setAddress("Hill st");
 
-        Assert.assertThat(company.getAddress(), is("Hill st"));
+        //then
+        assertEquals(company.getAddress(), "Hill st");
     }
 
-    @ParameterizedTest
-    @MethodSource("companyProvider")
-    void shouldReturnSetName(Company company) {
+    @Test
+    void shouldReturnSetName() {
+        //given
+        Company company = new Company(0L, "", "");
+
+        //when
         company.setName("New Place");
 
-        Assert.assertThat(company.getName(), is("New Place"));
+        //then
+
+        assertEquals(company.getName(), "New Place");
     }
 
-    @ParameterizedTest
-    @MethodSource("companyProvider")
-    void shouldReturnStringRepresentationOfCompany(Company company) {
-
-        Assert.assertThat(company.toString(), is("Company{"
-                + "taxIdentificationNumber=" + company.getTaxIdentificationNumber()
-                + ", address='" + company.getAddress() + '\''
-                + ", name='" + company.getName() + '\''
-                + '}'));
-    }
-
-    @ParameterizedTest
-    @MethodSource("companyProvider")
-    void shouldReturnHashCode(Company company) {
-
-        Assert.assertThat(company.hashCode(), is(Objects.hash(company.getTaxIdentificationNumber(), company.getAddress(), company.getName())));
-    }
-
-    @ParameterizedTest
-    @MethodSource("companyProvider")
-    void shouldReturnFalse(Company company, Company company2) {
-
-        company2.setName("test");
-
-        Assert.assertFalse(company.equals(company2));
-    }
-
-    @ParameterizedTest
-    @MethodSource("companyProvider")
-    void shouldReturnTrue(Company company, Company company2) {
-
-        Assert.assertTrue(company.equals(company2));
-    }
-
-    @ParameterizedTest
-    @MethodSource("companyProvider")
-    void shouldReturnFalseWhenArgIsNull(Company company) {
-
-        Assert.assertFalse(company.equals(null));
-
-    }
-
-    private static Stream<Arguments> companyProvider() {
+    @Test
+    void shouldCompareTwoDifferentHashCodes() {
+        //given
         Company company = new Company(0L, "", "");
-        Company company2 = new Company(0L, "", "");
 
-        return Stream.of(Arguments.of(company, company2));
+        //when
+        Company company2 = new Company(8L, "", "");
+
+        //then
+        assertNotEquals(company.hashCode(), company2.hashCode());
+
+    }
+
+    @Test
+    void shouldCheckIfToStringIsNotEmptyOrNull() {
+        //given
+        Company company = new Company(0L, "", "");
+
+        //when
+        String actual = company.toString();
+
+        //then
+        assertNotEquals(null, actual);
+        assertNotEquals("", actual);
+
+    }
+
+    @Test
+    void shouldReturnHashCode() {
+        //given
+        Company company = new Company(0L, "", "");
+
+        //when
+        int actual = company.hashCode();
+
+        //then
+        assertEquals(actual, HashCodeBuilder.reflectionHashCode(company));
     }
 }

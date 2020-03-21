@@ -1,61 +1,89 @@
 package pl.CodersTrust.invoice.model;
 
-import org.junit.Assert;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.junit.jupiter.api.Test;
 
 
 import java.math.BigDecimal;
-import java.util.stream.Stream;
 
-import static org.hamcrest.Matchers.is;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class InvoiceEntryTest {
 
+    @Test
+    void shouldReturnSetDescription() {
+        //given
+        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0);
 
-    @ParameterizedTest
-    @MethodSource("entriesProvider")
-    void shouldReturnSetDescription(InvoiceEntry entry) {
-
+        //when
         entry.setDescription("New test descri");
 
-        Assert.assertThat(entry.getDescription(), is("New test descri"));
+        //then
+        assertEquals(entry.getDescription(), "New test descri");
     }
 
+    @Test
+    void shouldReturnSetValue() {
+        //given
+        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0);
 
-    @ParameterizedTest
-    @MethodSource("entriesProvider")
-    void shouldReturnSetValue(InvoiceEntry entry) {
-
+        //when
         entry.setValue(new BigDecimal(100L));
 
-        Assert.assertThat(entry.getValue(), is(new BigDecimal(100)));
+        //then
+        assertEquals(entry.getValue(), new BigDecimal(100));
     }
 
 
-    @ParameterizedTest
-    @MethodSource("entriesProvider")
-    void shouldReturnSetVatRate(InvoiceEntry entry) {
+    @Test
+    void shouldReturnSetVatRate() {
+        //given
+        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0);
 
+        //when
         entry.setVatRate(Vat.VAT_8);
 
-        Assert.assertThat(entry.getVatRate(), is(Vat.VAT_8));
+        //then
+        assertEquals(entry.getVatRate(), Vat.VAT_8);
     }
 
-    @ParameterizedTest
-    @MethodSource("entriesProvider")
-    void shouldReturnFalseWhenArgIsNull(InvoiceEntry entry) {
-
-        Assert.assertFalse(entry.equals(null));
-
-    }
-
-    private static Stream<Arguments> entriesProvider() {
+    @Test
+    void shouldCompareTwoDifferentHashCodes() {
+        //given
         InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0);
-        InvoiceEntry entry2 = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0);
 
-        return Stream.of(Arguments.of(entry, entry2));
+        //when
+        InvoiceEntry entry2 = new InvoiceEntry("", new BigDecimal(8), Vat.VAT_0);
+
+        //then
+        assertNotEquals(entry.hashCode(), entry2.hashCode());
+
+    }
+
+    @Test
+    void shouldCheckIfToStringIsNotEmptyOrNull() {
+        //given
+        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0);
+
+        //when
+        String actual = entry.toString();
+
+        //then
+        assertNotEquals(null, actual);
+        assertNotEquals("", actual);
+
+    }
+
+    @Test
+    void shouldReturnHashCode() {
+        //given
+        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0);
+
+        //when
+        int actual = entry.hashCode();
+
+        //then
+        assertEquals(actual, HashCodeBuilder.reflectionHashCode(entry));
     }
 }

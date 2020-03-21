@@ -7,14 +7,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class InMemoryDatabase implements Database {
 
+    public static final AtomicLong idCount = new AtomicLong();
     private Map<Long, Invoice> invoices = new HashMap();
 
     @Override
     public final void saveInvoice(final Invoice invoice) {
-        invoice.setId(Invoice.idCount.incrementAndGet());
+        invoice.setId(idCount.incrementAndGet());
         invoices.put(invoice.getId(), invoice);
     }
 

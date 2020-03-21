@@ -1,123 +1,104 @@
 package pl.CodersTrust.invoice.model;
 
-import org.junit.Assert;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.junit.jupiter.api.Test;
 
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 
-import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mock;
-
 
 class InvoiceTest {
 
     Company company = mock(Company.class);
     InvoiceEntry entry = mock(InvoiceEntry.class);
 
+    @Test
+    void shouldReturnSetSeller() {
+        //given
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
 
-    @ParameterizedTest
-    @MethodSource("invoiceProvider")
-    void shouldReturnSetSeller(Invoice invoice) {
-
+        //when
         invoice.setSeller(company);
 
-        Assert.assertEquals(invoice.getSeller(), company);
+        //then
+        assertEquals(invoice.getSeller(), company);
     }
 
-    @ParameterizedTest
-    @MethodSource("invoiceProvider")
-    void shouldReturnSetBuyer(Invoice invoice) {
+    @Test
+    void shouldReturnSetBuyer() {
         //given
-        Company company = mock(Company.class);
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
 
         //when
         invoice.setBuyer(company);
 
         //then
-        Assert.assertThat(invoice.getBuyer(), is(company));
+        assertEquals(invoice.getBuyer(), company);
     }
 
-    @ParameterizedTest
-    @MethodSource("invoiceProvider")
-    void shouldReturnSetEntries(Invoice invoice) {
+    @Test
+    void shouldReturnSetEntries() {
         //given
-        InvoiceEntry entry = mock(InvoiceEntry.class);
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
 
         //when
         invoice.setEntries(List.of(entry));
 
         //then
-        Assert.assertThat(invoice.getEntries(), is(List.of(entry)));
+        assertEquals(invoice.getEntries(), List.of(entry));
     }
 
-    @ParameterizedTest
-    @MethodSource("invoiceProvider")
-    void shouldReturnSetDate(Invoice invoice) {
+    @Test
+    void shouldReturnSetDate() {
+        //given
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
 
+        //when
         invoice.setData(LocalDate.of(2015, 12, 14));
 
-        Assert.assertThat(invoice.getData(), is(LocalDate.of(2015, 12, 14)));
-    }
-
-    @ParameterizedTest
-    @MethodSource("invoiceProvider")
-    void shouldReturnStringRepresentationOfInvoice(Invoice invoice) {
-
-        Assert.assertThat(invoice.toString(), is("Invoice{"
-                + "id=" + invoice.getId()
-                + ", seller=" + invoice.getSeller()
-                + ", buyer=" + invoice.getBuyer()
-                + ", entries=" + invoice.getEntries()
-                + ", data=" + invoice.getData()
-                + '}'));
-    }
-
-    @ParameterizedTest
-    @MethodSource("invoiceProvider")
-    void shouldReturnHashCode(Invoice invoice) {
-
-        Assert.assertThat(invoice.hashCode(), is(Objects.hash(invoice.getId(), invoice.getSeller(), invoice.getBuyer(), invoice.getEntries(), invoice.getData())));
-
-    }
-
-    @ParameterizedTest
-    @MethodSource("invoiceProvider")
-    void shouldReturnFalse(Invoice invoice, Invoice invoice2) {
-        //given
-        invoice2.setData(LocalDate.of(2015, 12, 12));
-        //when
-        boolean actual = invoice.equals(invoice2);
         //then
-        Assert.assertFalse(actual);
+        assertEquals(invoice.getData(), LocalDate.of(2015, 12, 14));
     }
 
-    @ParameterizedTest
-    @MethodSource("invoiceProvider")
-    void shouldReturnTrue(Invoice invoice, Invoice invoice2) {
-
-        Assert.assertTrue(invoice.equals(invoice2));
-
-    }
-
-    @ParameterizedTest
-    @MethodSource("invoiceProvider")
-    void shouldReturnFalseWhenArgIsNull(Invoice invoice) {
-
-        Assert.assertFalse(invoice.equals(null));
-
-    }
-
-    private static Stream<Arguments> invoiceProvider() {
+    @Test
+    void shouldCompareTwoDifferentHashCodes() {
+        //given
         Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
-        Invoice invoice1 = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
-        return Stream.of(Arguments.of(invoice, invoice1));
+
+        //when
+        Invoice invoice2 = new Invoice(null, null, LocalDate.now().minusDays(5), new ArrayList<>());
+
+        //then
+        assertNotEquals(invoice.hashCode(), invoice2.hashCode());
+    }
+
+    @Test
+    void shouldCheckIfToStringIsNotEmptyOrNull() {
+        //given
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
+
+        //when
+        String actual = invoice.toString();
+
+        //then
+        assertNotEquals(null, actual);
+        assertNotEquals("", actual);
+    }
+
+    @Test
+    void shouldReturnHashCode() {
+        //given
+        Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
+
+        //when
+        int actual = invoice.hashCode();
+
+        //then
+        assertEquals(actual, HashCodeBuilder.reflectionHashCode(invoice));
     }
 }
-

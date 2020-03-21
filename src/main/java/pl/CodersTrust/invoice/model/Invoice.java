@@ -1,13 +1,14 @@
 package pl.CodersTrust.invoice.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Invoice {
-    public static final AtomicLong idCount = new AtomicLong();
     private long id;
     private Company seller;
     private Company buyer;
@@ -63,33 +64,20 @@ public class Invoice {
 
     @Override
     public final String toString() {
-        return "Invoice{"
-                + "id=" + id
-                + ", seller=" + seller
-                + ", buyer=" + buyer
-                + ", entries=" + entries
-                + ", data=" + data
-                + '}';
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
     @Override
     public final boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Invoice)) {
             return false;
         }
         Invoice invoice = (Invoice) o;
-        return id == invoice.id
-                && Objects.equals(seller, invoice.seller)
-                && Objects.equals(buyer, invoice.buyer)
-                && Objects.equals(entries, invoice.entries)
-                && Objects.equals(data, invoice.data);
+        return EqualsBuilder.reflectionEquals(this, invoice);
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(id, seller, buyer, entries, data);
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

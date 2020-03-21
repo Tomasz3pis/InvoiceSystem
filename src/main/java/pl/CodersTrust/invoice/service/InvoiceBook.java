@@ -20,4 +20,12 @@ public class InvoiceBook {
     public final Invoice searchInvoiceById(final long id) {
         return database.getInvoiceById(id);
     }
+
+    public final void updateInvoice(final long id, final Invoice newInvoice) {
+        database.updateInvoice(id, newInvoice);
+    }
+
+    public final void deleteInvoice(final long id) {
+        database.deleteInvoice(id);
+    }
 }

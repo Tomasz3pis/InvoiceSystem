@@ -1,9 +1,11 @@
 package pl.CodersTrust.invoice.model;
 
-import java.util.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class Company {
-
 
     private long taxIdentificationNumber;
     private String address;
@@ -41,29 +43,20 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company{"
-                + "taxIdentificationNumber=" + taxIdentificationNumber
-                + ", address='" + address + '\''
-                + ", name='" + name + '\''
-                + '}';
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+    public final boolean equals(final Object o) {
+        if (!(o instanceof Company)) {
             return false;
         }
         Company company = (Company) o;
-        return taxIdentificationNumber == company.taxIdentificationNumber
-                && Objects.equals(address, company.address)
-                && Objects.equals(name, company.name);
+        return EqualsBuilder.reflectionEquals(this, company);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(taxIdentificationNumber, address, name);
+    public final int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 }

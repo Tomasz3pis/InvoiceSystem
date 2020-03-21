@@ -1,6 +1,5 @@
 package pl.CodersTrust.invoice;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,15 +12,13 @@ import pl.CodersTrust.invoice.model.InvoiceEntry;
 import pl.CodersTrust.invoice.model.Vat;
 import pl.CodersTrust.invoice.service.InvoiceBook;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class IntegrationTest {
 
@@ -37,14 +34,12 @@ class IntegrationTest {
     @MethodSource("dataProvider")
     void shouldSaveInvoiceInDatabase(Invoice invoice1, Invoice invoice2) {
 
-
         invoiceBook.saveInvoiceInDatabase(invoice1);
         invoiceBook.saveInvoiceInDatabase(invoice2);
 
-        Assert.assertThat(invoiceBook.searchInvoiceById(invoice1.getId()), is(invoice1));
-        Assert.assertThat(invoiceBook.searchInvoiceById(invoice2.getId()), is(invoice2));
-        Assert.assertThat(database.getInvoices().size(), is(2));
-
+        assertEquals(invoiceBook.searchInvoiceById(invoice1.getId()), invoice1);
+        assertEquals(invoiceBook.searchInvoiceById(invoice2.getId()), invoice2);
+        assertEquals(database.getInvoices().size(), 2);
     }
 
     @ParameterizedTest
@@ -58,10 +53,9 @@ class IntegrationTest {
         invoice4.setSeller(new Company(1233211223L, "Unknow", "Hash Corp"));
         database.updateInvoice(invoice3.getId(), invoice4);
 
-        Assert.assertThat(database.getInvoiceById(invoice3.getId()), is(invoice4));
-        Assert.assertThat(invoice4.getData(), is(LocalDate.of(2018, 6, 8)));
-        Assert.assertThat(database.getInvoices().size(), is(1));
-
+        assertEquals(database.getInvoiceById(invoice3.getId()), invoice4);
+        assertEquals(invoice4.getData(), LocalDate.of(2018, 6, 8));
+        assertEquals(database.getInvoices().size(), 1);
     }
 
     @ParameterizedTest
@@ -72,9 +66,8 @@ class IntegrationTest {
         invoiceBook.saveInvoiceInDatabase(invoice6);
         database.deleteInvoice(invoice5.getId());
 
-        Assert.assertThat(database.getInvoiceById(invoice5.getId()), nullValue());
-        Assert.assertThat(database.getInvoices().size(), is(1));
-
+        assertNull(database.getInvoiceById(invoice5.getId()));
+        assertEquals(database.getInvoices().size(), 1);
     }
 
     private static Stream<Arguments> dataProvider() {
@@ -86,6 +79,5 @@ class IntegrationTest {
         Invoice invoice2 = new Invoice(company2, company1, LocalDate.now(), List.of(entry1));
 
         return Stream.of(Arguments.of(invoice1, invoice2));
-
     }
 }
