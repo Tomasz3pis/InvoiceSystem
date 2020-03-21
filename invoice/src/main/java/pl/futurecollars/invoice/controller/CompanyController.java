@@ -22,12 +22,12 @@ public class CompanyController {
         this.companyService = companyService;
     }
 
-    @GetMapping()
+    @GetMapping
     public List<Company> getAll() {
         return companyService.getCompanies();
     }
 
-    @PostMapping()
+    @PostMapping
     public Company addCompany(@RequestBody @Valid Company company) {
         return companyService.saveCompany(company);
     }

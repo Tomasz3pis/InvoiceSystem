@@ -11,7 +11,7 @@ public interface Database<T, T1> {
 
     List<T> getAll();
 
-    T getById(T1 id);
+    T getById(Long id);
 
     T update(T updatedInvoice);
 

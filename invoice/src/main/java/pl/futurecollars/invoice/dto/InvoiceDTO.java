@@ -3,22 +3,22 @@ package pl.futurecollars.invoice.dto;
 import pl.futurecollars.invoice.model.InvoiceEntry;
 
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public class InvoiceDTO {
     private Long id;
-    private LocalDate date;
-    private Long seller;
-    private Long buyer;
+    private Date date;
+    private Long sellerID;
+    private Long buyerID;
     @NotEmpty
     private List<InvoiceEntry> entries;
 
-    public InvoiceDTO(Long id, LocalDate date, Long seller, Long buyer, @NotEmpty List<InvoiceEntry> entries) {
+    public InvoiceDTO(Long id, Date date, Long seller, Long buyer, @NotEmpty List<InvoiceEntry> entries) {
         this.id = id;
         this.date = date;
-        this.seller = seller;
-        this.buyer = buyer;
+        this.sellerID = seller;
+        this.buyerID = buyer;
         this.entries = entries;
     }
 
@@ -30,28 +30,28 @@ public class InvoiceDTO {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
     public Long getSeller() {
-        return seller;
+        return sellerID;
     }
 
     public void setSeller(Long seller) {
-        this.seller = seller;
+        this.sellerID = seller;
     }
 
-    public Long getBuyer() {
-        return buyer;
+    public Long getBuyerID() {
+        return buyerID;
     }
 
-    public void setBuyer(Long buyer) {
-        this.buyer = buyer;
+    public void setBuyerID(Long buyerID) {
+        this.buyerID = buyerID;
     }
 
     public List<InvoiceEntry> getEntries() {

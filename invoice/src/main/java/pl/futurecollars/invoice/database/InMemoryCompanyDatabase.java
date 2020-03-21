@@ -19,10 +19,7 @@ public class InMemoryCompanyDatabase implements Database<Company, Long> {
 
     @Override
     public Company save(Company company) {
-        if (Company.getId() != null) {
-            throw new IllegalArgumentException("Id should be empty in post request");
-        }
-        Company.setId(idGenerator.getId());
+        company.setId(idGenerator.getId());
         if (companies.add(company)) {
             return company;
         }

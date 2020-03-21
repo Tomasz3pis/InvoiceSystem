@@ -14,6 +14,7 @@ import pl.futurecollars.invoice.model.InvoiceEntry;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,11 +38,11 @@ class InvoiceServiceTest {
     @Test
     void shouldSaveInvoice_whenDTOCorrect() {
         // given
-        InvoiceDTO invoiceDTO = new InvoiceDTO(12L, LocalDate.now(), 50L, 150L, Collections.singletonList(new InvoiceEntry("aaa", new BigDecimal("23.23"))));
+        InvoiceDTO invoiceDTO = new InvoiceDTO(12L,new Date(), 50L, 150L, Collections.singletonList(new InvoiceEntry("aaa", new BigDecimal("23.23"))));
         Company seller = new Company("Firma", "551551");
         seller.setId(invoiceDTO.getSeller());
         Company buyer = new Company("Firma", "551551");
-        buyer.setId(invoiceDTO.getBuyer());
+        buyer.setId(invoiceDTO.getBuyerID());
         Invoice invoice = new Invoice(invoiceDTO.getId(), invoiceDTO.getDate(), seller, buyer, Collections.singletonList(new InvoiceEntry("aaa", new BigDecimal("23.23"))));
         when(invoiceTransformer.fromDto(invoiceDTO)).thenReturn(invoice);
         when(inMemoryInvoiceDatabase.save(invoice)).thenReturn(invoice);
@@ -51,7 +52,7 @@ class InvoiceServiceTest {
 
         // then
         assertEquals(result, invoice);
-        assertEquals(result.getBuyer().getId(), invoiceDTO.getBuyer());
+        assertEquals(result.getBuyer().getId(), invoiceDTO.getBuyerID());
         assertEquals(result.getSeller().getId(), invoiceDTO.getSeller());
     }
 
@@ -59,8 +60,8 @@ class InvoiceServiceTest {
     void shouldGetInvoices() {
         // given
 
-        Invoice invoice = new Invoice(123L, LocalDate.now(), new Company(), new Company(), Collections.singletonList(new InvoiceEntry()));
-        Invoice invoice2 = new Invoice(254L, LocalDate.now(), new Company(), new Company(), Collections.singletonList(new InvoiceEntry()));
+        Invoice invoice = new Invoice(123L, new Date(), new Company(), new Company(), Collections.singletonList(new InvoiceEntry()));
+        Invoice invoice2 = new Invoice(254L, new Date(), new Company(), new Company(), Collections.singletonList(new InvoiceEntry()));
         when(inMemoryInvoiceDatabase.getAll()).thenReturn(List.of(invoice, invoice2));
 
         // when
@@ -73,7 +74,7 @@ class InvoiceServiceTest {
     @Test
     void shouldGetInvoice() {
         //given
-        Invoice invoice = new Invoice(123L, LocalDate.now(), new Company(), new Company(), Collections.singletonList(new InvoiceEntry()));
+        Invoice invoice = new Invoice(123L, new Date(), new Company(), new Company(), Collections.singletonList(new InvoiceEntry()));
         when(inMemoryInvoiceDatabase.getById(125L)).thenReturn(invoice);
 
         //when
@@ -86,8 +87,8 @@ class InvoiceServiceTest {
     @Test
     void shouldUpdateInvoice() {
         //given
-        InvoiceDTO invoiceDTO = new InvoiceDTO(125L, LocalDate.now(), 50L, 150L, Collections.singletonList(new InvoiceEntry("aaa", new BigDecimal("23.23"))));
-        Invoice invoice = new Invoice(125L, LocalDate.now(), new Company(), new Company(), Collections.singletonList(new InvoiceEntry()));
+        InvoiceDTO invoiceDTO = new InvoiceDTO(125L, new Date(), 50L, 150L, Collections.singletonList(new InvoiceEntry("aaa", new BigDecimal("23.23"))));
+        Invoice invoice = new Invoice(125L, new Date(), new Company(), new Company(), Collections.singletonList(new InvoiceEntry()));
         when(invoiceTransformer.fromDto(invoiceDTO)).thenReturn(invoice);
         when(inMemoryInvoiceDatabase.update(invoice)).thenReturn(invoice);
 

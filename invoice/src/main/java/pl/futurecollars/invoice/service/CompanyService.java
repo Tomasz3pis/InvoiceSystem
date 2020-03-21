@@ -16,6 +16,9 @@ public class CompanyService {
     }
 
     public Company saveCompany(Company company) {
+        if (company.getId() != null) {
+            throw new IllegalArgumentException("Id should be empty in post request");
+        }
         return database.save(company);
     }
 

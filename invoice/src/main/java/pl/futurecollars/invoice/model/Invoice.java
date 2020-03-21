@@ -4,21 +4,24 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class Invoice {
     private Long id;
     @NotNull
-    private LocalDate date;
+    private Date date;
     private Company seller;
     private Company buyer;
     @NotEmpty
     private List<InvoiceEntry> entries;
 
+    private BigDecimal totalValue;
+
     public Invoice() { }
 
-    public Invoice(Long id, LocalDate date, Company seller, Company buyer, List<InvoiceEntry> entries) {
+    public Invoice(Long id, Date date, Company seller, Company buyer, List<InvoiceEntry> entries) {
         this.id = id;
         this.date = date;
         this.seller = seller;
@@ -35,11 +38,11 @@ public class Invoice {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

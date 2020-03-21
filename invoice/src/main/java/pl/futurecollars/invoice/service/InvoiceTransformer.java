@@ -18,7 +18,7 @@ public class InvoiceTransformer {
         invoice.setId(invoiceDTO.getId());
         invoice.setEntries(invoiceDTO.getEntries());
         invoice.setDate(invoiceDTO.getDate());
-        invoice.setBuyer(companyService.getCompany(invoiceDTO.getBuyer()));
+        invoice.setBuyer(companyService.getCompany(invoiceDTO.getBuyerID()));
         invoice.setSeller(companyService.getCompany(invoiceDTO.getSeller()));
         return invoice;
     }
