@@ -60,10 +60,10 @@ public class InvoiceEntry {
             return false;
         }
         InvoiceEntry that = (InvoiceEntry) o;
-        return Objects.equals(description, that.description) &&
-                Objects.equals(quantity, that.quantity) &&
-                Objects.equals(cost, that.cost) &&
-                vat == that.vat;
+        return Objects.equals(description, that.description)
+                && Objects.equals(quantity, that.quantity)
+                && Objects.equals(cost, that.cost)
+                && vat == that.vat;
     }
 
     @Override
@@ -73,7 +73,17 @@ public class InvoiceEntry {
 
     @Override
     public String toString() {
-        return "InvoiceEntry{" + "productName='" + description + '\'' + ", amount='" + quantity + '\'' + ", cost=" + cost + ", vat=" + vat + '}';
+        return "InvoiceEntry{"
+                + "productName='"
+                + description
+                + '\''
+                + ", amount='"
+                + quantity
+                + '\''
+                + ", cost="
+                + cost
+                + ", vat="
+                + vat + '}';
     }
 
 }

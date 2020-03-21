@@ -5,23 +5,88 @@ import java.util.List;
 import java.util.Objects;
 
 public class Invoice {
+    public static class Builder {
+        private String id;
+        private LocalDate issueDate;
+        private List<InvoiceEntry> entries;
+        private Invoice invoice;
+        private Company buyer;
+        private Company seller;
+
+        public String getId() {
+            return id;
+        }
+
+        public Invoice.Builder withId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public Invoice.Builder withIssueDate(LocalDate issueDate) {
+            this.issueDate = issueDate;
+            return this;
+        }
+
+        public Invoice.Builder withSeller(Company seller) {
+            this.seller = seller;
+            return this;
+        }
+
+        public Invoice.Builder withBuyer(Company buyer) {
+            this.buyer = buyer;
+            return this;
+        }
+
+        public Invoice.Builder withEntries(List<InvoiceEntry> entries) {
+            this.entries = entries;
+            return this;
+        }
+
+        public Invoice build() {
+            return invoice;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Builder builder = (Builder) o;
+            return Objects.equals(id, builder.id)
+                    && Objects.equals(issueDate, builder.issueDate)
+                    && Objects.equals(entries, builder.entries)
+                    && Objects.equals(invoice, builder.invoice)
+                    && Objects.equals(buyer, builder.buyer)
+                    && Objects.equals(seller, builder.seller);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, issueDate, entries, invoice, buyer, seller);
+        }
+
+        @Override
+        public String toString() {
+            return "Builder{"
+                    + "id='" + id + '\''
+                    + ", issueDate=" + issueDate
+                    + ", entries=" + entries
+                    + ", invoice=" + invoice
+                    + ", buyer=" + buyer
+                    + ", seller=" + seller
+                    + '}';
+        }
+    }
+
     private String id;
     private LocalDate issueDate;
-    private Company seller;
-    private Company buyer;
     private List<InvoiceEntry> entries;
-
-    public Invoice() {
-
-    }
-
-    public Invoice(String id, LocalDate issueDate, Company seller, Company buyer, List<InvoiceEntry> entries) {
-        this.id = id;
-        this.issueDate = issueDate;
-        this.seller = seller;
-        this.buyer = buyer;
-        this.entries = entries;
-    }
+    private Invoice invoice;
+    private Company buyer;
+    private Company seller;
 
     public String getId() {
         return id;
@@ -39,12 +104,20 @@ public class Invoice {
         this.issueDate = issueDate;
     }
 
-    public Company getSeller() {
-        return seller;
+    public List<InvoiceEntry> getEntries() {
+        return entries;
     }
 
-    public void setSeller(Company seller) {
-        this.seller = seller;
+    public void setEntries(List<InvoiceEntry> entries) {
+        this.entries = entries;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 
     public Company getBuyer() {
@@ -55,37 +128,14 @@ public class Invoice {
         this.buyer = buyer;
     }
 
-    public List<InvoiceEntry> getEntries() {
-        return entries;
+    public Company getSeller() {
+        return seller;
     }
 
-    public void setEntries(List<InvoiceEntry> entries) {
-        this.entries = entries;
+    public void setSeller(Company seller) {
+        this.seller = seller;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Invoice invoice = (Invoice) o;
-        return Objects.equals(id, invoice.id) &&
-                Objects.equals(issueDate, invoice.issueDate) &&
-                Objects.equals(seller, invoice.seller) &&
-                Objects.equals(buyer, invoice.buyer) &&
-                Objects.equals(entries, invoice.entries);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, issueDate, seller, buyer, entries);
-    }
-
-    @Override
-    public String toString() {
-        return "Invoice{" + "id='" + id + '\'' + ", issueDate=" + issueDate + ", seller=" + seller + ", buyer=" + buyer + ", entries=" + entries + '}';
+    private Invoice() {
     }
 }
