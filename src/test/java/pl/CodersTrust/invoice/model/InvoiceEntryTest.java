@@ -2,9 +2,13 @@ package pl.CodersTrust.invoice.model;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 
 import java.math.BigDecimal;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -85,5 +89,24 @@ class InvoiceEntryTest {
 
         //then
         assertEquals(actual, HashCodeBuilder.reflectionHashCode(entry));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dataProvider")
+    void equals(InvoiceEntry entry, InvoiceEntry otherEntry, boolean expected) {
+
+        assertEquals(expected, entry.equals(otherEntry));
+    }
+
+    private static Stream<Arguments> dataProvider() {
+        InvoiceEntry entry1 = new InvoiceEntry("position", new BigDecimal(235), Vat.VAT_23);
+        InvoiceEntry entry2 = new InvoiceEntry("tests", new BigDecimal(88), Vat.VAT_8);
+        InvoiceEntry entry3 = new InvoiceEntry("tests", new BigDecimal(88), Vat.VAT_8);
+
+        return Stream.of(
+                Arguments.of(entry1, entry2, false),
+                Arguments.of(entry2, entry3, true),
+                Arguments.of(entry1, null, false)
+        );
     }
 }

@@ -2,7 +2,12 @@ package pl.CodersTrust.invoice.model;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -83,5 +88,24 @@ class CompanyTest {
 
         //then
         assertEquals(actual, HashCodeBuilder.reflectionHashCode(company));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dataProvider")
+    void equals(Company company, Company otherCompany, boolean expected) {
+
+        assertEquals(expected, company.equals(otherCompany));
+    }
+
+    private static Stream<Arguments> dataProvider() {
+        Company company1 = new Company(12333211L, "Here", "PC");
+        Company company2 = new Company(321313L, "There", "LnX");
+        Company company3 = new Company(321313L, "There", "LnX");
+
+        return Stream.of(
+                Arguments.of(company1, company2, false),
+                Arguments.of(company2, company3, true),
+                Arguments.of(company1, null, false)
+        );
     }
 }

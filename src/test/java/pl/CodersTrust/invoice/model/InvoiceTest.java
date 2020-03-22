@@ -2,11 +2,15 @@ package pl.CodersTrust.invoice.model;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -100,5 +104,25 @@ class InvoiceTest {
 
         //then
         assertEquals(actual, HashCodeBuilder.reflectionHashCode(invoice));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dataProvider")
+    void equals(Invoice invoice, Invoice otherInvoice, boolean expected) {
+
+        assertEquals(expected, invoice.equals(otherInvoice));
+    }
+
+    private static Stream<Arguments> dataProvider() {
+
+        Invoice invoice1 = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
+        Invoice invoice2 = new Invoice(null, null, LocalDate.now().minusDays(5), new ArrayList<>());
+        Invoice invoice3 = new Invoice(null, null, LocalDate.now().minusDays(5), new ArrayList<>());
+
+        return Stream.of(
+                Arguments.of(invoice1, invoice2, false),
+                Arguments.of(invoice2, invoice3, true),
+                Arguments.of(invoice1, null, false)
+        );
     }
 }
