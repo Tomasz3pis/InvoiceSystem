@@ -13,11 +13,11 @@ release.properties
 out/
 .idea/
 .idea_modules/
+.idea/compiler.xml
+.idea/workspace.xml
 *.iml
 *.ipr
 *.iws
-.idea/compiler.xml
-.idea/workspace.xml
 
 ##############################
 ## Maven

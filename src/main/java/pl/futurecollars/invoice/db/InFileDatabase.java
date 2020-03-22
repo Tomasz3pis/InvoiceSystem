@@ -40,7 +40,8 @@ public class InFileDatabase implements Database {
     @Override
     public void updateInvoice(Invoice invoice, int updatedIndex) {
         if(updatedIndex > invoices.size()) {
-            throw new IndexOutOfBoundsException ("List of invoices is between : 0 to  " + invoices.size() + " Please pass correct index.");
+            throw new IndexOutOfBoundsException ("List of invoices is between : 0 to  "
+                       + invoices.size() + " Please pass correct index.");
         }
     }
 

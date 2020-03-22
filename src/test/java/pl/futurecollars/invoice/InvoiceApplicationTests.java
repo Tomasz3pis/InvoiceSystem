@@ -1,6 +1,5 @@
 package pl.futurecollars.invoice;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -19,7 +18,3 @@ class InvoiceApplicationTests {
     }
 
 }
-
-
-// make unit test(test for class)
-//
