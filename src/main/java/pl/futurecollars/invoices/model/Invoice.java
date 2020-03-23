@@ -1,7 +1,6 @@
 package pl.futurecollars.invoices.model;
 
 import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
-import static pl.futurecollars.invoices.helpers.CheckIdFormat.checkIdFormat;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -13,15 +12,14 @@ import java.util.List;
 
 public class Invoice {
 
-    private String id;
+    private Long id;
     private LocalDate issueDate;
     private LocalDate saleDate;
     private Company seller;
     private Company buyer;
     private List<InvoiceEntry> entries;
 
-    public Invoice(LocalDate issueDate, Company seller, Company buyer,
-                   List<InvoiceEntry> entries) {
+    public Invoice(LocalDate issueDate, Company seller, Company buyer, List<InvoiceEntry> entries) {
         checkForNull(issueDate, "issueDate");
         checkForNull(seller, "seller");
         checkForNull(buyer, "buyer");
@@ -33,8 +31,7 @@ public class Invoice {
         this.entries = entries;
     }
 
-    public Invoice(LocalDate issueDate, LocalDate saleDate,
-                   Company seller, Company buyer, List<InvoiceEntry> entries) {
+    public Invoice(LocalDate issueDate, LocalDate saleDate, Company seller, Company buyer, List<InvoiceEntry> entries) {
         checkForNull(issueDate, "issueDate");
         checkForNull(saleDate, "saleDate");
         checkForNull(seller, "seller");
@@ -47,13 +44,12 @@ public class Invoice {
         this.entries = entries;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         checkForNull(id, "id");
-        checkIdFormat(id);
         this.id = id;
     }
 
@@ -121,7 +117,6 @@ public class Invoice {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

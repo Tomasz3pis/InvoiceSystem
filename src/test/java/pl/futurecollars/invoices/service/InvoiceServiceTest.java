@@ -32,8 +32,8 @@ class InvoiceServiceTest {
     @Test
     void shouldConstructInvoiceServiceGivenDatabase() {
         // Given
-        Map<String, Invoice> expectedInvoices = new HashMap<>();
-        expectedInvoices.put("key", invoice);
+        Map<Long, Invoice> expectedInvoices = new HashMap<>();
+        expectedInvoices.put(1L, invoice);
         when(database.getInvoices()).thenReturn(expectedInvoices);
 
         // When
@@ -46,7 +46,7 @@ class InvoiceServiceTest {
     @Test
     void shouldSaveInvoiceGivenData() {
         // Given
-        String id = "20200101_0001";
+        Long id = 1L;
         when(database.getInvoiceById(id)).thenReturn(Optional.of(invoice));
 
         // When
@@ -59,14 +59,24 @@ class InvoiceServiceTest {
 
     @Test
     void shouldUpdateInvoice() {
+        // Given
+
+        // When
         injectedInvoiceService.updateInvoice(invoice);
+
+        // Then
         verify(database).updateInvoice(invoice);
     }
 
     @Test
     void shouldDeleteInvoice() {
-        String id = "20200101_0001";
+        // Given
+        Long id = 1L;
+
+        // When
         injectedInvoiceService.deleteInvoice(id);
+
+        // Then
         verify(database).deleteInvoice(id);
     }
 }

@@ -1,7 +1,6 @@
 package pl.futurecollars.invoices.service;
 
 import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
-import static pl.futurecollars.invoices.helpers.CheckIdFormat.checkIdFormat;
 
 import pl.futurecollars.invoices.database.Database;
 import pl.futurecollars.invoices.model.Invoice;
@@ -23,13 +22,12 @@ public class InvoiceService {
         database.saveInvoice(invoice);
     }
 
-    public Map<String, Invoice> getInvoices() {
+    public Map<Long, Invoice> getInvoices() {
         return database.getInvoices();
     }
 
-    public Optional<Invoice> getInvoice(String id) {
+    public Optional<Invoice> getInvoice(Long id) {
         checkForNull(id, "id");
-        checkIdFormat(id);
         return database.getInvoiceById(id);
     }
 
@@ -38,9 +36,8 @@ public class InvoiceService {
         database.updateInvoice(updatedInvoice);
     }
 
-    public void deleteInvoice(String id) {
+    public void deleteInvoice(Long id) {
         checkForNull(id, "id");
-        checkIdFormat(id);
         database.deleteInvoice(id);
     }
 }

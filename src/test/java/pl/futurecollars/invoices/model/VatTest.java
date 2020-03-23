@@ -21,6 +21,11 @@ class VatTest {
     @ParameterizedTest
     @MethodSource("vatEnumArguments")
     void shouldReturnVatRate(Vat vat, BigDecimal expectedVatRate) {
+        // Given
+
+        // When
+
+        // Then
         assertThat(vat.getRate(), is(expectedVatRate));
     }
 

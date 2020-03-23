@@ -20,14 +20,13 @@ class InvoiceEntryTest {
 
     @ParameterizedTest
     @MethodSource("entryConstructorArguments")
-    void shouldConstructEntryGivenArguments(
-            String itemName,
-            int quantity,
-            BigDecimal netPrice,
-            Vat vat) {
-        InvoiceEntry entry = new InvoiceEntry(
-                itemName, quantity, netPrice, vat);
+    void shouldConstructEntryGivenArguments(String itemName, int quantity, BigDecimal netPrice, Vat vat) {
+        // Given
 
+        // When
+        InvoiceEntry entry = new InvoiceEntry(itemName, quantity, netPrice, vat);
+
+        // Then
         assertThat(entry.getItemName(), is(itemName));
         assertThat(entry.getQuantity(), is(quantity));
         assertThat(entry.getNetPrice(), is(netPrice));
@@ -36,20 +35,18 @@ class InvoiceEntryTest {
 
     @ParameterizedTest
     @MethodSource("entryConstructorArguments")
-    void shouldSetEntryFields(
-            String itemName,
-            int quantity,
-            BigDecimal netPrice,
-            Vat vat) {
+    void shouldSetEntryFields(String itemName, int quantity, BigDecimal netPrice, Vat vat) {
+        // Given
 
-        InvoiceEntry entry = new InvoiceEntry(
-                "someName", 0, BigDecimal.valueOf(0), VAT_0);
+        InvoiceEntry entry = new InvoiceEntry("someName", 0, BigDecimal.valueOf(0), VAT_0);
 
+        // When
         entry.setItemName(itemName);
         entry.setQuantity(quantity);
         entry.setNetPrice(netPrice);
         entry.setVat(vat);
 
+        // Then
         assertThat(entry.getItemName(), is(itemName));
         assertThat(entry.getQuantity(), is(quantity));
         assertThat(entry.getNetPrice(), is(netPrice));
@@ -59,33 +56,30 @@ class InvoiceEntryTest {
     @ParameterizedTest
     @MethodSource("entryConstructorNullArguments")
     void shouldThrowExceptionGivenNull(
-            String itemName,
-            int quantity,
-            BigDecimal netPrice,
-            Vat vat,
-            String nullObjectName) {
+            String itemName, int quantity, BigDecimal netPrice, Vat vat, String nullObjectName) {
+        // Given
+
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 new InvoiceEntry(itemName, quantity, netPrice, vat));
         assertThat(exception.getMessage(), is(
                 "Provided "
                         + nullObjectName
-                        + " Object cannot be null"
-        ));
+                        + " Object cannot be null"));
     }
 
     @ParameterizedTest
     @MethodSource("entryConstructorArguments")
-    void shouldReturnTrueGivenEqualEntries(
-            String itemName,
-            int quantity,
-            BigDecimal netPrice,
-            Vat vat) {
+    void shouldReturnTrueGivenEqualEntries(String itemName, int quantity, BigDecimal netPrice, Vat vat) {
+        // Given
 
-        InvoiceEntry firstEntry = new InvoiceEntry(
-                itemName, quantity, netPrice, vat);
-        InvoiceEntry secondEntry = new InvoiceEntry(
-                itemName, quantity, netPrice, vat);
+        // When
+        InvoiceEntry firstEntry = new InvoiceEntry(itemName, quantity, netPrice, vat);
+        InvoiceEntry secondEntry = new InvoiceEntry(itemName, quantity, netPrice, vat);
 
+        // Then
         assertThat(firstEntry.equals(secondEntry), is(true));
         assertThat(firstEntry.equals(firstEntry), is(true));
         assertThat(secondEntry.equals(secondEntry), is(true));
@@ -94,43 +88,39 @@ class InvoiceEntryTest {
     @ParameterizedTest
     @MethodSource("notEqualsArguments")
     void shouldReturnFalseGivenDifferentEntries(InvoiceEntry entryToCompare) {
+        // Given
 
-        InvoiceEntry entry = new InvoiceEntry(
-                "First Item Name",
-                1,
-                BigDecimal.valueOf(100),
-                VAT_23);
+        // When
+        InvoiceEntry entry = new InvoiceEntry("First Item Name", 1, BigDecimal.valueOf(100), VAT_23);
 
+        // Then
         assertThat(entry.equals(entryToCompare), is(false));
         assertThat(entryToCompare.equals(null), is(false));
     }
 
     @ParameterizedTest
     @MethodSource("entryConstructorArguments")
-    void shouldReturnHashCodeGivenEntry(
-            String itemName,
-            int quantity,
-            BigDecimal netPrice,
-            Vat vat) {
-        InvoiceEntry entry = new InvoiceEntry(
-                itemName, quantity, netPrice, vat);
-        InvoiceEntry secondEntry = new InvoiceEntry(
-                "someOtherName", quantity, netPrice, vat);
+    void shouldReturnHashCodeGivenEntry(String itemName, int quantity, BigDecimal netPrice, Vat vat) {
+        // Given
 
+        // When
+        InvoiceEntry entry = new InvoiceEntry(itemName, quantity, netPrice, vat);
+        InvoiceEntry secondEntry = new InvoiceEntry("someOtherName", quantity, netPrice, vat);
+
+        // Then
         assertNotEquals(0, entry.hashCode());
         assertNotEquals(entry.hashCode(), secondEntry.hashCode());
     }
 
     @ParameterizedTest
     @MethodSource("entryConstructorArguments")
-    void shouldReturnStringGivenEntry(
-            String itemName,
-            int quantity,
-            BigDecimal netPrice,
-            Vat vat) {
-        InvoiceEntry entry = new InvoiceEntry(
-                itemName, quantity, netPrice, vat);
+    void shouldReturnStringGivenEntry(String itemName, int quantity, BigDecimal netPrice, Vat vat) {
+        // Given
 
+        // When
+        InvoiceEntry entry = new InvoiceEntry(itemName, quantity, netPrice, vat);
+
+        // Then
         assertNotEquals(null, entry.toString());
         assertNotEquals("", entry.toString());
     }
@@ -160,27 +150,9 @@ class InvoiceEntryTest {
 
     private static Stream<Arguments> entryConstructorNullArguments() {
         return Stream.of(
-                Arguments.of(
-                        null,
-                        1,
-                        BigDecimal.valueOf(100),
-                        VAT_23,
-                        "itemName"
-                ),
-                Arguments.of(
-                        "First Item Name",
-                        1,
-                        null,
-                        VAT_23,
-                        "netPrice"
-                ),
-                Arguments.of(
-                        "First Item Name",
-                        1,
-                        BigDecimal.valueOf(100),
-                        null,
-                        "vat"
-                )
+                Arguments.of(null, 1, BigDecimal.valueOf(100), VAT_23, "itemName"),
+                Arguments.of("First Item Name", 1, null, VAT_23, "netPrice"),
+                Arguments.of("First Item Name", 1, BigDecimal.valueOf(100), null, "vat")
         );
     }
 

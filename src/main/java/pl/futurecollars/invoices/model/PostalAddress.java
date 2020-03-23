@@ -15,6 +15,8 @@ public class PostalAddress {
     private String apartmentNumber;
     private String postalCode;
     private String city;
+    private static Pattern postalCodePattern = Pattern.compile("(\\d){2}-[\\d]{3}");
+
 
     public PostalAddress(
             String streetName,
@@ -36,7 +38,6 @@ public class PostalAddress {
     }
 
     private void verifyPostalCode(String codeToCheck) {
-        Pattern postalCodePattern = Pattern.compile("(\\d){2}-[\\d]{3}");
         if (!postalCodePattern.matcher(codeToCheck).matches()) {
             throw new IllegalArgumentException(
                     "Provided postalCode: "

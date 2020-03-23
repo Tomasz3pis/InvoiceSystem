@@ -15,11 +15,7 @@ public class InvoiceEntry {
     private BigDecimal netPrice;
     private Vat vat;
 
-    public InvoiceEntry(
-            String itemName,
-            int quantity,
-            BigDecimal netPrice,
-            Vat vat) {
+    public InvoiceEntry(String itemName, int quantity, BigDecimal netPrice, Vat vat) {
         checkForNull(itemName, "itemName");
         checkForNull(netPrice, "netPrice");
         checkForNull(vat, "vat");

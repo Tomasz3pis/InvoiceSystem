@@ -15,6 +15,7 @@ public class Company {
     private String taxIdentificationNumber;
     private String name;
     private PostalAddress address;
+    private static Pattern taxIdentificationNumberPattern = Pattern.compile("(\\d){10}");
 
     public Company(
             String taxIdentificationNumber,
@@ -33,15 +34,13 @@ public class Company {
         StringBuilder normalizedNumber = new StringBuilder();
         try (Scanner scanner = new Scanner(numberToNormalize)) {
             while (scanner.useDelimiter("[^\\d]?").hasNextInt()) {
-                normalizedNumber.append(
-                        scanner.useDelimiter("[^\\d]?").nextInt());
+                normalizedNumber.append(scanner.useDelimiter("[^\\d]?").nextInt());
             }
         }
         return normalizedNumber.toString();
     }
 
     private void verifyTaxIdentificationNumber(String numberToVerify) {
-        Pattern taxIdentificationNumberPattern = Pattern.compile("(\\d){10}");
         if (!taxIdentificationNumberPattern.matcher(numberToVerify).matches()) {
             throw new IllegalArgumentException(
                     "Provided taxIdentificationNumber: "

@@ -24,35 +24,32 @@ class InvoiceSystemIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("invoiceSystemTestArguments")
-    void shouldSaveGivenInvoices(
-            Invoice firstInvoice,
-            Invoice secondInvoice) {
+    void shouldSaveGivenInvoices(Invoice firstInvoice, Invoice secondInvoice) {
+        // Given
 
-        System.out.println(firstInvoice);
-        System.out.println(secondInvoice);
-
+        // When
         invoiceService.saveInvoice(firstInvoice);
         invoiceService.saveInvoice(secondInvoice);
 
-        assertThat(invoiceService.getInvoice(firstInvoice.getId()),
-                is(Optional.of(firstInvoice)));
-        assertThat(invoiceService.getInvoice(secondInvoice.getId()),
-                is(Optional.of(secondInvoice)));
+        // Then
+        assertThat(invoiceService.getInvoice(firstInvoice.getId()), is(Optional.of(firstInvoice)));
+        assertThat(invoiceService.getInvoice(secondInvoice.getId()), is(Optional.of(secondInvoice)));
     }
 
     @ParameterizedTest
     @MethodSource("invoiceSystemTestArguments")
     void shouldModifyGivenInvoice(
-            Invoice thirdInvoice,
-            Invoice fourthInvoice) {
+            Invoice firstInvoice, Invoice secondInvoice, Invoice thirdInvoice, Invoice fourthInvoice) {
+        // Given
 
+        // When
         invoiceService.saveInvoice(thirdInvoice);
         invoiceService.saveInvoice(fourthInvoice);
         fourthInvoice.setSaleDate(LocalDate.of(2020, 2, 1));
         invoiceService.updateInvoice(fourthInvoice);
 
-        assertThat(
-                invoiceService
+        // Then
+        assertThat(invoiceService
                         .getInvoice(fourthInvoice.getId())
                         .get()
                         .getSaleDate(),
@@ -61,26 +58,23 @@ class InvoiceSystemIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("invoiceSystemTestArguments")
-    void shouldRemoveGivenInvoice(
-            Invoice fifthInvoice,
-            Invoice sixthInvoice) {
+    void shouldRemoveGivenInvoice(Invoice fifthInvoice, Invoice sixthInvoice) {
+        // Given
 
+        // When
         invoiceService.saveInvoice(fifthInvoice);
         invoiceService.saveInvoice(sixthInvoice);
         invoiceService.deleteInvoice(fifthInvoice.getId());
 
+        // Then
         assertThat(invoiceService.getInvoices().size(), is(5));
         assertFalse(database.getInvoices().containsKey(fifthInvoice.getId()));
-        assertThat(invoiceService.getInvoice(fifthInvoice.getId()),
-                is(Optional.empty()));
+        assertThat(invoiceService.getInvoice(fifthInvoice.getId()), is(Optional.empty()));
     }
 
     private static Stream<Arguments> invoiceSystemTestArguments() {
         return Stream.of(
-                Arguments.of(
-                        getInvoice(1234567, 20),
-                        getInvoice(2, 2)
-                )
+                Arguments.of(getInvoice(1), getInvoice(2), getInvoice(3), getInvoice(0))
         );
     }
 }

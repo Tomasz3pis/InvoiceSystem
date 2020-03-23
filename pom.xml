@@ -30,6 +30,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -43,6 +44,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -69,6 +71,7 @@
                     <consoleOutput>true</consoleOutput>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -108,9 +111,6 @@
                                             <minimum>0.80</minimum>
                                         </limit>
                                     </limits>
-                                    <excludes>
-                                        <exclude>database.impl.ConfigurationProvider</exclude>
-                                    </excludes>
                                 </rule>
                             </rules>
                         </configuration>

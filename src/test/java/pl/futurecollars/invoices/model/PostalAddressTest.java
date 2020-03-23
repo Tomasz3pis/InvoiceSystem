@@ -22,6 +22,9 @@ class PostalAddressTest {
             String apartmentNumber,
             String postalCode,
             String city) {
+        // Given
+
+        // When
         PostalAddress postalAddress = new PostalAddress(
                 streetName,
                 streetNumber,
@@ -29,6 +32,7 @@ class PostalAddressTest {
                 postalCode,
                 city);
 
+        // Then
         assertThat(postalAddress.getStreetName(), is(streetName));
         assertThat(postalAddress.getStreetNumber(), is(streetNumber));
         assertThat(postalAddress.getApartmentNumber(), is(apartmentNumber));
@@ -44,6 +48,8 @@ class PostalAddressTest {
             String apartmentNumber,
             String postalCode,
             String city) {
+        // Given
+
         PostalAddress postalAddress = new PostalAddress(
                 "",
                 "",
@@ -51,12 +57,14 @@ class PostalAddressTest {
                 "00-000",
                 "");
 
+        // When
         postalAddress.setStreetName(streetName);
         postalAddress.setStreetNumber(streetNumber);
         postalAddress.setApartmentNumber(apartmentNumber);
         postalAddress.setPostalCode(postalCode);
         postalAddress.setCity(city);
 
+        // Then
         assertThat(postalAddress.getStreetName(), is(streetName));
         assertThat(postalAddress.getStreetNumber(), is(streetNumber));
         assertThat(postalAddress.getApartmentNumber(), is(apartmentNumber));
@@ -82,13 +90,13 @@ class PostalAddressTest {
             "12,345"
     })
     void shouldThrowExceptionGivenWrongPostalCodeFormat(String postalCode) {
+        // Given
+
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new PostalAddress(
-                        "",
-                        "",
-                        "",
-                        postalCode,
-                        ""));
+                new PostalAddress("", "", "", postalCode, ""));
         assertThat(exception.getMessage(), is("Provided postalCode: "
                 + postalCode
                 + " does not match the pattern '00-000'"));
@@ -103,13 +111,13 @@ class PostalAddressTest {
             String postalCode,
             String city,
             String nullObjectName) {
+        // Given
+
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new PostalAddress(
-                        streetName,
-                        streetNumber,
-                        apartmentNumber,
-                        postalCode,
-                        city));
+                new PostalAddress(streetName, streetNumber, apartmentNumber, postalCode, city));
         assertThat(exception.getMessage(), is("Provided "
                 + nullObjectName
                 + " Object cannot be null"));
@@ -123,6 +131,9 @@ class PostalAddressTest {
             String apartmentNumber,
             String postalCode,
             String city) {
+        // Given
+
+        // When
         PostalAddress firstAddress = new PostalAddress(
                 streetName,
                 streetNumber,
@@ -136,6 +147,7 @@ class PostalAddressTest {
                 postalCode,
                 city);
 
+        // Then
         assertThat(firstAddress.equals(secondAddress), is(true));
         assertThat(firstAddress.equals(firstAddress), is(true));
         assertThat(secondAddress.equals(secondAddress), is(true));
@@ -145,7 +157,11 @@ class PostalAddressTest {
     @MethodSource("notEqualsArguments")
     void shouldReturnFalseForDifferentAddresses(
             PostalAddress firstAddress, PostalAddress secondAddress) {
+        // Given
 
+        // When
+
+        // Then
         assertThat(firstAddress.equals(secondAddress), is(false));
         assertThat(firstAddress.equals("otherClassObject"), is(false));
         assertThat(firstAddress.equals(null), is(false));
@@ -159,6 +175,9 @@ class PostalAddressTest {
             String apartmentNumber,
             String postalCode,
             String city) {
+        // Given
+
+        // When
         PostalAddress address = new PostalAddress(
                 streetName,
                 streetNumber,
@@ -171,6 +190,8 @@ class PostalAddressTest {
                 apartmentNumber,
                 postalCode,
                 city);
+
+        // Then
         assertNotEquals(0, address.hashCode());
         assertNotEquals(address.hashCode(), secondAddress.hashCode());
     }
@@ -178,6 +199,11 @@ class PostalAddressTest {
     @ParameterizedTest
     @MethodSource("notEqualsArguments")
     void shouldReturnStringGivenAddress(PostalAddress address) {
+        // Given
+
+        // When
+
+        // Then
         assertNotEquals(null, address.toString());
         assertNotEquals("", address.toString());
     }

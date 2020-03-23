@@ -28,58 +28,45 @@ class CompanyTest {
 
     @ParameterizedTest
     @MethodSource("companyConstructorArguments")
-    void shouldConstructCompanyGivenArguments(
-            String taxIdentificationNumber,
-            String name,
-            String expectedTaxId) {
+    void shouldConstructCompanyGivenArguments(String taxIdentificationNumber, String name, String expectedTaxId) {
+        // Given
 
-        Company company = new Company(
-                taxIdentificationNumber,
-                name,
-                postalAddress);
+        // When
+        Company company = new Company(taxIdentificationNumber, name, postalAddress);
 
-        assertThat(company.getTaxIdentificationNumber(),
-                is(expectedTaxId));
+        // Then
+        assertThat(company.getTaxIdentificationNumber(), is(expectedTaxId));
         assertThat(company.getName(), is(name));
         assertThat(company.getAddress(), is(postalAddress));
     }
 
     @ParameterizedTest
     @MethodSource("companyConstructorArguments")
-    void shouldSetCompanyFields(
-            String taxIdentificationNumber,
-            String name,
-            String expectedTaxId) {
+    void shouldSetCompanyFields(String taxIdentificationNumber, String name, String expectedTaxId) {
+        // Given
+        Company company = new Company("000 000 00 00", "", postalAddress);
 
-        Company company = new Company(
-                "000 000 00 00",
-                "",
-                postalAddress);
-
+        // When
         company.setTaxIdentificationNumber(taxIdentificationNumber);
         company.setName(name);
         company.setAddress(secondPostalAddress);
 
-        assertThat(company.getTaxIdentificationNumber(),
-                is(expectedTaxId));
+        // Then
+        assertThat(company.getTaxIdentificationNumber(), is(expectedTaxId));
         assertThat(company.getName(), is(name));
         assertThat(company.getAddress(), is(secondPostalAddress));
     }
 
     @ParameterizedTest
     @MethodSource("companyConstructorNullArguments")
-    void shouldThrowExceptionGivenNull(
-            String taxIdentificationNumber,
-            String name,
-            String nullObjectName) {
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new Company(
-                        taxIdentificationNumber,
-                        name,
-                        postalAddress
-                )
-        );
+    void shouldThrowExceptionGivenNull(String taxIdentificationNumber, String name, String nullObjectName) {
+        // Given
 
+        // When
+
+        // Then
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                new Company(taxIdentificationNumber, name, postalAddress));
         assertThat(exception.getMessage(), is("Provided "
                 + nullObjectName
                 + " Object cannot be null"));
@@ -87,16 +74,14 @@ class CompanyTest {
 
     @Test
     void shouldThrowExceptionGivenNullAddress() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new Company(
-                        "1234567890",
-                        "SomeName",
-                        null
-                )
-        );
+        // Given
 
-        assertThat(exception.getMessage(), is(
-                "Provided address Object cannot be null"));
+        // When
+
+        // Then
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                new Company("1234567890", "SomeName", null));
+        assertThat(exception.getMessage(), is("Provided address Object cannot be null"));
     }
 
     @ParameterizedTest
@@ -112,35 +97,27 @@ class CompanyTest {
             "  1234567890",
             ""
     })
-    void shouldThrowExceptionGivenInvalidTaxIdentificationNumber(
-            String taxIdentificationNumber) {
+    void shouldThrowExceptionGivenInvalidTaxIdentificationNumber(String taxIdentificationNumber) {
+        // Given
+
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new Company(
-                        taxIdentificationNumber,
-                        "SomeName",
-                        postalAddress
-                )
-        );
-        assertThat(exception.getMessage(), containsString(
-                "does not match the ten-digit pattern"));
+                new Company(taxIdentificationNumber, "SomeName", postalAddress));
+        assertThat(exception.getMessage(), containsString("does not match the ten-digit pattern"));
     }
 
     @ParameterizedTest
     @MethodSource("companyConstructorArguments")
-    void shouldReturnTrueGivenEqualCompanies(
-            String taxIdentificationNumber,
-            String name) {
+    void shouldReturnTrueGivenEqualCompanies(String taxIdentificationNumber, String name) {
+        // Given
 
-        Company firstCompany = new Company(
-                taxIdentificationNumber,
-                name,
-                postalAddress);
+        // When
+        Company firstCompany = new Company(taxIdentificationNumber, name, postalAddress);
+        Company secondCompany = new Company(taxIdentificationNumber, name, postalAddress);
 
-        Company secondCompany = new Company(
-                taxIdentificationNumber,
-                name,
-                postalAddress);
-
+        // Then
         assertThat(firstCompany.equals(secondCompany), is(true));
         assertThat(firstCompany.equals(firstCompany), is(true));
         assertThat(secondCompany.equals(secondCompany), is(true));
@@ -148,25 +125,17 @@ class CompanyTest {
 
     @ParameterizedTest
     @MethodSource("notEqualsArguments")
-    void shouldReturnFalseGivenDifferentCompanies(
-            String taxIdentificationNumber,
-            String name) {
+    void shouldReturnFalseGivenDifferentCompanies(String taxIdentificationNumber, String name) {
+        // Given
 
-        Company firstCompany = new Company(
-                "123-456-78-90",
-                "NameOne",
-                postalAddress);
+        // When
+        Company firstCompany = new Company("123-456-78-90", "NameOne", postalAddress);
 
-        Company secondCompany = new Company(
-                taxIdentificationNumber,
-                name,
-                postalAddress);
+        Company secondCompany = new Company(taxIdentificationNumber, name, postalAddress);
 
-        Company thirdCompany = new Company(
-                "123-456-78-90",
-                "NameOne",
-                secondPostalAddress);
+        Company thirdCompany = new Company("123-456-78-90", "NameOne", secondPostalAddress);
 
+        // Then
         assertThat(firstCompany.equals(secondCompany), is(false));
         assertThat(firstCompany.equals(thirdCompany), is(false));
         assertThat(firstCompany.equals("otherClassObject"), is(false));
@@ -175,35 +144,27 @@ class CompanyTest {
 
     @ParameterizedTest
     @MethodSource("companyConstructorArguments")
-    void shouldReturnHashCodeGivenCompany(
-            String taxIdentificationNumber,
-            String name,
-            String normalizedNumber) {
+    void shouldReturnHashCodeGivenCompany(String taxIdentificationNumber, String name) {
+        // Given
 
-        Company company = new Company(
-                taxIdentificationNumber,
-                name,
-                postalAddress);
-        Company secondCompany = new Company(
-                taxIdentificationNumber,
-                "someOtherName",
-                postalAddress);
+        // When
+        Company company = new Company(taxIdentificationNumber, name, postalAddress);
+        Company secondCompany = new Company(taxIdentificationNumber, "someOtherName", postalAddress);
 
+        // Then
         assertNotEquals(0, company.hashCode());
         assertNotEquals(company.hashCode(), secondCompany.hashCode());
     }
 
     @ParameterizedTest
     @MethodSource("companyConstructorArguments")
-    void shouldReturnStringGivenCompany(
-            String taxIdentificationNumber,
-            String name) {
+    void shouldReturnStringGivenCompany(String taxIdentificationNumber, String name) {
+        // Given
 
-        Company company = new Company(
-                taxIdentificationNumber,
-                name,
-                postalAddress);
+        // When
+        Company company = new Company(taxIdentificationNumber, name, postalAddress);
 
+        // Then
         assertNotEquals(null, company.toString());
         assertNotEquals("", company.toString());
     }
@@ -213,8 +174,7 @@ class CompanyTest {
                 Arguments.of("123-456-78-90", "NameOne", "1234567890"),
                 Arguments.of("234 567 89 01", "Name Two", "2345678901"),
                 Arguments.of("345-6789012", "Name 3", "3456789012"),
-                Arguments.of("456.789.01.23", "Name of Fourth Company inc.",
-                        "4567890123")
+                Arguments.of("456.789.01.23", "Name of Fourth Company inc.", "4567890123")
         );
     }
 

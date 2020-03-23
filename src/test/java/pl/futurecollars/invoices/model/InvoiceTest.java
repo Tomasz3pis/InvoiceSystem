@@ -41,13 +41,12 @@ class InvoiceTest {
     @ParameterizedTest
     @MethodSource("invoiceConstructorArguments")
     void shouldConstructInvoiceGivenArguments(LocalDate issueDate) {
+        // Given
 
-        Invoice invoice = new Invoice(
-                issueDate,
-                seller,
-                buyer,
-                entries);
+        // When
+        Invoice invoice = new Invoice(issueDate, seller, buyer, entries);
 
+        // Then
         assertThat(invoice.getIssueDate(), is(issueDate));
         assertThat(invoice.getSaleDate(), is(issueDate));
         assertThat(invoice.getSeller(), is(seller));
@@ -57,16 +56,13 @@ class InvoiceTest {
 
     @ParameterizedTest
     @MethodSource("invoiceConstructorArguments")
-    void shouldConstructInvoiceGivenArgumentsIncludingSaleDate(
-            LocalDate issueDate, LocalDate saleDate) {
+    void shouldConstructInvoiceGivenArgumentsIncludingSaleDate(LocalDate issueDate, LocalDate saleDate) {
+        // Given
 
-        Invoice invoice = new Invoice(
-                issueDate,
-                saleDate,
-                seller,
-                buyer,
-                entries);
+        // When
+        Invoice invoice = new Invoice(issueDate, saleDate, seller, buyer, entries);
 
+        // Then
         assertThat(invoice.getIssueDate(), is(issueDate));
         assertThat(invoice.getSaleDate(), is(saleDate));
         assertThat(invoice.getSeller(), is(seller));
@@ -76,9 +72,8 @@ class InvoiceTest {
 
     @ParameterizedTest
     @MethodSource("invoiceConstructorArguments")
-    void shouldSetInvoiceFields(
-            LocalDate issueDate, LocalDate saleDate) {
-
+    void shouldSetInvoiceFields(LocalDate issueDate, LocalDate saleDate) {
+        // Given
         Invoice invoice = new Invoice(
                 LocalDate.of(2019, 12, 31),
                 LocalDate.of(2019, 12, 31),
@@ -86,14 +81,16 @@ class InvoiceTest {
                 buyer,
                 entries);
 
-        invoice.setId("20200101_0001");
+        // When
+        invoice.setId(1L);
         invoice.setIssueDate(issueDate);
         invoice.setSaleDate(saleDate);
         invoice.setSeller(secondSeller);
         invoice.setBuyer(secondBuyer);
         invoice.setEntries(secondEntries);
 
-        assertThat(invoice.getId(), is("20200101_0001"));
+        // Then
+        assertThat(invoice.getId(), is(1L));
         assertThat(invoice.getIssueDate(), is(issueDate));
         assertThat(invoice.getSaleDate(), is(saleDate));
         assertThat(invoice.getSeller(), is(secondSeller));
@@ -103,13 +100,13 @@ class InvoiceTest {
 
     @Test
     void shouldThrowExceptionGivenNull() {
+        // Given
 
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new Invoice(
-                        null,
-                        seller,
-                        buyer,
-                        entries));
+                new Invoice(null, seller, buyer, entries));
         assertThat(exception.getMessage(), is(
                 "Provided "
                         + "issueDate"
@@ -119,17 +116,14 @@ class InvoiceTest {
     @ParameterizedTest
     @MethodSource("invoiceConstructorNullArgumentsIncludingSaleDate")
     void shouldThrowExceptionGivenNullIncludingSaleDate(
-            LocalDate issueDate,
-            LocalDate saleDate,
-            String nullObjectName) {
+            LocalDate issueDate, LocalDate saleDate, String nullObjectName) {
+        // Given
 
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new Invoice(
-                        issueDate,
-                        saleDate,
-                        seller,
-                        buyer,
-                        entries));
+                new Invoice(issueDate, saleDate, seller, buyer, entries));
         assertThat(exception.getMessage(), is(
                 "Provided "
                         + nullObjectName
@@ -138,70 +132,50 @@ class InvoiceTest {
 
     @Test
     void shouldThrowExceptionGivenNullSeller() {
+        // Given
 
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new Invoice(
-                        LocalDate.of(2020, 1, 2),
-                        null,
-                        buyer,
-                        entries
-                )
-        );
-
-        assertThat(exception.getMessage(), is(
-                "Provided seller Object cannot be null"));
+                new Invoice(LocalDate.of(2020, 1, 2), null, buyer, entries));
+        assertThat(exception.getMessage(), is("Provided seller Object cannot be null"));
     }
 
     @Test
     void shouldThrowExceptionGivenNullBuyer() {
+        // Given
 
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new Invoice(
-                        LocalDate.of(2020, 1, 2),
-                        seller,
-                        null,
-                        entries
-                )
-        );
-
-        assertThat(exception.getMessage(), is(
-                "Provided buyer Object cannot be null"));
+                new Invoice(LocalDate.of(2020, 1, 2), seller, null, entries));
+        assertThat(exception.getMessage(), is("Provided buyer Object cannot be null"));
     }
 
     @Test
     void shouldThrowExceptionGivenNullEntries() {
+        // Given
 
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new Invoice(
-                        LocalDate.of(2020, 1, 2),
-                        seller,
-                        buyer,
-                        null
-                )
-        );
-
-        assertThat(exception.getMessage(), is(
-                "Provided entries Object cannot be null"));
+                new Invoice(LocalDate.of(2020, 1, 2), seller, buyer, null));
+        assertThat(exception.getMessage(), is("Provided entries Object cannot be null"));
     }
 
     @ParameterizedTest
     @MethodSource("invoiceConstructorArguments")
-    void shouldReturnTrueGivenEqualInvoices(
-            LocalDate issueDate, LocalDate saleDate) {
+    void shouldReturnTrueGivenEqualInvoices(LocalDate issueDate, LocalDate saleDate) {
+        // Given
 
-        Invoice firstInvoice = new Invoice(
-                issueDate,
-                saleDate,
-                seller,
-                buyer,
-                entries);
-        Invoice secondInvoice = new Invoice(
-                issueDate,
-                saleDate,
-                seller,
-                buyer,
-                entries);
+        // When
+        Invoice firstInvoice = new Invoice(issueDate, saleDate, seller, buyer, entries);
+        Invoice secondInvoice = new Invoice(issueDate, saleDate, seller, buyer, entries);
 
+        // Then
         assertThat(firstInvoice.equals(secondInvoice), is(true));
         assertThat(firstInvoice.equals(firstInvoice), is(true));
         assertThat(secondInvoice.equals(secondInvoice), is(true));
@@ -209,9 +183,10 @@ class InvoiceTest {
 
     @ParameterizedTest
     @MethodSource("notEqualsArguments")
-    void shouldReturnFalseGivenDifferentInvoices(
-            LocalDate issueDate, LocalDate saleDate) {
+    void shouldReturnFalseGivenDifferentInvoices(LocalDate issueDate, LocalDate saleDate) {
+        // Given
 
+        // When
         Invoice firstInvoice = new Invoice(
                 LocalDate.of(2020, 1, 2),
                 LocalDate.of(2020, 1, 1),
@@ -243,6 +218,7 @@ class InvoiceTest {
                 buyer,
                 secondEntries);
 
+        // Then
         assertThat(firstInvoice.equals(secondInvoice), is(false));
         assertThat(firstInvoice.equals(thirdInvoice), is(false));
         assertThat(firstInvoice.equals(fourthInvoice), is(false));
@@ -253,38 +229,27 @@ class InvoiceTest {
 
     @ParameterizedTest
     @MethodSource("invoiceConstructorArguments")
-    void shouldReturnHashCodeGivenInvoice(
-            LocalDate issueDate, LocalDate saleDate) {
+    void shouldReturnHashCodeGivenInvoice(LocalDate issueDate, LocalDate saleDate) {
+        // Given
 
-        Invoice invoice = new Invoice(
-                issueDate,
-                saleDate,
-                seller,
-                buyer,
-                entries);
-        Invoice secondInvoice = new Invoice(
-                issueDate,
-                saleDate.minusDays(1),
-                seller,
-                buyer,
-                entries);
+        // When
+        Invoice invoice = new Invoice(issueDate, saleDate, seller, buyer, entries);
+        Invoice secondInvoice = new Invoice(issueDate, saleDate.minusDays(1), seller, buyer, entries);
 
+        // Then
         assertNotEquals(0, invoice.hashCode());
         assertNotEquals(invoice.hashCode(), secondInvoice.hashCode());
     }
 
     @ParameterizedTest
     @MethodSource("invoiceConstructorArguments")
-    void shouldReturnStringGivenInvoice(
-            LocalDate issueDate, LocalDate saleDate) {
+    void shouldReturnStringGivenInvoice(LocalDate issueDate, LocalDate saleDate) {
+        // Given
 
-        Invoice invoice = new Invoice(
-                issueDate,
-                saleDate,
-                seller,
-                buyer,
-                entries);
+        // When
+        Invoice invoice = new Invoice(issueDate, saleDate, seller, buyer, entries);
 
+        // Then
         assertNotEquals(null, invoice.toString());
         assertNotEquals("", invoice.toString());
     }
@@ -305,27 +270,15 @@ class InvoiceTest {
 
     private static Stream<Arguments> invoiceConstructorNullArguments() {
         return Stream.of(
-                Arguments.of(
-                        LocalDate.of(2020, 1, 2),
-                        "id"),
-                Arguments.of(
-                        null,
-                        "issueDate")
-        );
+                Arguments.of(LocalDate.of(2020, 1, 2), "id"),
+                Arguments.of(null, "issueDate"));
     }
 
     private static Stream<Arguments>
     invoiceConstructorNullArgumentsIncludingSaleDate() {
         return Stream.of(
-                Arguments.of(
-                        null,
-                        LocalDate.of(2020, 1, 1),
-                        "issueDate"),
-                Arguments.of(
-                        LocalDate.of(2020, 1, 2),
-                        null,
-                        "saleDate")
-        );
+                Arguments.of(null, LocalDate.of(2020, 1, 1), "issueDate"),
+                Arguments.of(LocalDate.of(2020, 1, 2), null, "saleDate"));
     }
 
     private static Stream<Arguments> notEqualsArguments() {

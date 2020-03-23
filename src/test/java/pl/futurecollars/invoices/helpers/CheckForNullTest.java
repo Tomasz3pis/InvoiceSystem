@@ -11,6 +11,11 @@ class CheckForNullTest {
 
     @Test
     void shouldThrowExceptionGivenNullObject() {
+        // Given
+
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 checkForNull(null, "someName"));
         assertThat(exception.getMessage(), is("Provided "
@@ -20,6 +25,11 @@ class CheckForNullTest {
 
     @Test
     void shouldThrowExceptionGivenNullObjectName() {
+        // Given
+
+        // When
+
+        // Then
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 checkForNull("someObject", null));
         assertThat(exception.getMessage(), is(
