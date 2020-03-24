@@ -1,4 +1,4 @@
-package pl.CodersTrust.invoice.model;
+package pl.coderstrust.invoice.model;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

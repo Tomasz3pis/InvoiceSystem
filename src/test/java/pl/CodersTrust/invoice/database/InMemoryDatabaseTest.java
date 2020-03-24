@@ -1,13 +1,11 @@
-package pl.CodersTrust.invoice.database;
+package pl.coderstrust.invoice.database;
 
 import org.junit.jupiter.api.Test;
-import pl.CodersTrust.invoice.model.Invoice;
-
+import pl.coderstrust.invoice.model.Invoice;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,7 +32,7 @@ class InMemoryDatabaseTest {
         Invoice invoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
         Invoice newInvoice = new Invoice(null, null, LocalDate.now(), new ArrayList<>());
 
-        InMemoryDatabase imd = new InMemoryDatabase();
+       InMemoryDatabase imd = new InMemoryDatabase();
         imd.saveInvoice(invoice);
 
         //when

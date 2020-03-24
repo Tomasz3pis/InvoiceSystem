@@ -1,4 +1,4 @@
-package pl.CodersTrust.invoice;
+package pl.coderstrust.invoice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

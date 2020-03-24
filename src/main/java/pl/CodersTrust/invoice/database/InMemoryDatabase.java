@@ -1,8 +1,6 @@
-package pl.CodersTrust.invoice.database;
+package pl.coderstrust.invoice.database;
 
-import pl.CodersTrust.invoice.model.Invoice;
-
-
+import pl.coderstrust.invoice.model.Invoice;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,12 +9,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class InMemoryDatabase implements Database {
 
-    public static final AtomicLong idCount = new AtomicLong();
+    public static final AtomicLong lastUsedId = new AtomicLong();
     private Map<Long, Invoice> invoices = new HashMap();
 
     @Override
     public final void saveInvoice(final Invoice invoice) {
-        invoice.setId(idCount.incrementAndGet());
+        invoice.setId(lastUsedId.incrementAndGet());
         invoices.put(invoice.getId(), invoice);
     }
 

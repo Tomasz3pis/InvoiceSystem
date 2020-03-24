@@ -1,4 +1,4 @@
-package pl.CodersTrust.invoice.model;
+package pl.coderstrust.invoice.model;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.junit.jupiter.api.Test;
@@ -108,7 +108,7 @@ class InvoiceTest {
 
     @ParameterizedTest
     @MethodSource("dataProvider")
-    void equals(Invoice invoice, Invoice otherInvoice, boolean expected) {
+    void shouldVerifyIfEqualWorksCorrectly(Invoice invoice, Invoice otherInvoice, boolean expected) {
 
         assertEquals(expected, invoice.equals(otherInvoice));
     }

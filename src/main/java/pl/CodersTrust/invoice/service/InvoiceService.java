@@ -1,15 +1,14 @@
-package pl.CodersTrust.invoice.service;
-
+package pl.coderstrust.invoice.service;
 
 import pl.CodersTrust.invoice.database.Database;
 import pl.CodersTrust.invoice.model.Invoice;
+import java.util.Collection;
 
-
-public class InvoiceBook {
+public class InvoiceService {
 
     private Database database;
 
-    public InvoiceBook(Database database) {
+    public InvoiceService(Database database) {
         this.database = database;
     }
 
@@ -19,6 +18,10 @@ public class InvoiceBook {
 
     public final Invoice searchInvoiceById(final long id) {
         return database.getInvoiceById(id);
+    }
+
+    public final Collection<Invoice> getAllInvoices() {
+        return database.getInvoices();
     }
 
     public final void updateInvoice(final long id, final Invoice newInvoice) {

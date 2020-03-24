@@ -1,9 +1,11 @@
-package pl.CodersTrust.invoice.service;
+package pl.coderstrust.invoice.service;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import pl.CodersTrust.invoice.database.Database;
 import pl.CodersTrust.invoice.model.Invoice;
+
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
@@ -11,7 +13,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class InvoiceBookTest {
+class InvoiceServiceTest {
 
     @Test
     void shouldSaveInvoiceInDatabase() {
@@ -19,7 +21,7 @@ class InvoiceBookTest {
         Invoice invoice = Mockito.mock(Invoice.class);
         Database database = Mockito.mock(Database.class);
         doNothing().when(database).saveInvoice(invoice);
-        InvoiceBook ib = new InvoiceBook(database);
+        InvoiceService ib = new InvoiceService(database);
 
         //when
         ib.saveInvoiceInDatabase(invoice);
@@ -33,7 +35,7 @@ class InvoiceBookTest {
         //given
         Invoice invoice = Mockito.mock(Invoice.class);
         Database database = Mockito.mock(Database.class);
-        InvoiceBook ib = new InvoiceBook(database);
+        InvoiceService ib = new InvoiceService(database);
         when(database.getInvoiceById(invoice.getId())).thenReturn(invoice);
 
         //when
@@ -45,12 +47,26 @@ class InvoiceBookTest {
     }
 
     @Test
+    void shouldReturnAllInvoices() {
+        //given
+        Database database = Mockito.mock(Database.class);
+        InvoiceService ib = new InvoiceService(database);
+
+        //when
+        when(ib.getAllInvoices()).thenReturn(Collections.emptyList());
+
+        //then
+        assertEquals(ib.getAllInvoices(), Collections.emptyList());
+        verify(database, times(1)).getInvoices();
+    }
+
+    @Test
     void updateInvoice() {
         //given
         Invoice invoice = Mockito.mock(Invoice.class);
         Invoice newInvoice = Mockito.mock(Invoice.class);
         Database database = Mockito.mock(Database.class);
-        InvoiceBook ib = new InvoiceBook(database);
+        InvoiceService ib = new InvoiceService(database);
         doNothing().when(database).updateInvoice(invoice.getId(), newInvoice);
 
         //when
@@ -66,7 +82,7 @@ class InvoiceBookTest {
         //given
         Invoice invoice = Mockito.mock(Invoice.class);
         Database database = Mockito.mock(Database.class);
-        InvoiceBook ib = new InvoiceBook(database);
+        InvoiceService ib = new InvoiceService(database);
         doNothing().when(database).deleteInvoice(invoice.getId());
 
         //when

@@ -1,4 +1,4 @@
-package pl.CodersTrust.invoice;
+package pl.coderstrust.invoice;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,7 +10,7 @@ import pl.CodersTrust.invoice.model.Company;
 import pl.CodersTrust.invoice.model.Invoice;
 import pl.CodersTrust.invoice.model.InvoiceEntry;
 import pl.CodersTrust.invoice.model.Vat;
-import pl.CodersTrust.invoice.service.InvoiceBook;
+import pl.coderstrust.invoice.service.InvoiceService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class IntegrationTest {
 
     private static Database database = new InMemoryDatabase();
-    private static InvoiceBook invoiceBook = new InvoiceBook(database);
+    private static InvoiceService invoiceService = new InvoiceService(database);
 
     @BeforeEach
     public void cleanup() {
@@ -34,11 +34,11 @@ class IntegrationTest {
     @MethodSource("dataProvider")
     void shouldSaveInvoiceInDatabase(Invoice invoice1, Invoice invoice2) {
 
-        invoiceBook.saveInvoiceInDatabase(invoice1);
-        invoiceBook.saveInvoiceInDatabase(invoice2);
+        invoiceService.saveInvoiceInDatabase(invoice1);
+        invoiceService.saveInvoiceInDatabase(invoice2);
 
-        assertEquals(invoiceBook.searchInvoiceById(invoice1.getId()), invoice1);
-        assertEquals(invoiceBook.searchInvoiceById(invoice2.getId()), invoice2);
+        assertEquals(invoiceService.searchInvoiceById(invoice1.getId()), invoice1);
+        assertEquals(invoiceService.searchInvoiceById(invoice2.getId()), invoice2);
         assertEquals(database.getInvoices().size(), 2);
     }
 
@@ -46,7 +46,7 @@ class IntegrationTest {
     @MethodSource("dataProvider")
     void shouldChangeInvoice(Invoice invoice3, Invoice invoice4) {
 
-        invoiceBook.saveInvoiceInDatabase(invoice3);
+        invoiceService.saveInvoiceInDatabase(invoice3);
         invoice4.setData(LocalDate.of(2018, 6, 8));
         invoice4.setBuyer(new Company(8900988889L, "Monkey st", "Snek"));
         invoice4.setEntries(invoice3.getEntries());
@@ -62,8 +62,8 @@ class IntegrationTest {
     @MethodSource("dataProvider")
     void shouldRemoveInvoiceFromDatabase(Invoice invoice5, Invoice invoice6) {
 
-        invoiceBook.saveInvoiceInDatabase(invoice5);
-        invoiceBook.saveInvoiceInDatabase(invoice6);
+        invoiceService.saveInvoiceInDatabase(invoice5);
+        invoiceService.saveInvoiceInDatabase(invoice6);
         database.deleteInvoice(invoice5.getId());
 
         assertNull(database.getInvoiceById(invoice5.getId()));
