@@ -137,8 +137,13 @@ class InvoiceTest {
     @ParameterizedTest
     @MethodSource("dataProvider")
     void shouldVerifyIfEqualWorksCorrectly(Invoice invoice, Invoice otherInvoice, boolean expected) {
+        //given
 
-        assertEquals(expected, invoice.equals(otherInvoice));
+        //when
+        boolean actual = invoice.equals(otherInvoice);
+
+        //then
+        assertEquals(expected, actual);
     }
 
     private static Stream<Arguments> dataProvider() {

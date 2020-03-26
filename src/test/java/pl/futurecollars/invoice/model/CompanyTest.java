@@ -90,8 +90,13 @@ class CompanyTest {
     @ParameterizedTest
     @MethodSource("dataProvider")
     void shouldVerifyIfEqualWorksCorrectly(Company company, Company otherCompany, boolean expected) {
+        //given
 
-        assertEquals(expected, company.equals(otherCompany));
+        //when
+        boolean actual = company.equals(otherCompany);
+
+        //then
+        assertEquals(expected, actual);
     }
 
     private static Stream<Arguments> dataProvider() {
