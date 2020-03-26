@@ -1,20 +1,24 @@
-package pl.coderstrust.invoice.model;
+package pl.futurecollars.invoice.model;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.math.BigDecimal;
 
 public class InvoiceEntry {
-    private String description;
-    private BigDecimal value;
-    private Vat vatRate;
 
-    public InvoiceEntry(final String description, final BigDecimal value, final Vat vatRate) {
+    private String description;
+    private BigDecimal unitPrice;
+    private Vat vatRate;
+    private long quantity;
+
+    public InvoiceEntry(final String description, final BigDecimal unitPrice, final Vat vatRate, final long quantity) {
         this.description = description;
-        this.value = value;
+        this.unitPrice = unitPrice;
         this.vatRate = vatRate;
+        this.quantity = quantity;
     }
 
     public final String getDescription() {
@@ -25,12 +29,12 @@ public class InvoiceEntry {
         this.description = description;
     }
 
-    public final BigDecimal getValue() {
-        return value;
+    public final BigDecimal getUnitPrice() {
+        return unitPrice;
     }
 
-    public final void setValue(final BigDecimal value) {
-        this.value = value;
+    public final void setUnitPrice(final BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public final Vat getVatRate() {
@@ -39,6 +43,14 @@ public class InvoiceEntry {
 
     public final void setVatRate(final Vat vatRate) {
         this.vatRate = vatRate;
+    }
+
+    public long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
     }
 
     @Override

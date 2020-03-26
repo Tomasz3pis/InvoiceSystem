@@ -1,6 +1,7 @@
-package pl.coderstrust.invoice.database;
+package pl.futurecollars.invoice.database;
 
-import pl.coderstrust.invoice.model.Invoice;
+import pl.futurecollars.invoice.model.Invoice;
+
 import java.util.Collection;
 
 public interface Database {

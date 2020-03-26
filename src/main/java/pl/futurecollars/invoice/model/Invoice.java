@@ -1,24 +1,30 @@
-package pl.coderstrust.invoice.model;
+package pl.futurecollars.invoice.model;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class Invoice {
+
     private long id;
     private Company seller;
     private Company buyer;
     private List<InvoiceEntry> entries;
     private LocalDate data;
 
-    public Invoice(final Company seller, final Company buyer, final LocalDate data, final List<InvoiceEntry> entries) {
+    private Invoice(final Company seller, final Company buyer, final LocalDate data, final List<InvoiceEntry> entries) {
         this.seller = seller;
         this.buyer = buyer;
         this.data = data;
         this.entries = entries;
+    }
+
+    public Invoice() {
+
     }
 
     public final long getId() {
@@ -78,5 +84,34 @@ public class Invoice {
     @Override
     public final int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    public static class InvoiceBuilder {
+
+        private Invoice invoice = new Invoice();
+
+        public InvoiceBuilder withSeller(Company company) {
+            this.invoice.setSeller(company);
+            return this;
+        }
+
+        public InvoiceBuilder withBuyer(Company company) {
+            this.invoice.setBuyer(company);
+            return this;
+        }
+
+        public InvoiceBuilder withDate(LocalDate date) {
+            this.invoice.setData(date);
+            return this;
+        }
+
+        public InvoiceBuilder withEntries(List<InvoiceEntry> entries) {
+            this.invoice.setEntries(entries);
+            return this;
+        }
+
+        public Invoice build() {
+            return invoice;
+        }
     }
 }

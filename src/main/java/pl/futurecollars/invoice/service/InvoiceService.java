@@ -1,7 +1,8 @@
-package pl.coderstrust.invoice.service;
+package pl.futurecollars.invoice.service;
 
-import pl.CodersTrust.invoice.database.Database;
-import pl.CodersTrust.invoice.model.Invoice;
+import pl.futurecollars.invoice.database.Database;
+import pl.futurecollars.invoice.model.Invoice;
+
 import java.util.Collection;
 
 public class InvoiceService {
@@ -12,11 +13,11 @@ public class InvoiceService {
         this.database = database;
     }
 
-    public final void saveInvoiceInDatabase(final Invoice invoice) {
+    public final void saveInvoice(final Invoice invoice) {
         database.saveInvoice(invoice);
     }
 
-    public final Invoice searchInvoiceById(final long id) {
+    public final Invoice findInvoiceById(final long id) {
         return database.getInvoiceById(id);
     }
 

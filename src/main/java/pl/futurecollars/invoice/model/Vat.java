@@ -1,4 +1,4 @@
-package pl.coderstrust.invoice.model;
+package pl.futurecollars.invoice.model;
 
 public enum Vat {
 

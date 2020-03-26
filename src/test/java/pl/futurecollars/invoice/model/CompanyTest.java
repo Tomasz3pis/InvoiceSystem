@@ -1,16 +1,16 @@
-package pl.coderstrust.invoice.model;
+package pl.futurecollars.invoice.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import com.jparams.verifier.tostring.ToStringVerifier;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-
 import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CompanyTest {
 
@@ -67,15 +67,12 @@ class CompanyTest {
     @Test
     void shouldCheckIfToStringIsNotEmptyOrNull() {
         //given
-        Company company = new Company(0L, "", "");
 
         //when
-        String actual = company.toString();
 
         //then
-        assertNotEquals(null, actual);
-        assertNotEquals("", actual);
-
+        ToStringVerifier.forClass(Company.class)
+                .verify();
     }
 
     @Test
