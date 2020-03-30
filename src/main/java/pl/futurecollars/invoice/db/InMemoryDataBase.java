@@ -1,11 +1,13 @@
+/*
 package pl.futurecollars.invoice.db;
 
 import pl.futurecollars.invoice.model.Invoice;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Optional;
 
 public class InMemoryDataBase implements Database {
-    private List<Invoice> invoices = new ArrayList<>();
+    private Invoice invoice;
+    private HashMap<String, Invoice> invoices = new HashMap<>();
 
     @Override
     public void saveInvoice(Invoice invoice) {
@@ -13,20 +15,14 @@ public class InMemoryDataBase implements Database {
     }
 
     @Override
-    public List<Invoice> getInvoices() {
+    public HashMap<String, Invoice> getInvoices() {
         return invoices;
     }
 
     @Override
     public Invoice getInvoiceById(String id) {
-        for (Invoice invoice : invoices) {
-            if (invoice.getId().equals(id)) {
-                return invoice;
-            }
-        }
-        throw new IllegalArgumentException(
-                "Invoice id: " + id
-                + " not found in Database.");
+        invoice = invoices.get(id);
+        return invoice;
     }
 
     @Override
@@ -34,8 +30,8 @@ public class InMemoryDataBase implements Database {
         if (updatedIndex > invoices.size()) {
             throw new IndexOutOfBoundsException(
                     "List of invoices is between : 0 to  "
-                    + invoices.size()
-                    + " Please pass correct index.");
+                            + invoices.size()
+                            + " Please pass correct index.");
         }
         invoices.set(updatedIndex, invoice);
 
@@ -46,11 +42,11 @@ public class InMemoryDataBase implements Database {
         for (Invoice invoice : invoices) {
             if (invoice.getId().equals(id)) {
                 invoices.remove(id);
+            } else {
+                Optional.empty();
             }
-            throw new IllegalArgumentException(
-                    "" + "Invoice id: " + id
-                            + " not found in Database.");
         }
     }
 
 }
+*/

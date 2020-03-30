@@ -1,7 +1,5 @@
 package pl.futurecollars.invoice.model;
 
-import java.util.Objects;
-
 public class Company {
 
     public static class Builder {
@@ -44,51 +42,6 @@ public class Company {
         public Company build() {
             return company;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Builder builder = (Builder) o;
-            return Objects.equals(name, builder.name)
-                    && Objects.equals(taxIdentificationNumber, builder.taxIdentificationNumber)
-                    && Objects.equals(streetName, builder.streetName)
-                    && Objects.equals(postCode, builder.postCode)
-                    && Objects.equals(town, builder.town)
-                    && Objects.equals(company, builder.company);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(name, taxIdentificationNumber, streetName, postCode, town, company);
-        }
-
-        @Override
-        public String toString() {
-            return "Builder{"
-                    + "name='"
-                    + name
-                    + '\''
-                    + ", taxIdentificationNumber='"
-                    + taxIdentificationNumber
-                    + '\''
-                    + ", streetName='"
-                    + streetName
-                    + '\''
-                    + ", postCode='"
-                    + postCode
-                    + '\''
-                    + ", town='"
-                    + town
-                    + '\''
-                    + ", company="
-                    + company
-                    + '}';
-        }
     }
 
     public String getName() {
@@ -116,6 +69,7 @@ public class Company {
     private String streetName;
     private String postCode;
     private String town;
+
     private Company() {
 
     }

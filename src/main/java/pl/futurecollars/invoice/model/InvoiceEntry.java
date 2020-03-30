@@ -6,16 +6,16 @@ import java.util.Objects;
 public class InvoiceEntry {
     private String description;
     private String quantity;
-    private BigDecimal cost;
+    private BigDecimal pricePerUnit;
     private Vat vat;
 
     public InvoiceEntry() {
     }
 
-    public InvoiceEntry(String entityName, String quantity, BigDecimal cost, Vat vat) {
+    public InvoiceEntry(String entityName, String quantity, BigDecimal pricePerUnit, Vat vat) {
         this.description = entityName;
         this.quantity = quantity;
-        this.cost = cost;
+        this.pricePerUnit = pricePerUnit;
         this.vat = vat;
     }
 
@@ -36,11 +36,11 @@ public class InvoiceEntry {
     }
 
     public BigDecimal getCost() {
-        return cost;
+        return pricePerUnit;
     }
 
     public void setCost(BigDecimal cost) {
-        this.cost = cost;
+        this.pricePerUnit = pricePerUnit;
     }
 
     public Vat getVat() {
@@ -62,13 +62,13 @@ public class InvoiceEntry {
         InvoiceEntry that = (InvoiceEntry) o;
         return Objects.equals(description, that.description)
                 && Objects.equals(quantity, that.quantity)
-                && Objects.equals(cost, that.cost)
+                && Objects.equals(pricePerUnit, that.pricePerUnit)
                 && vat == that.vat;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, quantity, cost, vat);
+        return Objects.hash(description, quantity, pricePerUnit, vat);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class InvoiceEntry {
                 + quantity
                 + '\''
                 + ", cost="
-                + cost
+                + pricePerUnit
                 + ", vat="
                 + vat + '}';
     }

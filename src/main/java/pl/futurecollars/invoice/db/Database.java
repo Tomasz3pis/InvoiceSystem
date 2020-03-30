@@ -1,12 +1,13 @@
 package pl.futurecollars.invoice.db;
 
 import pl.futurecollars.invoice.model.Invoice;
-import java.util.List;
+
+import java.util.HashMap;
 
 public interface Database {
     void saveInvoice(Invoice invoice);
 
-    List<Invoice> getInvoices();
+    HashMap<String, Invoice> getInvoices();
 
     Invoice getInvoiceById(String id);
 

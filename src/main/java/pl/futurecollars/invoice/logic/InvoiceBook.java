@@ -1,3 +1,4 @@
+/*
 package pl.futurecollars.invoice.logic;
 
 import pl.futurecollars.invoice.db.Database;
@@ -34,3 +35,4 @@ public class InvoiceBook implements Database {
         inMemoryDataBase.deleteInvoice(id);
     }
 }
+*/

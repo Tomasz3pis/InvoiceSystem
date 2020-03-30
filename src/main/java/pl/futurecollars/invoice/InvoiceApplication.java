@@ -1,4 +1,3 @@
-
 package pl.futurecollars.invoice;
 
 import org.springframework.boot.SpringApplication;

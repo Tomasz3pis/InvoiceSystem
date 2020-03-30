@@ -6,7 +6,7 @@ HELP.md
 README.md
 invoice.iml
 release.properties
-
+invoice.iml
 ##############################
 ## IntelliJ
 ##############################
@@ -15,10 +15,10 @@ out/
 .idea_modules/
 .idea/compiler.xml
 .idea/workspace.xml
+invoice.iml
 *.iml
 *.ipr
 *.iws
-
 ##############################
 ## Maven
 ##############################
@@ -33,3 +33,4 @@ pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
+libraries/
