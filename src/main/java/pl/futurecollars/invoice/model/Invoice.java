@@ -7,18 +7,18 @@ import java.util.Objects;
 
 public class Invoice {
     public static class Builder {
-        private String id;
+        private Integer id;
         private LocalDate issueDate;
         private List<InvoiceEntry> entries;
         private Invoice invoice;
         private Company buyer;
         private Company seller;
 
-        public String getId() {
+        public Integer getId() {
             return id;
         }
 
-        public Invoice.Builder withId(String id) {
+        public Invoice.Builder withId(Integer id) {
             this.id = id;
             return this;
         }
@@ -82,18 +82,18 @@ public class Invoice {
         }
     }
 
-    private String id;
+    private Integer id;
     private LocalDate issueDate;
     private List<InvoiceEntry> entries;
     private Invoice invoice;
     private Company buyer;
     private Company seller;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

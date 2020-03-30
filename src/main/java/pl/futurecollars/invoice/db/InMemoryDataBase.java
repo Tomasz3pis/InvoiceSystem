@@ -1,52 +1,41 @@
-/*
 package pl.futurecollars.invoice.db;
 
 import pl.futurecollars.invoice.model.Invoice;
+
 import java.util.HashMap;
-import java.util.Optional;
 
 public class InMemoryDataBase implements Database {
-    private Invoice invoice;
-    private HashMap<String, Invoice> invoices = new HashMap<>();
+
+    private HashMap<Integer, Invoice> invoices = new HashMap<>();
+    private int counter = 0;
 
     @Override
-    public void saveInvoice(Invoice invoice) {
-        invoices.add(invoice);
+    public int saveInvoice(Invoice invoice) {
+        invoice.setId(counter);
+        invoices.put(counter, invoice);
+        return counter++;
     }
 
     @Override
-    public HashMap<String, Invoice> getInvoices() {
+    public HashMap<Integer, Invoice> getInvoices() {
         return invoices;
     }
 
     @Override
-    public Invoice getInvoiceById(String id) {
+    public Invoice getInvoiceById(Integer id) {
+        return invoices.get(id);
+    }
+
+    @Override
+    public void updateInvoice(Invoice invoice, Integer id) {
         invoice = invoices.get(id);
-        return invoice;
+        invoice.setId(counter);
+        counter++;
     }
 
     @Override
-    public void updateInvoice(Invoice invoice, int updatedIndex) {
-        if (updatedIndex > invoices.size()) {
-            throw new IndexOutOfBoundsException(
-                    "List of invoices is between : 0 to  "
-                            + invoices.size()
-                            + " Please pass correct index.");
-        }
-        invoices.set(updatedIndex, invoice);
-
-    }
-
-    @Override
-    public void deleteInvoice(String id) {
-        for (Invoice invoice : invoices) {
-            if (invoice.getId().equals(id)) {
-                invoices.remove(id);
-            } else {
-                Optional.empty();
-            }
-        }
+    public void deleteInvoice(Integer id) {
+        invoices.remove(id);
     }
 
 }
-*/
