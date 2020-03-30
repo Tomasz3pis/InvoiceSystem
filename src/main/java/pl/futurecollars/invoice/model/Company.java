@@ -21,24 +21,12 @@ public class Company {
         return taxIdentificationNumber;
     }
 
-    public final void setTaxIdentificationNumber(final long taxIdentificationNumber) {
-        this.taxIdentificationNumber = taxIdentificationNumber;
-    }
-
     public final String getAddress() {
         return address;
     }
 
-    public final void setAddress(final String address) {
-        this.address = address;
-    }
-
     public final String getName() {
         return name;
-    }
-
-    public final void setName(final String name) {
-        this.name = name;
     }
 
     @Override

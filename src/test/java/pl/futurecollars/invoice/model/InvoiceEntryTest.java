@@ -16,55 +16,6 @@ import java.util.stream.Stream;
 class InvoiceEntryTest {
 
     @Test
-    void shouldReturnSetDescription() {
-        //given
-        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0, 1);
-
-        //when
-        entry.setDescription("New test descri");
-
-        //then
-        assertEquals(entry.getDescription(), "New test descri");
-    }
-
-    @Test
-    void shouldReturnSetValue() {
-        //given
-        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0, 1);
-
-        //when
-        entry.setUnitPrice(new BigDecimal(100L));
-
-        //then
-        assertEquals(entry.getUnitPrice(), new BigDecimal(100));
-    }
-
-
-    @Test
-    void shouldReturnSetVatRate() {
-        //given
-        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0, 1);
-
-        //when
-        entry.setVatRate(Vat.VAT_8);
-
-        //then
-        assertEquals(entry.getVatRate(), Vat.VAT_8);
-    }
-
-    @Test
-    void shouldReturnSetUnitPrice() {
-        //given
-        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0, 1);
-
-        //when
-        entry.setQuantity(5);
-
-        //then
-        assertEquals(entry.getQuantity(), 5);
-    }
-
-    @Test
     void shouldCompareTwoDifferentHashCodes() {
         //given
         InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0, 1);
@@ -77,7 +28,7 @@ class InvoiceEntryTest {
     }
 
     @Test
-    void shouldCheckIfToStringIsNotEmptyOrNull() {
+    void shouldCheckIfToStringIsWorking() {
         //given
 
         //when

@@ -2,7 +2,6 @@ package pl.futurecollars.invoice.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.mockito.Mockito.mock;
 
 import com.jparams.verifier.tostring.ToStringVerifier;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -10,99 +9,53 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import pl.futurecollars.invoice.model.Invoice.InvoiceBuilder;
+import pl.futurecollars.invoice.TestInvoiceProvider;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.stream.Stream;
 
 class InvoiceTest {
 
-    private Company company = mock(Company.class);
-    private InvoiceEntry entry = mock(InvoiceEntry.class);
+    private TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
 
     @Test
-    void shouldReturnSetSeller() {
+    void shouldReturnTotalValueWithVat() {
         //given
-        Invoice invoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
+        Invoice invoice = testInvoiceProvider.getBaseInvoice();
+        Invoice secondInvoice = testInvoiceProvider.getInvoiceWith5Entries();
 
         //when
-        invoice.setSeller(company);
+        BigDecimal totalValueWithVat = invoice.getTotalValueWithVat();
+        BigDecimal secondTotalValueWithVat = secondInvoice.getTotalValueWithVat();
 
         //then
-        assertEquals(invoice.getSeller(), company);
+        assertEquals(totalValueWithVat, new BigDecimal("10521.00"));
+        assertEquals(secondTotalValueWithVat, new BigDecimal("12568.50"));
     }
 
     @Test
-    void shouldReturnSetBuyer() {
+    void shouldReturnTotalValueWithoutVat() {
         //given
-        Invoice invoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
+        Invoice invoice = testInvoiceProvider.getBaseInvoice();
+        Invoice secondInvoice = testInvoiceProvider.getInvoiceWith5Entries();
+
         //when
-        invoice.setBuyer(company);
+        BigDecimal totalValueWithVat = invoice.getTotalValueWithoutVat();
+        BigDecimal secondTotalValueWithVat = secondInvoice.getTotalValueWithoutVat();
 
         //then
-        assertEquals(invoice.getBuyer(), company);
-    }
-
-    @Test
-    void shouldReturnSetEntries() {
-        //given
-        Invoice invoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
-        //when
-        invoice.setEntries(List.of(entry));
-
-        //then
-        assertEquals(invoice.getEntries(), List.of(entry));
-    }
-
-    @Test
-    void shouldReturnSetDate() {
-        //given
-        Invoice invoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
-        //when
-        invoice.setData(LocalDate.of(2015, 12, 14));
-
-        //then
-        assertEquals(invoice.getData(), LocalDate.of(2015, 12, 14));
+        assertEquals(totalValueWithVat, new BigDecimal("8700"));
+        assertEquals(secondTotalValueWithVat, new BigDecimal("12150"));
     }
 
     @Test
     void shouldCompareTwoDifferentHashCodes() {
         //given
-        Invoice invoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
+        Invoice invoice = testInvoiceProvider.getBaseInvoice();
+
         //when
-        Invoice secondInvoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now().minusDays(5))
-                .withEntries(new ArrayList<>())
-                .build();
+        Invoice secondInvoice = testInvoiceProvider.getInvoiceWith5Entries();
+
         //then
         assertNotEquals(invoice.hashCode(), secondInvoice.hashCode());
     }
@@ -121,12 +74,8 @@ class InvoiceTest {
     @Test
     void shouldReturnHashCode() {
         //given
-        Invoice invoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
+        Invoice invoice = testInvoiceProvider.getBaseInvoice();
+
         //when
         int actual = invoice.hashCode();
 
@@ -148,24 +97,10 @@ class InvoiceTest {
 
     private static Stream<Arguments> dataProvider() {
 
-        Invoice firstInvoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
-        Invoice secondInvoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now().minusDays(5))
-                .withEntries(new ArrayList<>())
-                .build();
-        Invoice thirdInvoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now().minusDays(5))
-                .withEntries(new ArrayList<>())
-                .build();
+        TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
+        Invoice firstInvoice = testInvoiceProvider.getInvoiceWith5Entries();
+        Invoice thirdInvoice = testInvoiceProvider.getBaseInvoice();
+        Invoice secondInvoice = testInvoiceProvider.getSameAsBaseInvoice();
 
         return Stream.of(
                 Arguments.of(firstInvoice, secondInvoice, false),

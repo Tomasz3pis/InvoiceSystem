@@ -1,11 +1,11 @@
 package pl.futurecollars.invoice;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.junit.jupiter.api.Test;
 import pl.futurecollars.invoice.database.Database;
 import pl.futurecollars.invoice.database.InMemoryDatabase;
 import pl.futurecollars.invoice.model.Invoice;
@@ -15,31 +15,36 @@ class IntegrationTest {
 
     private Database database = new InMemoryDatabase();
     private InvoiceService invoiceService = new InvoiceService(database);
+    private TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
 
     @BeforeEach
     public void cleanup() {
         database.getInvoices().forEach(invoice -> database.deleteInvoice(invoice.getId()));
     }
 
-    @ParameterizedTest
-    @ArgumentsSource(InvoiceProvider.class)
-    void shouldSaveInvoiceInDatabase(Invoice firstInvoice, Invoice secondInvoice) {
+    @Test
+    void shouldSaveInvoiceInDatabase() {
         //given
+        Invoice firstInvoice = testInvoiceProvider.getBaseInvoice();
+        Invoice secondInvoice = testInvoiceProvider.getInvoiceWith5Entries();
 
         //when
         invoiceService.saveInvoice(firstInvoice);
         invoiceService.saveInvoice(secondInvoice);
 
         //then
+        assertEquals(database.getInvoices().size(), 2);
+        assertTrue(database.getInvoices().contains(firstInvoice));
+        assertTrue(database.getInvoices().contains(secondInvoice));
         assertEquals(invoiceService.findInvoiceById(firstInvoice.getId()), firstInvoice);
         assertEquals(invoiceService.findInvoiceById(secondInvoice.getId()), secondInvoice);
-        assertEquals(database.getInvoices().size(), 2);
     }
 
-    @ParameterizedTest
-    @ArgumentsSource(InvoiceProvider.class)
-    void shouldUpdateInvoice(Invoice invoice, Invoice updatedInvoice) {
+    @Test
+    void shouldUpdateInvoice() {
         //given
+        Invoice invoice = testInvoiceProvider.getBaseInvoice();
+        Invoice updatedInvoice = testInvoiceProvider.getInvoiceWith5Entries();
 
         //when
         invoiceService.saveInvoice(invoice);
@@ -47,13 +52,15 @@ class IntegrationTest {
 
         //then
         assertEquals(database.getInvoices().size(), 1);
-        assertEquals(database.getInvoiceById(invoice.getId()), updatedInvoice);
+        assertTrue(database.getInvoices().contains(updatedInvoice));
+        assertFalse(database.getInvoices().contains(invoice));
     }
 
-    @ParameterizedTest
-    @ArgumentsSource(InvoiceProvider.class)
-    void shouldRemoveInvoiceFromDatabase(Invoice firstInvoice, Invoice secondInvoice) {
+    @Test
+    void shouldRemoveInvoiceFromDatabase() {
         //given
+        Invoice firstInvoice = testInvoiceProvider.getBaseInvoice();
+        Invoice secondInvoice = testInvoiceProvider.getInvoiceWith5Entries();
 
         //when
         invoiceService.saveInvoice(firstInvoice);
@@ -62,7 +69,7 @@ class IntegrationTest {
 
         //then
         assertEquals(database.getInvoices().size(), 1);
-        assertThrows(NotExistingInvoiceException.class, () ->
-                database.getInvoiceById(firstInvoice.getId()));
+        assertTrue(database.getInvoices().contains(secondInvoice));
+        assertFalse(database.getInvoices().contains(firstInvoice));
     }
 }

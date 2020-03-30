@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.math.BigDecimal;
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,8 +25,19 @@ public class Invoice {
         this.entries = entries;
     }
 
-    public Invoice() {
+    Invoice() {
+    }
 
+    public BigDecimal getTotalValueWithoutVat() {
+        return entries.stream()
+                .map(InvoiceEntry::getTotalValueWithoutVat)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getTotalValueWithVat() {
+        return entries.stream()
+                .map(InvoiceEntry::getTotalValueWithVat)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public final long getId() {
@@ -111,6 +124,12 @@ public class Invoice {
         }
 
         public Invoice build() {
+            if (invoice.getBuyer() == null
+                    || invoice.getSeller() == null
+                    || invoice.getData() == null
+                    || invoice.getEntries() == null) {
+                throw new InvalidParameterException("Parameters cannot be null " + invoice.toString());
+            }
             return invoice;
         }
     }

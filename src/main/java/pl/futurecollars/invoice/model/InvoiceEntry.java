@@ -21,36 +21,31 @@ public class InvoiceEntry {
         this.quantity = quantity;
     }
 
-    public final String getDescription() {
-        return description;
+    public BigDecimal getTotalValueWithoutVat() {
+       return new BigDecimal(String.valueOf(unitPrice))
+               .multiply(new BigDecimal(String.valueOf(quantity)));
     }
 
-    public final void setDescription(final String description) {
-        this.description = description;
+    public BigDecimal getTotalValueWithVat() {
+        return new BigDecimal(String.valueOf(unitPrice))
+                .multiply(BigDecimal.valueOf(quantity))
+                .multiply(vatRate.getRate());
+    }
+
+    public final String getDescription() {
+        return description;
     }
 
     public final BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    public final void setUnitPrice(final BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
     public final Vat getVatRate() {
         return vatRate;
     }
 
-    public final void setVatRate(final Vat vatRate) {
-        this.vatRate = vatRate;
-    }
-
     public long getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
     }
 
     @Override

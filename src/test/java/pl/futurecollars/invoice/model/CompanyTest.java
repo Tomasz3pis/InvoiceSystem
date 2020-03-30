@@ -15,43 +15,6 @@ import java.util.stream.Stream;
 class CompanyTest {
 
     @Test
-    void shouldReturnSetTaxIdentificationNumber() {
-        //given
-        Company company = new Company(0L, "", "");
-
-        //when
-        company.setTaxIdentificationNumber(1231234455L);
-
-        //then
-        assertEquals(company.getTaxIdentificationNumber(), 1231234455L);
-    }
-
-    @Test
-    void shouldReturnSetAddress() {
-        //given
-        Company company = new Company(0L, "", "");
-
-        //when
-        company.setAddress("Hill st");
-
-        //then
-        assertEquals(company.getAddress(), "Hill st");
-    }
-
-    @Test
-    void shouldReturnSetName() {
-        //given
-        Company company = new Company(0L, "", "");
-
-        //when
-        company.setName("New Place");
-
-        //then
-
-        assertEquals(company.getName(), "New Place");
-    }
-
-    @Test
     void shouldCompareTwoDifferentHashCodes() {
         //given
         Company company = new Company(0L, "", "");
@@ -61,11 +24,10 @@ class CompanyTest {
 
         //then
         assertNotEquals(company.hashCode(), company2.hashCode());
-
     }
 
     @Test
-    void shouldCheckIfToStringIsNotEmptyOrNull() {
+    void shouldCheckIfToStringIsWorking() {
         //given
 
         //when

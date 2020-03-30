@@ -6,12 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-import pl.futurecollars.invoice.NotExistingInvoiceException;
+import pl.futurecollars.invoice.TestInvoiceProvider;
 import pl.futurecollars.invoice.model.Invoice;
-import pl.futurecollars.invoice.model.Invoice.InvoiceBuilder;
+import pl.futurecollars.invoice.model.InvoiceNotFoundException;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,12 +18,8 @@ class InMemoryDatabaseTest {
     @Test
     void shouldSaveInvoiceInDatabase() {
         //given
-        Invoice invoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
+        TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
+        Invoice invoice = testInvoiceProvider.getBaseInvoice();
         InMemoryDatabase inMemoryDatabase = new InMemoryDatabase();
 
         //when
@@ -38,18 +32,9 @@ class InMemoryDatabaseTest {
     @Test
     void shouldPutNewInvoiceInPlaceOfOldInvoice() {
         //given
-        Invoice invoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
-        Invoice updatedInvoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
+        TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
+        Invoice invoice = testInvoiceProvider.getBaseInvoice();
+        Invoice updatedInvoice = testInvoiceProvider.getInvoiceWith5Entries();
         InMemoryDatabase inMemoryDatabase = new InMemoryDatabase();
         inMemoryDatabase.saveInvoice(invoice);
 
@@ -65,35 +50,25 @@ class InMemoryDatabaseTest {
     void shouldThrowNotExistingInvoiceExceptionWhenUpdatingInvoice() {
         //given
         InMemoryDatabase inMemoryDatabase = new InMemoryDatabase();
-        Invoice updatedInvoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
+        TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
+        Invoice updatedInvoice = testInvoiceProvider.getBaseInvoice();
         //when
 
         //then
-        assertThrows(NotExistingInvoiceException.class, () -> {
-            inMemoryDatabase.updateInvoice(5, updatedInvoice);
-
-        });
+        assertThrows(InvoiceNotFoundException.class, () ->
+                inMemoryDatabase.updateInvoice(5, updatedInvoice));
     }
 
     @Test
     void shouldDeleteGivenInvoiceFromDatabase() {
         //given
-        Invoice invoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
+        TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
+        Invoice baseInvoice = testInvoiceProvider.getBaseInvoice();
         InMemoryDatabase inMemoryDatabase = new InMemoryDatabase();
-        inMemoryDatabase.saveInvoice(invoice);
+        inMemoryDatabase.saveInvoice(baseInvoice);
 
         //when
-        inMemoryDatabase.deleteInvoice(invoice.getId());
+        inMemoryDatabase.deleteInvoice(baseInvoice.getId());
 
         //then
         assertTrue(inMemoryDatabase.getInvoices().isEmpty());
@@ -107,29 +82,23 @@ class InMemoryDatabaseTest {
         //when
 
         //then
-        assertThrows(NotExistingInvoiceException.class, () -> {
-            inMemoryDatabase.deleteInvoice(5);
-        });
+        assertThrows(InvoiceNotFoundException.class, () ->
+                inMemoryDatabase.deleteInvoice(5));
     }
 
     @Test
     void shouldReturnInvoice() {
         //given
-        Invoice invoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
+        TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
+        Invoice baseInvoice = testInvoiceProvider.getBaseInvoice();
         InMemoryDatabase inMemoryDatabase = new InMemoryDatabase();
 
         //when
-        inMemoryDatabase.saveInvoice(invoice);
-        Invoice actual = inMemoryDatabase.getInvoiceById(invoice.getId());
+        inMemoryDatabase.saveInvoice(baseInvoice);
+        Invoice actual = inMemoryDatabase.getInvoiceById(baseInvoice.getId());
 
         //then
-        assertEquals(actual, invoice);
-        assertEquals(invoice.getId(), InMemoryDatabase.getLastUsedId().longValue());
+        assertEquals(actual, baseInvoice);
     }
 
     @Test
@@ -147,28 +116,18 @@ class InMemoryDatabaseTest {
     @Test
     void shouldReturnListOfInvoices() {
         //given
-        Invoice firstInvoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
-        Invoice secondInvoice = new InvoiceBuilder()
-                .withBuyer(null)
-                .withSeller(null)
-                .withDate(LocalDate.now())
-                .withEntries(new ArrayList<>())
-                .build();
-
         InMemoryDatabase inMemoryDatabase = new InMemoryDatabase();
+        TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
+        Invoice baseInvoice = testInvoiceProvider.getBaseInvoice();
+        Invoice invoiceWith5Entries = testInvoiceProvider.getInvoiceWith5Entries();
 
         //when
-        inMemoryDatabase.saveInvoice(firstInvoice);
-        inMemoryDatabase.saveInvoice(secondInvoice);
+        inMemoryDatabase.saveInvoice(baseInvoice);
+        inMemoryDatabase.saveInvoice(invoiceWith5Entries);
         Collection<Invoice> actual = inMemoryDatabase.getInvoices();
 
         //then
         assertEquals(actual.size(), 2);
-        assertIterableEquals(actual, List.of(firstInvoice, secondInvoice));
+        assertIterableEquals(actual, List.of(baseInvoice, invoiceWith5Entries));
     }
 }
