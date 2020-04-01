@@ -1,5 +1,7 @@
 package pl.futurecollars.invoice.model;
 
+import java.util.Objects;
+
 public class Company {
 
     private String name;
@@ -8,15 +10,7 @@ public class Company {
     private String postCode;
     private String town;
 
-    public Company() {
-
-    }
-    public Company(String name, String taxIdentificationNumber, String streetName, String postCode, String town) {
-        this.name = name;
-        this.taxIdentificationNumber = taxIdentificationNumber;
-        this.streetName = streetName;
-        this.postCode = postCode;
-        this.town = town;
+    private Company() {
     }
 
     public String getName() {
@@ -59,39 +53,71 @@ public class Company {
         this.town = town;
     }
 
-    public static class Builder {
-    private Company company;
-
-        public Company.Builder withName(String name) {
-            company.setName(name);
-            return this;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-
-        public Company.Builder withTaxIdentificationNumber(String taxIdentificationNumber) {
-            company.setTaxIdentificationNumber(taxIdentificationNumber);
-            return this;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
         }
-
-        public Company.Builder withStreetName(String streetName) {
-            company.setStreetName(streetName);
-            return this;
-        }
-
-        public Company.Builder withPostCode(String postCode) {
-            company.setPostCode(postCode);
-            return this;
-        }
-
-        public Company.Builder withTown(String town) {
-            company.setTown(town);
-            return this;
-        }
-
-        public Company build() {
-           return company;
-        }
+        Company company = (Company) o;
+        return Objects.equals(name, company.name) &&
+                Objects.equals(taxIdentificationNumber, company.taxIdentificationNumber) &&
+                Objects.equals(streetName, company.streetName) &&
+                Objects.equals(postCode, company.postCode) &&
+                Objects.equals(town, company.town);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, taxIdentificationNumber, streetName, postCode, town);
+    }
 
+    @Override
+    public String toString() {
+        return "Company{" +
+                "name='" + name + '\'' +
+                ", taxIdentificationNumber='" + taxIdentificationNumber + '\'' +
+                ", streetName='" + streetName + '\'' +
+                ", postCode='" + postCode + '\'' +
+                ", town='" + town + '\'' +
+                '}';
+    }
+
+    public static class CompanyBuilder {
+
+        private Company company = new Company();
+
+        CompanyBuilder withName(String name) {
+            this.company.setName(name);
+            return this;
+        }
+
+        CompanyBuilder withTaxIdentificationNumber(String taxIdentificationNumber) {
+            this.company.setTaxIdentificationNumber(taxIdentificationNumber);
+            return this;
+        }
+
+        CompanyBuilder withStreetName(String streetName) {
+            this.company.setName(streetName);
+            return this;
+        }
+
+        CompanyBuilder withPostCode(String postCode) {
+            this.company.setPostCode(postCode);
+            return this;
+        }
+
+        CompanyBuilder withTown(String town) {
+            this.company.setTown(town);
+            return this;
+        }
+
+        Company build() {
+            return company;
+        }
+
+    }
 
 }

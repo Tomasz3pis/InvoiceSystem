@@ -4,42 +4,36 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class InvoiceEntry {
+
     private String description;
-    private String quantity;
+    private Integer quantity;
     private BigDecimal pricePerUnit;
     private Vat vat;
 
-    public InvoiceEntry() {
+    private InvoiceEntry() {
     }
 
-    public InvoiceEntry(String entityName, String quantity, BigDecimal pricePerUnit, Vat vat) {
-        this.description = entityName;
-        this.quantity = quantity;
-        this.pricePerUnit = pricePerUnit;
-        this.vat = vat;
-    }
-
-    public String getEntityName() {
+    public String getDescription() {
         return description;
     }
 
-    public void setEntityName(String entityName) {
-        this.description = entityName;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getAmount() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setAmount(String amount) {
-        this.quantity = amount;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
-    public BigDecimal getCost() {
+    public BigDecimal getPricePerUnit() {
         return pricePerUnit;
     }
 
-    public void setCost(BigDecimal cost) {
+    public void setPricePerUnit(BigDecimal pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
     }
 
@@ -60,10 +54,10 @@ public class InvoiceEntry {
             return false;
         }
         InvoiceEntry that = (InvoiceEntry) o;
-        return Objects.equals(description, that.description)
-                && Objects.equals(quantity, that.quantity)
-                && Objects.equals(pricePerUnit, that.pricePerUnit)
-                && vat == that.vat;
+        return Objects.equals(description, that.description) &&
+                Objects.equals(quantity, that.quantity) &&
+                Objects.equals(pricePerUnit, that.pricePerUnit) &&
+                vat == that.vat;
     }
 
     @Override
@@ -73,17 +67,41 @@ public class InvoiceEntry {
 
     @Override
     public String toString() {
-        return "InvoiceEntry{"
-                + "productName='"
-                + description
-                + '\''
-                + ", amount='"
-                + quantity
-                + '\''
-                + ", cost="
-                + pricePerUnit
-                + ", vat="
-                + vat + '}';
+        return "InvoiceEntry{" +
+                "description='" + description + '\'' +
+                ", quantity='" + quantity + '\'' +
+                ", pricePerUnit=" + pricePerUnit +
+                ", vat=" + vat +
+                '}';
+    }
+
+    public static class InvoiceEntryBuilder {
+
+        private InvoiceEntry invoiceEntry = new InvoiceEntry();
+
+        InvoiceEntryBuilder withProductName(String description) {
+            this.invoiceEntry.setDescription(description);
+            return this;
+        }
+
+        InvoiceEntryBuilder withQuantity(Integer quantity) {
+            this.invoiceEntry.setQuantity(quantity);
+            return this;
+        }
+
+        InvoiceEntryBuilder withPricePerUnit(BigDecimal pricePerUnit) {
+            this.invoiceEntry.setPricePerUnit(pricePerUnit);
+            return this;
+        }
+
+        InvoiceEntryBuilder withVat(Vat vat) {
+            this.invoiceEntry.setVat(vat);
+            return this;
+        }
+
+        InvoiceEntry build() {
+            return invoiceEntry;
+        }
     }
 
 }
