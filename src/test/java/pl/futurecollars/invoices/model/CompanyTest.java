@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -55,33 +54,6 @@ class CompanyTest {
         assertThat(company.getTaxIdentificationNumber(), is(expectedTaxId));
         assertThat(company.getName(), is(name));
         assertThat(company.getAddress(), is(secondPostalAddress));
-    }
-
-    @ParameterizedTest
-    @MethodSource("companyConstructorNullArguments")
-    void shouldThrowExceptionGivenNull(String taxIdentificationNumber, String name, String nullObjectName) {
-        // Given
-
-        // When
-
-        // Then
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new Company(taxIdentificationNumber, name, postalAddress));
-        assertThat(exception.getMessage(), is("Provided "
-                + nullObjectName
-                + " Object cannot be null"));
-    }
-
-    @Test
-    void shouldThrowExceptionGivenNullAddress() {
-        // Given
-
-        // When
-
-        // Then
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new Company("1234567890", "SomeName", null));
-        assertThat(exception.getMessage(), is("Provided address Object cannot be null"));
     }
 
     @ParameterizedTest
@@ -182,13 +154,6 @@ class CompanyTest {
         return Stream.of(
                 Arguments.of("9999999999", "NameOne"),
                 Arguments.of("123-456-78-90", "NameOne changed")
-        );
-    }
-
-    private static Stream<Arguments> companyConstructorNullArguments() {
-        return Stream.of(
-                Arguments.of(null, "NameOne", "taxIdentificationNumber"),
-                Arguments.of("123-456-78-90", null, "name")
         );
     }
 }

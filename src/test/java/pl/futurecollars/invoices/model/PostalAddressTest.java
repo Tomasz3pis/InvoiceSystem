@@ -103,27 +103,6 @@ class PostalAddressTest {
     }
 
     @ParameterizedTest
-    @MethodSource("addressConstructorNullArguments")
-    void shouldThrowExceptionGivenNullArgument(
-            String streetName,
-            String streetNumber,
-            String apartmentNumber,
-            String postalCode,
-            String city,
-            String nullObjectName) {
-        // Given
-
-        // When
-
-        // Then
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new PostalAddress(streetName, streetNumber, apartmentNumber, postalCode, city));
-        assertThat(exception.getMessage(), is("Provided "
-                + nullObjectName
-                + " Object cannot be null"));
-    }
-
-    @ParameterizedTest
     @MethodSource("addressConstructorArguments")
     void shouldReturnTrueForEqualAddresses(
             String streetName,
@@ -329,46 +308,6 @@ class PostalAddressTest {
                                 "Wólka Druga"
                         )
                 )
-        );
-    }
-
-    private static Stream<Arguments> addressConstructorNullArguments() {
-        return Stream.of(
-                Arguments.of(
-                        null,
-                        "101",
-                        "1",
-                        "01-111",
-                        "Pierwszyce",
-                        "streetName"),
-                Arguments.of(
-                        "Ulica Pierwsza",
-                        null,
-                        "1",
-                        "01-111",
-                        "Pierwszyce",
-                        "streetNumber"),
-                Arguments.of(
-                        "Ulica Pierwsza",
-                        "101",
-                        null,
-                        "01-111",
-                        "Pierwszyce",
-                        "apartmentNumber"),
-                Arguments.of(
-                        "Ulica Pierwsza",
-                        "101",
-                        "1",
-                        null,
-                        "Pierwszyce",
-                        "postalCode"),
-                Arguments.of(
-                        "Ulica Pierwsza",
-                        "101",
-                        "1",
-                        "01-111",
-                        null,
-                        "city")
         );
     }
 }

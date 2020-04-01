@@ -1,7 +1,5 @@
 package pl.futurecollars.invoices.model;
 
-import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -9,47 +7,38 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.time.LocalDate;
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
-public class Invoice {
+public final class Invoice {
 
-    private Long id;
+    private long id;
+    @NotNull
     private LocalDate issueDate;
+    @NotNull
     private LocalDate saleDate;
+    @Valid
     private Company seller;
+    @Valid
     private Company buyer;
-    private List<InvoiceEntry> entries;
+    private List<@Valid InvoiceEntry> entries;
 
-    public Invoice(LocalDate issueDate, Company seller, Company buyer, List<InvoiceEntry> entries) {
-        checkForNull(issueDate, "issueDate");
-        checkForNull(seller, "seller");
-        checkForNull(buyer, "buyer");
-        checkForNull(entries, "entries");
-        this.issueDate = issueDate;
-        this.saleDate = issueDate;
-        this.seller = seller;
-        this.buyer = buyer;
-        this.entries = entries;
+    public Invoice() {
     }
 
-    public Invoice(LocalDate issueDate, LocalDate saleDate, Company seller, Company buyer, List<InvoiceEntry> entries) {
-        checkForNull(issueDate, "issueDate");
-        checkForNull(saleDate, "saleDate");
-        checkForNull(seller, "seller");
-        checkForNull(buyer, "buyer");
-        checkForNull(entries, "entries");
-        this.issueDate = issueDate;
-        this.saleDate = saleDate;
-        this.seller = seller;
-        this.buyer = buyer;
-        this.entries = entries;
+    private Invoice(InvoiceBuilder invoiceBuilder) {
+        this.issueDate = invoiceBuilder.builderIssueDate;
+        this.saleDate = invoiceBuilder.builderSaleDate;
+        this.seller = invoiceBuilder.builderSeller;
+        this.buyer = invoiceBuilder.builderBuyer;
+        this.entries = invoiceBuilder.builderEntries;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        checkForNull(id, "id");
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -58,7 +47,6 @@ public class Invoice {
     }
 
     public void setIssueDate(LocalDate issueDate) {
-        checkForNull(issueDate, "issueDate");
         this.issueDate = issueDate;
     }
 
@@ -67,7 +55,6 @@ public class Invoice {
     }
 
     public void setSaleDate(LocalDate saleDate) {
-        checkForNull(saleDate, "saleDate");
         this.saleDate = saleDate;
     }
 
@@ -76,7 +63,6 @@ public class Invoice {
     }
 
     public void setSeller(Company seller) {
-        checkForNull(seller, "seller");
         this.seller = seller;
     }
 
@@ -85,7 +71,6 @@ public class Invoice {
     }
 
     public void setBuyer(Company buyer) {
-        checkForNull(buyer, "buyer");
         this.buyer = buyer;
     }
 
@@ -94,8 +79,44 @@ public class Invoice {
     }
 
     public void setEntries(List<InvoiceEntry> entries) {
-        checkForNull(entries, "entries");
         this.entries = entries;
+    }
+
+    public static class InvoiceBuilder {
+        private LocalDate builderIssueDate;
+        private LocalDate builderSaleDate;
+        private Company builderSeller;
+        private Company builderBuyer;
+        private List<InvoiceEntry> builderEntries;
+
+        public InvoiceBuilder setIssueDate(LocalDate issueDate) {
+            this.builderIssueDate = issueDate;
+            return this;
+        }
+
+        public InvoiceBuilder setSaleDate(LocalDate saleDate) {
+            this.builderSaleDate = saleDate;
+            return this;
+        }
+
+        public InvoiceBuilder setSeller(Company seller) {
+            this.builderSeller = seller;
+            return this;
+        }
+
+        public InvoiceBuilder setBuyer(Company buyer) {
+            this.builderBuyer = buyer;
+            return this;
+        }
+
+        public InvoiceBuilder setEntries(List<InvoiceEntry> entries) {
+            this.builderEntries = entries;
+            return this;
+        }
+
+        public Invoice build() {
+            return new Invoice(this);
+        }
     }
 
     @Override

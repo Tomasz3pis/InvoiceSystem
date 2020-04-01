@@ -2,18 +2,21 @@ package pl.futurecollars.invoices.database;
 
 import pl.futurecollars.invoices.model.Invoice;
 
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface Database {
 
-    void saveInvoice(Invoice invoice);
+    long saveInvoice(Invoice invoice);
 
-    Map<Long, Invoice> getInvoices();
+    List<Invoice> getInvoices();
 
-    Optional<Invoice> getInvoiceById(Long id);
+    List<Invoice> getInvoices(LocalDate startDate, LocalDate endDate);
 
-    void updateInvoice(Invoice updatedInvoice);
+    Optional<Invoice> getInvoiceById(long id);
 
-    void deleteInvoice(Long id);
+    void updateInvoice(long id, Invoice updatedInvoice);
+
+    void deleteInvoice(long id);
 }

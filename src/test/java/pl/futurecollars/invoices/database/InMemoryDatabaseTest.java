@@ -2,10 +2,7 @@ package pl.futurecollars.invoices.database;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,22 +32,21 @@ class InMemoryDatabaseTest {
     @Test
     void shouldSaveInvoice() {
         // Given
-        Long id = 1L;
+        long id = 1L;
 
         // When
         database.saveInvoice(invoice);
 
         // Then
         assertThat(database.getInvoiceById(id), is(Optional.of(invoice)));
-        assertTrue(database.getInvoices().containsKey(id));
     }
 
     @Test
     void shouldSaveManyInvoices() {
         // Given
-        Long id = 1L;
-        Long secondId = 2L;
-        Long thirdId = 3L;
+        long id = 1L;
+        long secondId = 2L;
+        long thirdId = 3L;
 
         // When
         database.saveInvoice(invoice);
@@ -58,20 +54,19 @@ class InMemoryDatabaseTest {
         database.saveInvoice(thirdInvoice);
 
         // Then
-        assertThat(database.getInvoices().get(id), is(invoice));
-        assertThat(database.getInvoices().get(secondId), is(secondInvoice));
-        assertThat(database.getInvoices().get(thirdId), is(thirdInvoice));
+        assertThat(database.getInvoiceById(id), is(Optional.of(invoice)));
+        assertThat(database.getInvoiceById(secondId), is(Optional.of(secondInvoice)));
+        assertThat(database.getInvoiceById(thirdId), is(Optional.of(thirdInvoice)));
     }
 
     @Test
     void shouldUpdateInvoiceGivenSameIdInvoice() {
         // Given
-        Long id = 1L;
-        when(secondInvoice.getId()).thenReturn(id);
+        long id = 1L;
         database.saveInvoice(invoice);
 
         // When
-        database.updateInvoice(secondInvoice);
+        database.updateInvoice(id, secondInvoice);
 
         // Then
         assertThat(database.getInvoiceById(id), is(Optional.of(secondInvoice)));
@@ -80,13 +75,12 @@ class InMemoryDatabaseTest {
     @Test
     void updateInvoiceShouldThrowExceptionGivenNotPresentInvoice() {
         // Given
-        Long id = 1L;
-        when(invoice.getId()).thenReturn(id);
+        long id = 1L;
 
         // When
 
         // Then
-        Exception exception = assertThrows(InvoiceNotFoundException.class, () -> database.updateInvoice(invoice));
+        Exception exception = assertThrows(InvoiceNotFoundException.class, () -> database.updateInvoice(id, invoice));
         assertThat(exception.getMessage(), is(
                 "Provided updatedInvoice does not exist in database. "
                         + "Invoice id: " + id + " not found."));
@@ -95,7 +89,7 @@ class InMemoryDatabaseTest {
     @Test
     void shouldDeleteInvoiceGivenId() {
         // Given
-        Long id = 1L;
+        long id = 1L;
         database.saveInvoice(invoice);
         assertThat(database.getInvoiceById(id), is(Optional.of(invoice)));
 
@@ -103,7 +97,7 @@ class InMemoryDatabaseTest {
         database.deleteInvoice(id);
 
         // Then
-        assertFalse(database.getInvoices().containsKey(id));
+        assertThat(database.getInvoiceById(id), is(Optional.empty()));
     }
 
     @Test
@@ -113,7 +107,7 @@ class InMemoryDatabaseTest {
         // When
 
         // Then
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> database.deleteInvoice(1L));
+        Exception exception = assertThrows(InvoiceNotFoundException.class, () -> database.deleteInvoice(1L));
         assertThat(exception.getMessage(), is(
                 "Provided id: "
                         + "1"

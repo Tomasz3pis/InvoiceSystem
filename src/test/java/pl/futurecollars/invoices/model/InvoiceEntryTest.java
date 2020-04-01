@@ -3,7 +3,6 @@ package pl.futurecollars.invoices.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static pl.futurecollars.invoices.model.Vat.VAT_0;
 import static pl.futurecollars.invoices.model.Vat.VAT_23;
 import static pl.futurecollars.invoices.model.Vat.VAT_8;
@@ -51,23 +50,6 @@ class InvoiceEntryTest {
         assertThat(entry.getQuantity(), is(quantity));
         assertThat(entry.getNetPrice(), is(netPrice));
         assertThat(entry.getVat(), is(vat));
-    }
-
-    @ParameterizedTest
-    @MethodSource("entryConstructorNullArguments")
-    void shouldThrowExceptionGivenNull(
-            String itemName, int quantity, BigDecimal netPrice, Vat vat, String nullObjectName) {
-        // Given
-
-        // When
-
-        // Then
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new InvoiceEntry(itemName, quantity, netPrice, vat));
-        assertThat(exception.getMessage(), is(
-                "Provided "
-                        + nullObjectName
-                        + " Object cannot be null"));
     }
 
     @ParameterizedTest
@@ -145,14 +127,6 @@ class InvoiceEntryTest {
                         BigDecimal.valueOf(3.2),
                         VAT_ZW
                 )
-        );
-    }
-
-    private static Stream<Arguments> entryConstructorNullArguments() {
-        return Stream.of(
-                Arguments.of(null, 1, BigDecimal.valueOf(100), VAT_23, "itemName"),
-                Arguments.of("First Item Name", 1, null, VAT_23, "netPrice"),
-                Arguments.of("First Item Name", 1, BigDecimal.valueOf(100), null, "vat")
         );
     }
 

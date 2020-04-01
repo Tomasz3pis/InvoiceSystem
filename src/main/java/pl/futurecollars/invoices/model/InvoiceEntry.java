@@ -1,24 +1,24 @@
 package pl.futurecollars.invoices.model;
 
-import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.math.BigDecimal;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class InvoiceEntry {
 
+    @NotBlank
     private String itemName;
     private int quantity;
+    @NotNull
     private BigDecimal netPrice;
+    @NotNull
     private Vat vat;
 
     public InvoiceEntry(String itemName, int quantity, BigDecimal netPrice, Vat vat) {
-        checkForNull(itemName, "itemName");
-        checkForNull(netPrice, "netPrice");
-        checkForNull(vat, "vat");
         this.itemName = itemName;
         this.quantity = quantity;
         this.netPrice = netPrice;
@@ -30,7 +30,6 @@ public class InvoiceEntry {
     }
 
     public void setItemName(String itemName) {
-        checkForNull(itemName, "itemName");
         this.itemName = itemName;
     }
 
@@ -47,7 +46,6 @@ public class InvoiceEntry {
     }
 
     public void setNetPrice(BigDecimal netPrice) {
-        checkForNull(netPrice, "netPrice");
         this.netPrice = netPrice;
     }
 
@@ -56,7 +54,6 @@ public class InvoiceEntry {
     }
 
     public void setVat(Vat vat) {
-        checkForNull(vat, "vat");
         this.vat = vat;
     }
 

@@ -13,8 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.futurecollars.invoices.database.Database;
 import pl.futurecollars.invoices.model.Invoice;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,23 +28,9 @@ class InvoiceServiceTest {
     private InvoiceService injectedInvoiceService;
 
     @Test
-    void shouldConstructInvoiceServiceGivenDatabase() {
-        // Given
-        Map<Long, Invoice> expectedInvoices = new HashMap<>();
-        expectedInvoices.put(1L, invoice);
-        when(database.getInvoices()).thenReturn(expectedInvoices);
-
-        // When
-        InvoiceService invoiceService = new InvoiceService(database);
-
-        // Then
-        assertThat(invoiceService.getInvoices(), is(expectedInvoices));
-    }
-
-    @Test
     void shouldSaveInvoiceGivenData() {
         // Given
-        Long id = 1L;
+        long id = 1L;
         when(database.getInvoiceById(id)).thenReturn(Optional.of(invoice));
 
         // When
@@ -62,16 +46,16 @@ class InvoiceServiceTest {
         // Given
 
         // When
-        injectedInvoiceService.updateInvoice(invoice);
+        injectedInvoiceService.updateInvoice(1L, invoice);
 
         // Then
-        verify(database).updateInvoice(invoice);
+        verify(database).updateInvoice(1L, invoice);
     }
 
     @Test
     void shouldDeleteInvoice() {
         // Given
-        Long id = 1L;
+        long id = 1L;
 
         // When
         injectedInvoiceService.deleteInvoice(id);

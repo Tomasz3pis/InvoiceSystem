@@ -1,64 +1,84 @@
 package pl.futurecollars.invoices.database;
 
-import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
-
+import org.springframework.stereotype.Repository;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
+@Repository
 public class InMemoryDatabase implements Database {
 
     private Map<Long, Invoice> invoices = new HashMap<>();
     private AtomicLong idCounter = new AtomicLong();
 
     @Override
-    public void saveInvoice(Invoice invoice) {
-        checkForNull(invoice, "invoice");
-        Long id = generateId();
+    public long saveInvoice(Invoice invoice) {
+        long id = generateId();
         invoice.setId(id);
         invoices.put(id, invoice);
+        return id;
     }
 
     @Override
-    public Map<Long, Invoice> getInvoices() {
-        return invoices;
+    public List<Invoice> getInvoices() {
+        return new ArrayList<>(invoices.values());
     }
 
     @Override
-    public Optional<Invoice> getInvoiceById(Long id) {
-        checkForNull(id, "id");
+    public List<Invoice> getInvoices(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null && endDate == null) {
+            return getInvoices();
+        }
+        if (startDate == null) {
+            startDate = LocalDate.MIN;
+        }
+        if (endDate == null) {
+            endDate = LocalDate.MAX;
+        }
+        LocalDate finalStartDate = startDate;
+        LocalDate finalEndDate = endDate;
+        return getInvoices().stream()
+                .filter(invoice -> invoice.getIssueDate().isAfter(finalStartDate)
+                        && invoice.getIssueDate().isBefore(finalEndDate))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Invoice> getInvoiceById(long id) {
         return Optional.ofNullable(invoices.get(id));
     }
 
     @Override
-    public void updateInvoice(Invoice updatedInvoice) {
-        checkForNull(updatedInvoice, "updatedInvoice");
-        Long updatedInvoiceId = updatedInvoice.getId();
-        Invoice originalInvoice = invoices.replace(updatedInvoiceId, updatedInvoice);
+    public void updateInvoice(long id, Invoice updatedInvoice) {
+        updatedInvoice.setId(id);
+        Invoice originalInvoice = invoices.replace(id, updatedInvoice);
         if (originalInvoice == null) {
             throw new InvoiceNotFoundException(
                     "Provided updatedInvoice does not exist in database. "
-                            + "Invoice id: " + updatedInvoiceId + " not found.");
+                            + "Invoice id: " + id + " not found.");
         }
     }
 
     @Override
-    public void deleteInvoice(Long id) {
-        checkForNull(id, "id");
+    public void deleteInvoice(long id) {
         Invoice deletedInvoice = invoices.remove(id);
         if (deletedInvoice == null) {
-            throw new IllegalArgumentException(
+            throw new InvoiceNotFoundException(
                     "Provided id: "
                             + id
                             + " not found in Database.");
         }
     }
 
-    private Long generateId() {
+    private long generateId() {
         return idCounter.incrementAndGet();
     }
 }

@@ -1,22 +1,24 @@
 package pl.futurecollars.invoices.model;
 
-import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.regex.Pattern;
+import javax.validation.constraints.NotBlank;
 
 public class PostalAddress {
 
+    private static final Pattern POSTAL_CODE_PATTERN = Pattern.compile("(\\d){2}-[\\d]{3}");
+    @NotBlank
     private String streetName;
+    @NotBlank
     private String streetNumber;
     private String apartmentNumber;
+    @NotBlank
     private String postalCode;
+    @NotBlank
     private String city;
-    private static Pattern postalCodePattern = Pattern.compile("(\\d){2}-[\\d]{3}");
-
 
     public PostalAddress(
             String streetName,
@@ -24,12 +26,7 @@ public class PostalAddress {
             String apartmentNumber,
             String postalCode,
             String city) {
-        checkForNull(streetName, "streetName");
-        checkForNull(streetNumber, "streetNumber");
-        checkForNull(apartmentNumber, "apartmentNumber");
-        checkForNull(postalCode, "postalCode");
         verifyPostalCode(postalCode);
-        checkForNull(city, "city");
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.apartmentNumber = apartmentNumber;
@@ -38,7 +35,7 @@ public class PostalAddress {
     }
 
     private void verifyPostalCode(String codeToCheck) {
-        if (!postalCodePattern.matcher(codeToCheck).matches()) {
+        if (!POSTAL_CODE_PATTERN.matcher(codeToCheck).matches()) {
             throw new IllegalArgumentException(
                     "Provided postalCode: "
                             + codeToCheck
@@ -51,7 +48,6 @@ public class PostalAddress {
     }
 
     public void setStreetName(String streetName) {
-        checkForNull(streetName, "streetName");
         this.streetName = streetName;
     }
 
@@ -60,7 +56,6 @@ public class PostalAddress {
     }
 
     public void setStreetNumber(String streetNumber) {
-        checkForNull(streetNumber, "streetNumber");
         this.streetNumber = streetNumber;
     }
 
@@ -69,7 +64,6 @@ public class PostalAddress {
     }
 
     public void setApartmentNumber(String apartmentNumber) {
-        checkForNull(apartmentNumber, "apartmentNumber");
         this.apartmentNumber = apartmentNumber;
     }
 
@@ -78,7 +72,6 @@ public class PostalAddress {
     }
 
     public void setPostalCode(String postalCode) {
-        checkForNull(postalCode, "postalCode");
         verifyPostalCode(postalCode);
         this.postalCode = postalCode;
     }
@@ -88,7 +81,6 @@ public class PostalAddress {
     }
 
     public void setCity(String city) {
-        checkForNull(city, "city");
         this.city = city;
     }
 

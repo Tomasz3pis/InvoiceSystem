@@ -1,43 +1,44 @@
 package pl.futurecollars.invoices.service;
 
-import static pl.futurecollars.invoices.helpers.CheckForNull.checkForNull;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import pl.futurecollars.invoices.database.Database;
 import pl.futurecollars.invoices.model.Invoice;
 
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 
+@Service
+@Validated
 public class InvoiceService {
 
+    @Autowired
     private Database database;
 
-    public InvoiceService(Database database) {
-        checkForNull(database, "database");
-        this.database = database;
+    public long saveInvoice(@Valid Invoice invoice) {
+        return database.saveInvoice(invoice);
     }
 
-    public void saveInvoice(Invoice invoice) {
-        checkForNull(invoice, "invoice");
-        database.saveInvoice(invoice);
-    }
-
-    public Map<Long, Invoice> getInvoices() {
+    public List<Invoice> getInvoices() {
         return database.getInvoices();
     }
 
-    public Optional<Invoice> getInvoice(Long id) {
-        checkForNull(id, "id");
+    public List<Invoice> getInvoices(LocalDate startDate, LocalDate endDate) {
+        return database.getInvoices(startDate, endDate);
+    }
+
+    public Optional<Invoice> getInvoice(long id) {
         return database.getInvoiceById(id);
     }
 
-    public void updateInvoice(Invoice updatedInvoice) {
-        checkForNull(updatedInvoice, "updatedInvoice");
-        database.updateInvoice(updatedInvoice);
+    public void updateInvoice(long id, @Valid Invoice updatedInvoice) {
+        database.updateInvoice(id, updatedInvoice);
     }
 
-    public void deleteInvoice(Long id) {
-        checkForNull(id, "id");
+    public void deleteInvoice(long id) {
         database.deleteInvoice(id);
     }
 }
