@@ -6,12 +6,22 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.math.BigDecimal;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class InvoiceEntry {
 
+    @NotBlank
     private String description;
+
+    @NotNull
     private BigDecimal unitPrice;
+
+    @NotNull
     private Vat vatRate;
+
+    @Min(1)
     private long quantity;
 
     public InvoiceEntry(final String description, final BigDecimal unitPrice, final Vat vatRate, final long quantity) {
@@ -22,8 +32,8 @@ public class InvoiceEntry {
     }
 
     public BigDecimal getTotalValueWithoutVat() {
-       return new BigDecimal(String.valueOf(unitPrice))
-               .multiply(new BigDecimal(String.valueOf(quantity)));
+        return new BigDecimal(String.valueOf(unitPrice))
+                .multiply(new BigDecimal(String.valueOf(quantity)));
     }
 
     public BigDecimal getTotalValueWithVat() {

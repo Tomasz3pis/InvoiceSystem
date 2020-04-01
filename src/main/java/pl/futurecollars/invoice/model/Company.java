@@ -5,10 +5,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.validation.constraints.NotBlank;
+
 public class Company {
 
+    @NotBlank
     private long taxIdentificationNumber;
+
+    @NotBlank
     private String address;
+
+    @NotBlank
     private String name;
 
     public Company(final long taxIdentificationNumber, final String address, final String name) {

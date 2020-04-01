@@ -1,15 +1,19 @@
 package pl.futurecollars.invoice.database;
 
+import org.springframework.stereotype.Repository;
 import pl.futurecollars.invoice.model.Invoice;
 import pl.futurecollars.invoice.model.InvoiceNotFoundException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
+@Repository
 public class InMemoryDatabase implements Database {
 
     private static AtomicLong lastUsedId = new AtomicLong();
@@ -50,6 +54,24 @@ public class InMemoryDatabase implements Database {
     @Override
     public final Collection<Invoice> getInvoices() {
         return new ArrayList<>(invoices.values());
+    }
+
+    @Override
+    public Collection<Invoice> getInvoices(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null) {
+            startDate = LocalDate.MIN;
+        }
+        if (endDate == null) {
+            endDate = LocalDate.MAX;
+        }
+        LocalDate finalStartDate = startDate;
+        LocalDate finalEndDate = endDate;
+
+        return getInvoices()
+                .stream()
+                .filter(invoice -> invoice.getData()
+                        .isAfter(finalStartDate) && invoice.getData().isBefore(finalEndDate))
+                .collect(Collectors.toList());
     }
 
     private static AtomicLong getLastUsedId() {

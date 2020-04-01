@@ -2,6 +2,7 @@ package pl.futurecollars.invoice.database;
 
 import pl.futurecollars.invoice.model.Invoice;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 public interface Database {
@@ -15,4 +16,6 @@ public interface Database {
     Invoice getInvoiceById(long id);
 
     Collection<Invoice> getInvoices();
+
+    Collection<Invoice> getInvoices(LocalDate startDate, LocalDate endDate);
 }

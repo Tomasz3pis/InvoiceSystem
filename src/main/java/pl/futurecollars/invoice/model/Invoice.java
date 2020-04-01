@@ -9,13 +9,22 @@ import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 public class Invoice {
 
     private long id;
+
+    @Valid
     private Company seller;
+
+    @Valid
     private Company buyer;
-    private List<InvoiceEntry> entries;
+
+    private List<@Valid InvoiceEntry> entries;
+
+    @NotNull
     private LocalDate data;
 
     private Invoice(final Company seller, final Company buyer, final LocalDate data, final List<InvoiceEntry> entries) {
