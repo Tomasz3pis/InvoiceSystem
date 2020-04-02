@@ -46,18 +46,6 @@ public class InvoiceEntry {
         return description;
     }
 
-    public final BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
-    public final Vat getVatRate() {
-        return vatRate;
-    }
-
-    public long getQuantity() {
-        return quantity;
-    }
-
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);

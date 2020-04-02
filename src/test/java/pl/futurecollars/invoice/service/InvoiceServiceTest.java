@@ -13,7 +13,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.futurecollars.invoice.database.Database;
 import pl.futurecollars.invoice.model.Invoice;
 
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class InvoiceServiceTest {
@@ -52,6 +55,20 @@ class InvoiceServiceTest {
         //then
         assertEquals(invoice, actual);
         verify(database, times(1)).getInvoiceById(invoice.getId());
+    }
+
+    @Test
+    void shouldReturnInvoiceInTimePeriod() {
+        //given
+        InvoiceService invoiceService = new InvoiceService(database);
+        when(database.getInvoices(LocalDate.MIN, LocalDate.MAX)).thenReturn(List.of(invoice));
+
+        //when
+        Collection<Invoice> actual = invoiceService.getInvoices(LocalDate.MIN, LocalDate.MAX);
+
+        //then
+        assertEquals(List.of(invoice), actual);
+        verify(database, times(1)).getInvoices(LocalDate.MIN, LocalDate.MAX);
     }
 
     @Test

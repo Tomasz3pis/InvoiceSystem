@@ -6,12 +6,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.provider.Arguments;
 import pl.futurecollars.invoice.TestInvoiceProvider;
 import pl.futurecollars.invoice.model.Invoice;
 import pl.futurecollars.invoice.model.InvoiceNotFoundException;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 class InMemoryDatabaseTest {
 
@@ -129,5 +132,42 @@ class InMemoryDatabaseTest {
         //then
         assertEquals(actual.size(), 2);
         assertIterableEquals(actual, List.of(baseInvoice, invoiceWith5Entries));
+    }
+
+    @Test
+    void shouldReturnInvoicesInTimePeriod() {
+        //before
+        InMemoryDatabase inMemoryDatabase = new InMemoryDatabase();
+        TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
+        Invoice firstInvoice = testInvoiceProvider.getInvoiceWith5Entries();
+        Invoice secondInvoice = testInvoiceProvider.getBaseInvoice();
+        inMemoryDatabase.saveInvoice(firstInvoice);
+        inMemoryDatabase.saveInvoice(secondInvoice);
+
+        //when
+        Collection<Invoice> firstCase = inMemoryDatabase.getInvoices(null, null);
+        Collection<Invoice> secondCase = inMemoryDatabase.getInvoices(LocalDate.of(2015, 1, 1), null);
+        Collection<Invoice> thirdCase = inMemoryDatabase.getInvoices(null, LocalDate.of(2015, 1, 1));
+        Collection<Invoice> fourthCase = inMemoryDatabase.getInvoices(LocalDate.of(2015, 1, 1), LocalDate.of(2016, 1, 1));
+
+        //then
+        assertEquals(List.of(firstInvoice, secondInvoice), firstCase);
+        assertEquals(List.of(secondInvoice), secondCase);
+        assertEquals(List.of(firstInvoice), thirdCase);
+        assertEquals(List.of(), fourthCase);
+    }
+
+    private static Stream<Arguments> invoiceProvider() {
+
+        TestInvoiceProvider testInvoiceProvider = new TestInvoiceProvider();
+        Invoice firstInvoice = testInvoiceProvider.getInvoiceWith5Entries();
+        Invoice thirdInvoice = testInvoiceProvider.getBaseInvoice();
+        Invoice secondInvoice = testInvoiceProvider.getSameAsBaseInvoice();
+
+        return Stream.of(
+                Arguments.of(firstInvoice, secondInvoice),
+                Arguments.of(secondInvoice, thirdInvoice),
+                Arguments.of(firstInvoice, thirdInvoice)
+        );
     }
 }
