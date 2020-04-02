@@ -12,7 +12,7 @@ public class InvoiceProvider {
     private CompanyProvider buyer;
     private CompanyProvider seller;
 
-    public InvoiceProvider() {
+    private InvoiceProvider() {
     }
 
     public Integer getId() {
