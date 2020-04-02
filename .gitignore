@@ -1,7 +1,6 @@
 ##############################
 ## Java
 ##############################
-Main
 HELP.md
 README.md
 invoice.iml
@@ -16,7 +15,6 @@ out/
 .idea_modules/
 .idea/compiler.xml
 .idea/workspace.xml
-invoice.iml
 *.iml
 *.ipr
 *.iws

@@ -1,33 +1,33 @@
 package pl.futurecollars.invoice.db;
 
-import pl.futurecollars.invoice.model.Invoice;
+import pl.futurecollars.invoice.model.InvoiceProvider;
 
 import java.util.HashMap;
 
 public class InMemoryDataBase implements Database {
 
-    private HashMap<Integer, Invoice> invoices = new HashMap<>();
+    private HashMap<Integer, InvoiceProvider> invoices = new HashMap<>();
     private int counter = 0;
 
     @Override
-    public int saveInvoice(Invoice invoice) {
+    public int saveInvoice(InvoiceProvider invoice) {
         invoice.setId(counter);
         invoices.put(counter, invoice);
         return counter++;
     }
 
     @Override
-    public HashMap<Integer, Invoice> getInvoices() {
+    public HashMap<Integer, InvoiceProvider> getInvoices() {
         return invoices;
     }
 
     @Override
-    public Invoice getInvoiceById(Integer id) {
+    public InvoiceProvider getInvoiceById(Integer id) {
         return invoices.get(id);
     }
 
     @Override
-    public void updateInvoice(Invoice invoice, Integer id) {
+    public void updateInvoice(InvoiceProvider invoice, Integer id) {
         invoice = invoices.get(id);
         invoice.setId(counter);
         counter++;
