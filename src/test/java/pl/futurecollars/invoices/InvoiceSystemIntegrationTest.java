@@ -74,7 +74,6 @@ class InvoiceSystemIntegrationTest {
 
         // When
         invoiceService.deleteInvoice(fifthInvoice.getId());
-        System.out.println(database.getInvoices());
 
         // Then
         assertThat(invoiceService.getInvoices().size(), is(expectedInvoiceCount));

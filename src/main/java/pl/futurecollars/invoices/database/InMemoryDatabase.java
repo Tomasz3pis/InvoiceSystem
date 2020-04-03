@@ -39,9 +39,13 @@ public class InMemoryDatabase implements Database {
         }
         if (startDate == null) {
             startDate = LocalDate.MIN;
-        }
-        if (endDate == null) {
+            endDate = endDate.plusDays(1);
+        } else if (endDate == null) {
+            startDate = startDate.minusDays(1);
             endDate = LocalDate.MAX;
+        } else {
+            startDate = startDate.minusDays(1);
+            endDate = endDate.plusDays(1);
         }
         LocalDate finalStartDate = startDate;
         LocalDate finalEndDate = endDate;
