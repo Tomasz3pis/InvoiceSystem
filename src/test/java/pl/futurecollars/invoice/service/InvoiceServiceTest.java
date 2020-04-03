@@ -58,7 +58,7 @@ class InvoiceServiceTest {
     }
 
     @Test
-    void shouldReturnInvoiceInTimePeriod() {
+    void shouldReturnInvoicesInTimePeriod() {
         //given
         InvoiceService invoiceService = new InvoiceService(database);
         when(database.getInvoices(LocalDate.MIN, LocalDate.MAX)).thenReturn(List.of(invoice));

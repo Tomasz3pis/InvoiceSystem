@@ -18,13 +18,13 @@ class InvoiceEntryTest {
     @Test
     void shouldCompareTwoDifferentHashCodes() {
         //given
-        InvoiceEntry entry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0, 1);
+        InvoiceEntry firstEntry = new InvoiceEntry("", new BigDecimal(0), Vat.VAT_0, 1);
 
         //when
-        InvoiceEntry entry2 = new InvoiceEntry("", new BigDecimal(8), Vat.VAT_0, 1);
+        InvoiceEntry secondEntry = new InvoiceEntry("", new BigDecimal(8), Vat.VAT_0, 1);
 
         //then
-        assertNotEquals(entry.hashCode(), entry2.hashCode());
+        assertNotEquals(firstEntry.hashCode(), secondEntry.hashCode());
     }
 
     @Test
@@ -63,14 +63,14 @@ class InvoiceEntryTest {
     }
 
     private static Stream<Arguments> dataProvider() {
-        InvoiceEntry entry1 = new InvoiceEntry("position", new BigDecimal(235), Vat.VAT_23, 1);
-        InvoiceEntry entry2 = new InvoiceEntry("tests", new BigDecimal(88), Vat.VAT_8, 1);
-        InvoiceEntry entry3 = new InvoiceEntry("tests", new BigDecimal(88), Vat.VAT_8, 1);
+        InvoiceEntry firstEntry = new InvoiceEntry("position", new BigDecimal(235), Vat.VAT_23, 1);
+        InvoiceEntry secondEntry = new InvoiceEntry("tests", new BigDecimal(88), Vat.VAT_8, 1);
+        InvoiceEntry sameAsSecondEntry = new InvoiceEntry("tests", new BigDecimal(88), Vat.VAT_8, 1);
 
         return Stream.of(
-                Arguments.of(entry1, entry2, false),
-                Arguments.of(entry2, entry3, true),
-                Arguments.of(entry1, null, false)
+                Arguments.of(firstEntry, secondEntry, false),
+                Arguments.of(secondEntry, sameAsSecondEntry, true),
+                Arguments.of(firstEntry, null, false)
         );
     }
 }

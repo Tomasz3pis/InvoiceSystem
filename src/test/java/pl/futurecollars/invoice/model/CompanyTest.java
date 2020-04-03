@@ -62,14 +62,14 @@ class CompanyTest {
     }
 
     private static Stream<Arguments> dataProvider() {
-        Company company1 = new Company(12333211L, "Here", "PC");
-        Company company2 = new Company(321313L, "There", "LnX");
-        Company company3 = new Company(321313L, "There", "LnX");
+        Company firstCompany = new Company(12333211L, "Here", "PC");
+        Company secondCompany = new Company(321313L, "There", "LnX");
+        Company sameAsSecondCompany = new Company(321313L, "There", "LnX");
 
         return Stream.of(
-                Arguments.of(company1, company2, false),
-                Arguments.of(company2, company3, true),
-                Arguments.of(company1, null, false)
+                Arguments.of(firstCompany, secondCompany, false),
+                Arguments.of(secondCompany, sameAsSecondCompany, true),
+                Arguments.of(firstCompany, null, false)
         );
     }
 }

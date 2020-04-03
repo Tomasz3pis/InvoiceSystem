@@ -61,7 +61,7 @@ class InvoiceTest {
     }
 
     @Test
-    void shouldCheckIfToStringIsNotEmptyOrNull() {
+    void shouldCheckIfToStringIsWorking() {
         //given
 
         //when
