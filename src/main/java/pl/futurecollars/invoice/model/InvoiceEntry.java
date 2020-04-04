@@ -6,7 +6,7 @@ import java.util.Objects;
 public class InvoiceEntry {
 
     private String description;
-    private Integer quantity;
+    private int quantity;
     private BigDecimal pricePerUnit;
     private Vat vat;
 
@@ -25,7 +25,7 @@ public class InvoiceEntry {
         return quantity;
     }
 
-    private void setQuantity(Integer quantity) {
+    private void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -84,7 +84,7 @@ public class InvoiceEntry {
             return this;
         }
 
-        InvoiceEntryBuilder withQuantity(Integer quantity) {
+        InvoiceEntryBuilder withQuantity(int quantity) {
             this.invoiceEntry.setQuantity(quantity);
             return this;
         }

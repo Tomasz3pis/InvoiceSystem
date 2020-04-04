@@ -9,8 +9,8 @@ public class InvoiceProvider {
     private long id;
     private LocalDate issueDate;
     private List<InvoiceEntry> entries;
-    private CompanyProvider buyer;
-    private CompanyProvider seller;
+    private Company buyer;
+    private Company seller;
 
     private InvoiceProvider() {
     }
@@ -39,19 +39,19 @@ public class InvoiceProvider {
         this.entries = entries;
     }
 
-    public CompanyProvider getBuyer() {
+    public Company getBuyer() {
         return buyer;
     }
 
-    private void setBuyer(CompanyProvider buyer) {
+    private void setBuyer(Company buyer) {
         this.buyer = buyer;
     }
 
-    public CompanyProvider getSeller() {
+    public Company getSeller() {
         return seller;
     }
 
-    private void setSeller(CompanyProvider seller) {
+    private void setSeller(Company seller) {
         this.seller = seller;
     }
 
@@ -106,12 +106,12 @@ public class InvoiceProvider {
             return this;
         }
 
-        InvoiceBuilder withBuyer(CompanyProvider buyer) {
+        InvoiceBuilder withBuyer(Company buyer) {
             this.invoice.setBuyer(buyer);
             return this;
         }
 
-        InvoiceBuilder withSeller(CompanyProvider seller) {
+        InvoiceBuilder withSeller(Company seller) {
             this.invoice.setSeller(seller);
             return this;
         }

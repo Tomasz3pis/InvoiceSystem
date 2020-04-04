@@ -1,10 +1,10 @@
 package pl.futurecollars.invoice.db;
 
-import pl.futurecollars.invoice.model.InvoiceNotfoundExceptions;
 import pl.futurecollars.invoice.model.InvoiceProvider;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class InMemoryDataBase implements Database {
@@ -14,10 +14,10 @@ public class InMemoryDataBase implements Database {
 
 
     @Override
-    public long saveInvoice(InvoiceProvider invoice) {
+    public void saveInvoice(InvoiceProvider invoice) {
         invoice.setId(counter.get());
         invoices.put(counter.get(), invoice);
-        return counter.getAndIncrement();
+        counter.getAndIncrement();
     }
 
     @Override
@@ -26,12 +26,14 @@ public class InMemoryDataBase implements Database {
     }
 
     @Override
-    public InvoiceProvider getInvoiceById(long id) {
-         return invoices.get(id);
+    public InvoiceProvider getInvoiceById(long id) throws NoSuchFieldException {
+        Optional.ofNullable(invoices.get(id)).orElseThrow(NoSuchFieldException::new);
+        return invoices.get(id);
     }
 
     @Override
-    public void updateInvoice(InvoiceProvider invoice, long id) {
+    public void updateInvoice(InvoiceProvider invoice, long id) throws NoSuchFieldException {
+        Optional.ofNullable(invoices.get(id)).orElseThrow(NoSuchFieldException::new);
         invoice = invoices.get(id);
         invoice.setId(counter.getAndIncrement());
     }

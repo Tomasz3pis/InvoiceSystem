@@ -2,7 +2,7 @@ package pl.futurecollars.invoice.model;
 
 import java.util.Objects;
 
-public class CompanyProvider {
+public class Company {
 
     private String name;
     private String taxIdentificationNumber;
@@ -10,7 +10,7 @@ public class CompanyProvider {
     private String postCode;
     private String town;
 
-    private CompanyProvider() {
+    private Company() {
     }
 
     public String getName() {
@@ -61,7 +61,7 @@ public class CompanyProvider {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CompanyProvider companyProvider = (CompanyProvider) o;
+        Company companyProvider = (Company) o;
         return Objects.equals(name, companyProvider.name) &&
                 Objects.equals(taxIdentificationNumber, companyProvider.taxIdentificationNumber) &&
                 Objects.equals(streetName, companyProvider.streetName) &&
@@ -87,7 +87,7 @@ public class CompanyProvider {
 
     public static class CompanyBuilder {
 
-        private CompanyProvider companyProvider = new CompanyProvider();
+        private Company companyProvider = new Company();
 
         CompanyBuilder withName(String name) {
             this.companyProvider.setName(name);
@@ -114,7 +114,7 @@ public class CompanyProvider {
             return this;
         }
 
-        CompanyProvider build() {
+        Company build() {
             return companyProvider;
         }
 

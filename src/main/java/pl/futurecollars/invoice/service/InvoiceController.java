@@ -5,8 +5,8 @@ import pl.futurecollars.invoice.db.InMemoryDataBase;
 import pl.futurecollars.invoice.model.InvoiceProvider;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class InvoiceController implements Database {
 
@@ -17,8 +17,8 @@ public class InvoiceController implements Database {
     }
 
     @Override
-    public long saveInvoice(InvoiceProvider invoice) {
-        return database.saveInvoice(invoice);
+    public void saveInvoice(InvoiceProvider invoice) {
+        database.saveInvoice(invoice);
     }
 
     @Override
@@ -27,13 +27,15 @@ public class InvoiceController implements Database {
     }
 
     @Override
-    public InvoiceProvider getInvoiceById(long id) {
+    public InvoiceProvider getInvoiceById(long id) throws NoSuchFieldException {
+        Optional.ofNullable(database.getInvoiceById(id)).orElseThrow(NoSuchFieldError::new);
         return database.getInvoiceById(id);
     }
 
     @Override
-    public void updateInvoice(InvoiceProvider invoice, long updatedIndex) {
-        database.updateInvoice(invoice, updatedIndex);
+    public void updateInvoice(InvoiceProvider invoice, long id) throws NoSuchFieldException {
+        Optional.ofNullable(database.getInvoiceById(id)).orElseThrow(NoSuchFieldError::new);
+        invoice = database.getInvoiceById(id);
     }
 
     @Override
