@@ -17,7 +17,7 @@ public class InvoiceEntry {
         return description;
     }
 
-    public void setDescription(String description) {
+    private void setDescription(String description) {
         this.description = description;
     }
 
@@ -25,7 +25,7 @@ public class InvoiceEntry {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    private void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -33,7 +33,7 @@ public class InvoiceEntry {
         return pricePerUnit;
     }
 
-    public void setPricePerUnit(BigDecimal pricePerUnit) {
+    private void setPricePerUnit(BigDecimal pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
     }
 
@@ -41,7 +41,7 @@ public class InvoiceEntry {
         return vat;
     }
 
-    public void setVat(Vat vat) {
+    private void setVat(Vat vat) {
         this.vat = vat;
     }
 

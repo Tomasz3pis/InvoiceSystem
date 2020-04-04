@@ -1,40 +1,43 @@
 package pl.futurecollars.invoice.db;
 
+import pl.futurecollars.invoice.model.InvoiceNotfoundExceptions;
 import pl.futurecollars.invoice.model.InvoiceProvider;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class InMemoryDataBase implements Database {
+    private Database database;
+    private HashMap<Long, InvoiceProvider> invoices = new HashMap<>();
+    private AtomicLong counter;
 
-    private HashMap<Integer, InvoiceProvider> invoices = new HashMap<>();
-    private int counter = 0;
 
     @Override
-    public int saveInvoice(InvoiceProvider invoice) {
-        invoice.setId(counter);
-        invoices.put(counter, invoice);
-        return counter++;
+    public long saveInvoice(InvoiceProvider invoice) {
+        invoice.setId(counter.get());
+        invoices.put(counter.get(), invoice);
+        return counter.getAndIncrement();
     }
 
     @Override
-    public HashMap<Integer, InvoiceProvider> getInvoices() {
-        return invoices;
+    public List<InvoiceProvider> getInvoices() {
+        return new ArrayList(invoices.values());
     }
 
     @Override
-    public InvoiceProvider getInvoiceById(Integer id) {
-        return invoices.get(id);
+    public InvoiceProvider getInvoiceById(long id) {
+         return invoices.get(id);
     }
 
     @Override
-    public void updateInvoice(InvoiceProvider invoice, Integer id) {
+    public void updateInvoice(InvoiceProvider invoice, long id) {
         invoice = invoices.get(id);
-        invoice.setId(counter);
-        counter++;
+        invoice.setId(counter.getAndIncrement());
     }
 
     @Override
-    public void deleteInvoice(Integer id) {
+    public void deleteInvoice(long id) {
         invoices.remove(id);
     }
 

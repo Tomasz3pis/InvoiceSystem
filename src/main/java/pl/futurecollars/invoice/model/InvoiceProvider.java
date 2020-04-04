@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class InvoiceProvider {
 
-    private Integer id;
+    private long id;
     private LocalDate issueDate;
     private List<InvoiceEntry> entries;
     private CompanyProvider buyer;
@@ -15,11 +15,11 @@ public class InvoiceProvider {
     private InvoiceProvider() {
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -27,7 +27,7 @@ public class InvoiceProvider {
         return issueDate;
     }
 
-    public void setIssueDate(LocalDate issueDate) {
+    private void setIssueDate(LocalDate issueDate) {
         this.issueDate = issueDate;
     }
 
@@ -35,7 +35,7 @@ public class InvoiceProvider {
         return entries;
     }
 
-    public void setEntries(List<InvoiceEntry> entries) {
+    private void setEntries(List<InvoiceEntry> entries) {
         this.entries = entries;
     }
 
@@ -43,7 +43,7 @@ public class InvoiceProvider {
         return buyer;
     }
 
-    public void setBuyer(CompanyProvider buyer) {
+    private void setBuyer(CompanyProvider buyer) {
         this.buyer = buyer;
     }
 
@@ -51,7 +51,7 @@ public class InvoiceProvider {
         return seller;
     }
 
-    public void setSeller(CompanyProvider seller) {
+    private void setSeller(CompanyProvider seller) {
         this.seller = seller;
     }
 
@@ -87,10 +87,11 @@ public class InvoiceProvider {
                 '}';
     }
 
+
     public static class InvoiceBuilder {
         private InvoiceProvider invoice = new InvoiceProvider();
 
-        InvoiceBuilder withId(Integer id) {
+        InvoiceBuilder withId(long id) {
             this.invoice.setId(id);
             return this;
         }

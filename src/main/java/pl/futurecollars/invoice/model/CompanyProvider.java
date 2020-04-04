@@ -17,7 +17,7 @@ public class CompanyProvider {
         return name;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
@@ -25,7 +25,7 @@ public class CompanyProvider {
         return taxIdentificationNumber;
     }
 
-    public void setTaxIdentificationNumber(String taxIdentificationNumber) {
+    private void setTaxIdentificationNumber(String taxIdentificationNumber) {
         this.taxIdentificationNumber = taxIdentificationNumber;
     }
 
@@ -41,7 +41,7 @@ public class CompanyProvider {
         return postCode;
     }
 
-    public void setPostCode(String postCode) {
+    private void setPostCode(String postCode) {
         this.postCode = postCode;
     }
 
@@ -49,7 +49,7 @@ public class CompanyProvider {
         return town;
     }
 
-    public void setTown(String town) {
+    private void setTown(String town) {
         this.town = town;
     }
 
@@ -87,35 +87,35 @@ public class CompanyProvider {
 
     public static class CompanyBuilder {
 
-        private CompanyProvider CompanyProvider = new CompanyProvider();
+        private CompanyProvider companyProvider = new CompanyProvider();
 
         CompanyBuilder withName(String name) {
-            this.CompanyProvider.setName(name);
+            this.companyProvider.setName(name);
             return this;
         }
 
         CompanyBuilder withTaxIdentificationNumber(String taxIdentificationNumber) {
-            this.CompanyProvider.setTaxIdentificationNumber(taxIdentificationNumber);
+            this.companyProvider.setTaxIdentificationNumber(taxIdentificationNumber);
             return this;
         }
 
         CompanyBuilder withStreetName(String streetName) {
-            this.CompanyProvider.setName(streetName);
+            this.companyProvider.setName(streetName);
             return this;
         }
 
         CompanyBuilder withPostCode(String postCode) {
-            this.CompanyProvider.setPostCode(postCode);
+            this.companyProvider.setPostCode(postCode);
             return this;
         }
 
         CompanyBuilder withTown(String town) {
-            this.CompanyProvider.setTown(town);
+            this.companyProvider.setTown(town);
             return this;
         }
 
         CompanyProvider build() {
-            return CompanyProvider;
+            return companyProvider;
         }
 
     }

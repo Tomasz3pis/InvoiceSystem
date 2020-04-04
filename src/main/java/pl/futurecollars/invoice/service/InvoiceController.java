@@ -3,38 +3,41 @@ package pl.futurecollars.invoice.service;
 import pl.futurecollars.invoice.db.Database;
 import pl.futurecollars.invoice.db.InMemoryDataBase;
 import pl.futurecollars.invoice.model.InvoiceProvider;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InvoiceController implements Database {
 
-    private InMemoryDataBase inMemoryDataBase;
+    private Database database;
 
     public InvoiceController(InMemoryDataBase inMemoryDataBase) {
-        this.inMemoryDataBase = inMemoryDataBase;
+        this.database = inMemoryDataBase;
     }
 
     @Override
-    public int saveInvoice(InvoiceProvider invoice) {
-        return inMemoryDataBase.saveInvoice(invoice);
+    public long saveInvoice(InvoiceProvider invoice) {
+        return database.saveInvoice(invoice);
     }
 
     @Override
-    public HashMap<Integer, InvoiceProvider> getInvoices() {
-        return inMemoryDataBase.getInvoices();
+    public List<InvoiceProvider> getInvoices() {
+        return new ArrayList(database.getInvoices());
     }
 
     @Override
-    public InvoiceProvider getInvoiceById(Integer id) {
-        return inMemoryDataBase.getInvoiceById(id);
+    public InvoiceProvider getInvoiceById(long id) {
+        return database.getInvoiceById(id);
     }
 
     @Override
-    public void updateInvoice(InvoiceProvider invoice, Integer updatedIndex) {
-        inMemoryDataBase.updateInvoice(invoice, updatedIndex);
+    public void updateInvoice(InvoiceProvider invoice, long updatedIndex) {
+        database.updateInvoice(invoice, updatedIndex);
     }
 
     @Override
-    public void deleteInvoice(Integer id) {
-        inMemoryDataBase.deleteInvoice(id);
+    public void deleteInvoice(long id) {
+        database.deleteInvoice(id);
     }
 }
