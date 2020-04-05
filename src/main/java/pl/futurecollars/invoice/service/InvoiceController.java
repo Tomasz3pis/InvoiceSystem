@@ -2,11 +2,10 @@ package pl.futurecollars.invoice.service;
 
 import pl.futurecollars.invoice.db.Database;
 import pl.futurecollars.invoice.db.InMemoryDataBase;
-import pl.futurecollars.invoice.model.InvoiceProvider;
-
+import pl.futurecollars.invoice.db.NoInvoiceFoundException;
+import pl.futurecollars.invoice.model.Invoice;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class InvoiceController implements Database {
 
@@ -17,29 +16,39 @@ public class InvoiceController implements Database {
     }
 
     @Override
-    public void saveInvoice(InvoiceProvider invoice) {
+    public void saveInvoice(Invoice invoice) {
         database.saveInvoice(invoice);
     }
 
     @Override
-    public List<InvoiceProvider> getInvoices() {
+    public List<Invoice> getInvoices() {
         return new ArrayList(database.getInvoices());
     }
 
     @Override
-    public InvoiceProvider getInvoiceById(long id) throws NoSuchFieldException {
-        Optional.ofNullable(database.getInvoiceById(id)).orElseThrow(NoSuchFieldError::new);
-        return database.getInvoiceById(id);
+    public Invoice getInvoiceById(long id) throws NoInvoiceFoundException {
+        if (database.getInvoiceById(id) == null) {
+            throw new NoInvoiceFoundException("Invoice not found in database.");
+        } else {
+            return database.getInvoiceById(id);
+        }
     }
 
     @Override
-    public void updateInvoice(InvoiceProvider invoice, long id) throws NoSuchFieldException {
-        Optional.ofNullable(database.getInvoiceById(id)).orElseThrow(NoSuchFieldError::new);
-        invoice = database.getInvoiceById(id);
+    public void updateInvoice(Invoice invoice, long id) throws NoInvoiceFoundException {
+        if (database.getInvoiceById(id) == null) {
+            throw new NoInvoiceFoundException("Invoice not found in database.");
+        } else {
+            invoice = database.getInvoiceById(id);
+        }
     }
 
     @Override
-    public void deleteInvoice(long id) {
-        database.deleteInvoice(id);
+    public void deleteInvoice(long id) throws NoInvoiceFoundException {
+        if (database.getInvoiceById(id) == null) {
+            throw new NoInvoiceFoundException("Invoice not found in database.");
+        } else {
+            database.deleteInvoice(id);
+        }
     }
 }

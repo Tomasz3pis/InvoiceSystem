@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public class InvoiceProvider {
+public class Invoice {
 
     private long id;
     private LocalDate issueDate;
@@ -12,7 +12,7 @@ public class InvoiceProvider {
     private Company buyer;
     private Company seller;
 
-    private InvoiceProvider() {
+    private Invoice() {
     }
 
     public long getId() {
@@ -63,7 +63,7 @@ public class InvoiceProvider {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InvoiceProvider invoice = (InvoiceProvider) o;
+        Invoice invoice = (Invoice) o;
         return Objects.equals(id, invoice.id) &&
                 Objects.equals(issueDate, invoice.issueDate) &&
                 Objects.equals(entries, invoice.entries) &&
@@ -87,9 +87,8 @@ public class InvoiceProvider {
                 '}';
     }
 
-
     public static class InvoiceBuilder {
-        private InvoiceProvider invoice = new InvoiceProvider();
+        private Invoice invoice = new Invoice();
 
         InvoiceBuilder withId(long id) {
             this.invoice.setId(id);
@@ -116,7 +115,7 @@ public class InvoiceProvider {
             return this;
         }
 
-        InvoiceProvider build() {
+        Invoice build() {
             return invoice;
         }
 
