@@ -11,6 +11,10 @@ import java.util.List;
 public class InMemoryInvoiceDatabase implements Database<Invoice, Long> {
     private List<Invoice> invoices = new ArrayList<>();
 
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
     private final IdGenerator idGenerator;
 
     public InMemoryInvoiceDatabase(IdGenerator idGenerator) {
@@ -45,12 +49,14 @@ public class InMemoryInvoiceDatabase implements Database<Invoice, Long> {
     @Override
     public Invoice update(Invoice updatedInvoice) {
         int updateIndex = invoices.indexOf(getById(updatedInvoice.getId()));
-        return invoices.set(updateIndex, updatedInvoice);
+        invoices.set(updateIndex, updatedInvoice);
+        return updatedInvoice;
     }
 
     @Override
     public void delete(Long id) {
-        invoices.removeIf(invoice -> invoice.getId().equals(id));
-        throw new IllegalArgumentException("Provide id" + id + "is not found");
+        if(!invoices.removeIf(invoice -> invoice.getId().equals(id))) {
+            throw new IllegalArgumentException("Provide id" + id + "is not found");
+        }
     }
 }

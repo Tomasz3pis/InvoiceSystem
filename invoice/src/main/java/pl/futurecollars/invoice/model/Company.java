@@ -15,6 +15,12 @@ public class Company {
         this.taxIdentificationNumber = taxIdentificationNumber;
     }
 
+    public Company(String name, String taxIdentificationNumber, Long id) {
+        this.id = id;
+        this.name = name;
+        this.taxIdentificationNumber = taxIdentificationNumber;
+    }
+
     public Long getId() {
         return id;
     }

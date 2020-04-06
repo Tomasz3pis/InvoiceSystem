@@ -43,7 +43,7 @@ public class InvoiceController {
         return invoiceService.saveInvoice(invoiceDTO);
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteInvoice(@PathVariable long id) {
         invoiceService.deleteInvoice(id);
