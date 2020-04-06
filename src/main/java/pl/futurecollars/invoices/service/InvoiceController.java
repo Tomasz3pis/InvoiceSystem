@@ -34,13 +34,14 @@ public class InvoiceController {
 
     @Autowired
     private Database database;
+
     @Autowired
     private InvoiceService invoiceService;
 
     @GetMapping
-    public List<Invoice> getInvoices(@RequestParam(name = "start", required = false) @DateTimeFormat(iso = ISO.DATE)
+    public List<Invoice> getInvoices(@RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE)
                                              LocalDate startDate,
-                                     @RequestParam(name = "end", required = false) @DateTimeFormat(iso = ISO.DATE)
+                                     @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE)
                                              LocalDate endDate) {
         return invoiceService.getInvoices(startDate, endDate);
     }

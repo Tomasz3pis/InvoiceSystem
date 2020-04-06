@@ -12,9 +12,12 @@ public class InvoiceEntry {
 
     @NotBlank
     private String itemName;
+
     private int quantity;
+
     @NotNull
     private BigDecimal netPrice;
+
     @NotNull
     private Vat vat;
 

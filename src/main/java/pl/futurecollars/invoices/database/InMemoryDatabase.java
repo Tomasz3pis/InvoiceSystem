@@ -21,7 +21,7 @@ public class InMemoryDatabase implements Database {
 
     @Override
     public long saveInvoice(Invoice invoice) {
-        long id = generateId();
+        long id = idCounter.incrementAndGet();
         invoice.setId(id);
         invoices.put(id, invoice);
         return id;
@@ -50,8 +50,8 @@ public class InMemoryDatabase implements Database {
         LocalDate finalStartDate = startDate;
         LocalDate finalEndDate = endDate;
         return getInvoices().stream()
-                .filter(invoice -> invoice.getIssueDate().isAfter(finalStartDate)
-                        && invoice.getIssueDate().isBefore(finalEndDate))
+                .filter(invoice -> invoice.getIssueDate().isAfter(finalStartDate))
+                .filter(invoice -> invoice.getIssueDate().isBefore(finalEndDate))
                 .collect(Collectors.toList());
     }
 
@@ -65,9 +65,7 @@ public class InMemoryDatabase implements Database {
         updatedInvoice.setId(id);
         Invoice originalInvoice = invoices.replace(id, updatedInvoice);
         if (originalInvoice == null) {
-            throw new InvoiceNotFoundException(
-                    "Provided updatedInvoice does not exist in database. "
-                            + "Invoice id: " + id + " not found.");
+            throw new InvoiceNotFoundException(id);
         }
     }
 
@@ -75,14 +73,7 @@ public class InMemoryDatabase implements Database {
     public void deleteInvoice(long id) {
         Invoice deletedInvoice = invoices.remove(id);
         if (deletedInvoice == null) {
-            throw new InvoiceNotFoundException(
-                    "Provided id: "
-                            + id
-                            + " not found in Database.");
+            throw new InvoiceNotFoundException(id);
         }
-    }
-
-    private long generateId() {
-        return idCounter.incrementAndGet();
     }
 }

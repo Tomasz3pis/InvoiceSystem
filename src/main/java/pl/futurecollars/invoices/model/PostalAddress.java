@@ -4,19 +4,21 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.regex.Pattern;
 import javax.validation.constraints.NotBlank;
 
 public class PostalAddress {
 
-    private static final Pattern POSTAL_CODE_PATTERN = Pattern.compile("(\\d){2}-[\\d]{3}");
     @NotBlank
     private String streetName;
+
     @NotBlank
     private String streetNumber;
+
     private String apartmentNumber;
+
     @NotBlank
     private String postalCode;
+
     @NotBlank
     private String city;
 
@@ -26,21 +28,11 @@ public class PostalAddress {
             String apartmentNumber,
             String postalCode,
             String city) {
-        verifyPostalCode(postalCode);
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.apartmentNumber = apartmentNumber;
         this.postalCode = postalCode;
         this.city = city;
-    }
-
-    private void verifyPostalCode(String codeToCheck) {
-        if (!POSTAL_CODE_PATTERN.matcher(codeToCheck).matches()) {
-            throw new IllegalArgumentException(
-                    "Provided postalCode: "
-                            + codeToCheck
-                            + " does not match the pattern '00-000'");
-        }
     }
 
     public String getStreetName() {
@@ -72,7 +64,6 @@ public class PostalAddress {
     }
 
     public void setPostalCode(String postalCode) {
-        verifyPostalCode(postalCode);
         this.postalCode = postalCode;
     }
 

@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import pl.futurecollars.invoices.exceptions.InvoiceNotCompleteException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,25 +14,22 @@ import javax.validation.constraints.NotNull;
 public final class Invoice {
 
     private long id;
+
     @NotNull
     private LocalDate issueDate;
+
     @NotNull
     private LocalDate saleDate;
+
     @Valid
     private Company seller;
+
     @Valid
     private Company buyer;
+
     private List<@Valid InvoiceEntry> entries;
 
-    public Invoice() {
-    }
-
-    private Invoice(InvoiceBuilder invoiceBuilder) {
-        this.issueDate = invoiceBuilder.builderIssueDate;
-        this.saleDate = invoiceBuilder.builderSaleDate;
-        this.seller = invoiceBuilder.builderSeller;
-        this.buyer = invoiceBuilder.builderBuyer;
-        this.entries = invoiceBuilder.builderEntries;
+    private Invoice() {
     }
 
     public long getId() {
@@ -83,39 +81,58 @@ public final class Invoice {
     }
 
     public static class InvoiceBuilder {
-        private LocalDate builderIssueDate;
-        private LocalDate builderSaleDate;
-        private Company builderSeller;
-        private Company builderBuyer;
-        private List<InvoiceEntry> builderEntries;
+        private Invoice builderInvoice = new Invoice();
 
         public InvoiceBuilder setIssueDate(LocalDate issueDate) {
-            this.builderIssueDate = issueDate;
+            this.builderInvoice.setIssueDate(issueDate);
             return this;
         }
 
         public InvoiceBuilder setSaleDate(LocalDate saleDate) {
-            this.builderSaleDate = saleDate;
+            this.builderInvoice.setSaleDate(saleDate);
             return this;
         }
 
         public InvoiceBuilder setSeller(Company seller) {
-            this.builderSeller = seller;
+            this.builderInvoice.setSeller(seller);
             return this;
         }
 
         public InvoiceBuilder setBuyer(Company buyer) {
-            this.builderBuyer = buyer;
+            this.builderInvoice.setBuyer(buyer);
             return this;
         }
 
         public InvoiceBuilder setEntries(List<InvoiceEntry> entries) {
-            this.builderEntries = entries;
+            this.builderInvoice.setEntries(entries);
             return this;
         }
 
         public Invoice build() {
-            return new Invoice(this);
+            validateInvoiceFields();
+            return builderInvoice;
+        }
+
+        private void validateInvoiceFields() {
+            StringBuilder missingFields = new StringBuilder();
+            if (this.builderInvoice.getIssueDate() == null) {
+                missingFields.append(" issueDate");
+            }
+            if (this.builderInvoice.getSaleDate() == null) {
+                missingFields.append(" saleDate");
+            }
+            if (this.builderInvoice.getSeller() == null) {
+                missingFields.append(" seller");
+            }
+            if (this.builderInvoice.getBuyer() == null) {
+                missingFields.append(" buyer");
+            }
+            if (this.builderInvoice.getEntries() == null) {
+                missingFields.append(" entries");
+            }
+            if (missingFields.length() != 0) {
+                throw new InvoiceNotCompleteException(missingFields.toString());
+            }
         }
     }
 

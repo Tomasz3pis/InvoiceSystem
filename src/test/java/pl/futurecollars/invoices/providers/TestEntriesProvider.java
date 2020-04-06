@@ -16,40 +16,34 @@ import java.util.List;
 
 public class TestEntriesProvider {
 
-    static List<InvoiceEntry> firstInvoiceEntries() {
+    static List<InvoiceEntry> invoiceEntriesCountOne() {
         List<InvoiceEntry> firstInvoiceEntries = new ArrayList<>();
-        firstInvoiceEntries.add(new InvoiceEntry("Papier XXL", 5, BigDecimal.valueOf(14.99), VAT_23));
+        firstInvoiceEntries.add(new InvoiceEntry("One and only product", 5, BigDecimal.valueOf(14.99), VAT_23));
         return firstInvoiceEntries;
     }
 
-    static List<InvoiceEntry> secondInvoiceEntries() {
+    static List<InvoiceEntry> invoiceEntriesCountThree() {
         List<InvoiceEntry> secondInvoiceEntries = new ArrayList<>();
-        secondInvoiceEntries.add(new InvoiceEntry("Igła 3\"", 20, BigDecimal.valueOf(0.49), VAT_23));
-        secondInvoiceEntries.add(new InvoiceEntry("Nici tapicerskie", 50, BigDecimal.valueOf(4.14), VAT_5));
-        secondInvoiceEntries.add(new InvoiceEntry("Skóra niedźwiedzia", 2, BigDecimal.valueOf(1349.0), VAT_0));
+        secondInvoiceEntries.add(new InvoiceEntry("first product", 20, BigDecimal.valueOf(0.49), VAT_23));
+        secondInvoiceEntries.add(new InvoiceEntry("second product", 50, BigDecimal.valueOf(4.14), VAT_5));
+        secondInvoiceEntries.add(new InvoiceEntry("third product", 2, BigDecimal.valueOf(1349.0), VAT_0));
         return secondInvoiceEntries;
     }
 
-    static List<InvoiceEntry> thirdInvoiceEntries() {
+    static List<InvoiceEntry> invoiceEntriesCountFour() {
         List<InvoiceEntry> thirdInvoiceEntries = new ArrayList<>();
-        thirdInvoiceEntries.add(new InvoiceEntry("1256_drewn_opal_kat3_1m3", 20, BigDecimal.valueOf(0.49), VAT_7));
-        thirdInvoiceEntries.add(new InvoiceEntry("999_smola_beczk_50l", 12, BigDecimal.valueOf(4.14), VAT_ZW));
-        thirdInvoiceEntries.add(new InvoiceEntry("10119_wod_swiecon_250ml", 50, BigDecimal.valueOf(4.14), VAT_ZW));
-        thirdInvoiceEntries.add(new InvoiceEntry("transport_max50km", 1, BigDecimal.valueOf(1349.0), VAT_8));
+        thirdInvoiceEntries.add(new InvoiceEntry("product 1.", 20, BigDecimal.valueOf(0.49), VAT_7));
+        thirdInvoiceEntries.add(new InvoiceEntry("product 2.", 12, BigDecimal.valueOf(4.14), VAT_ZW));
+        thirdInvoiceEntries.add(new InvoiceEntry("product 3.", 50, BigDecimal.valueOf(4.14), VAT_ZW));
+        thirdInvoiceEntries.add(new InvoiceEntry("product 4.", 1, BigDecimal.valueOf(1349.0), VAT_8));
         return thirdInvoiceEntries;
-    }
-
-    static List<InvoiceEntry> defaultInvoiceEntries() {
-        List<InvoiceEntry> defaultInvoiceEntries = new ArrayList<>();
-        defaultInvoiceEntries.add(new InvoiceEntry("", 1, BigDecimal.valueOf(0.01), VAT_0));
-        return defaultInvoiceEntries;
     }
 
     static List<InvoiceEntry> invoiceEntriesWithOffset(int offset, int numberOfEntries) {
         List<InvoiceEntry> invoiceEntries = new ArrayList<>();
         for (int i = 1; i <= numberOfEntries; i++) {
             invoiceEntries.add(new InvoiceEntry(
-                    "Produkt " + offset + "_" + i,
+                    "SomeProduct " + offset + "_" + i,
                     i,
                     BigDecimal.valueOf(i * 1.5),
                     getVat(i)));

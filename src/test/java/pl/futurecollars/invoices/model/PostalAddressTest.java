@@ -3,12 +3,10 @@ package pl.futurecollars.invoices.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
@@ -70,36 +68,6 @@ class PostalAddressTest {
         assertThat(postalAddress.getApartmentNumber(), is(apartmentNumber));
         assertThat(postalAddress.getPostalCode(), is(postalCode));
         assertThat(postalAddress.getCity(), is(city));
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "0",
-            "1",
-            "a",
-            "A",
-            "123-456",
-            "1-2345",
-            "12345",
-            "12-34",
-            "12-3",
-            "ab-cde",
-            "12–345",
-            "12.345",
-            "12=345",
-            "12,345"
-    })
-    void shouldThrowExceptionGivenWrongPostalCodeFormat(String postalCode) {
-        // Given
-
-        // When
-
-        // Then
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                new PostalAddress("", "", "", postalCode, ""));
-        assertThat(exception.getMessage(), is("Provided postalCode: "
-                + postalCode
-                + " does not match the pattern '00-000'"));
     }
 
     @ParameterizedTest

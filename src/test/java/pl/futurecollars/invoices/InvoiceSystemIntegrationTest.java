@@ -3,15 +3,15 @@ package pl.futurecollars.invoices;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoice;
+import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceOne;
+import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceThree;
+import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceTwo;
 
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.futurecollars.invoices.database.Database;
 import pl.futurecollars.invoices.model.Invoice;
 import pl.futurecollars.invoices.service.InvoiceService;
@@ -20,12 +20,12 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 class InvoiceSystemIntegrationTest {
 
     @Autowired
     private Database database;
+
     @Autowired
     private InvoiceService invoiceService;
 
@@ -83,7 +83,7 @@ class InvoiceSystemIntegrationTest {
 
     private static Stream<Arguments> invoiceSystemTestArguments() {
         return Stream.of(
-                Arguments.of(getInvoice(1), getInvoice(2), getInvoice(3), getInvoice(4, 4))
+                Arguments.of(getInvoiceOne(), getInvoiceTwo(), getInvoiceThree(), getInvoice(4, 4))
         );
     }
 }

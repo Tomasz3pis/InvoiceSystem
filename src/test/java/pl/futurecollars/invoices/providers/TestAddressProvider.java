@@ -4,84 +4,66 @@ import pl.futurecollars.invoices.model.PostalAddress;
 
 public class TestAddressProvider {
 
-    static PostalAddress firstSellerAddress() {
+    static PostalAddress addressRoseville() {
         return new PostalAddress(
-                "Sprzedajna",
+                "Integer Rd.",
                 "11",
                 "",
                 "11-111",
-                "Sprzedajnice");
+                "Roseville");
     }
 
-    static PostalAddress secondSellerAddress() {
+    static PostalAddress addressLatrobe() {
         return new PostalAddress(
-                "Al. Kupców Bławatnych",
+                "Viverra Avenue",
                 "101",
                 "12b",
                 "01-111",
-                "Nowa Mała Wieś");
+                "Latrobe");
     }
 
-    static PostalAddress thirdSellerAddress() {
+    static PostalAddress addressRhodeIsland() {
         return new PostalAddress(
-                "Wądołki Dolne",
+                "Nunc Road",
                 "1101",
                 "",
                 "10-100",
-                "Zasiedmiogórogrodzie");
+                "Rhode Island");
     }
 
-    static PostalAddress firstBuyerAddress() {
+    static PostalAddress addressWoodruff() {
         return new PostalAddress(
-                "Pokupna",
+                "Curabitur Rd.",
                 "99",
                 "9",
                 "99-999",
-                "Wola Kupczycka");
+                "Woodruff");
     }
 
-    static PostalAddress secondBuyerAddress() {
+    static PostalAddress addressIdahoFalls() {
         return new PostalAddress(
-                "Trakt Kupiecki",
+                "Lacinia Avenue",
                 "909",
                 "",
                 "09-999",
-                "Wojsławice");
+                "Idaho Falls");
     }
 
-    static PostalAddress thirdBuyerAddress() {
+    static PostalAddress addressFortDodge() {
         return new PostalAddress(
-                "Kardynała Armanda Jeana Richelieu",
+                "Aliquet St.",
                 "9",
                 "",
                 "90-900",
-                "Stosy Kościelne");
+                "Fort Dodge");
     }
 
-    static PostalAddress defaultAddress() {
+    static PostalAddress addressWithOffset(int offset) {
         return new PostalAddress(
-                "",
-                "",
-                "",
-                "00-000",
-                "");
-    }
-
-    static PostalAddress sellerAddressWithOffset(int offset) {
-        return new PostalAddress(
-                "Sprzedajna" + offset,
+                "SomeStreetName " + offset,
                 "10" + String.format("%02d", offset).substring(0, 2),
                 "" + String.format("%02d", offset).substring(0, 2),
                 "99-" + String.format("%03d", offset).substring(0, 3),
-                "Sprzedajnice" + offset);
-    }
-
-    static PostalAddress buyerAddressWithOffset(int offset) {
-        return new PostalAddress(
-                "Pokupna" + offset,
-                "90" + String.format("%02d", offset).substring(0, 2),
-                "9" + String.format("%02d", offset).substring(0, 2),
-                "09-" + String.format("%03d", offset).substring(0, 3),
-                "Wola Kupczycka " + offset);
+                "SomeCityName " + offset);
     }
 }

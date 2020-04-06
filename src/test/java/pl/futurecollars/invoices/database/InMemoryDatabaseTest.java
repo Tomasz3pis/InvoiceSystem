@@ -18,6 +18,8 @@ import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -70,37 +72,20 @@ class InMemoryDatabaseTest {
     @ParameterizedTest
     @MethodSource("getInvoicesLocalDateArguments")
     void shouldGetInvoicesInGivenDateRange(
-            LocalDate firstIssueDate,
-            LocalDate secondIssueDate,
-            LocalDate thirdIssueDate,
+            List<LocalDate> issueDates,
             LocalDate startDate,
             LocalDate endDate,
-            int expectedSize) {
+            int expectedSize,
+            LocalDate startDateToCompare,
+            LocalDate endDateToCompare) {
         // Given
         database.saveInvoice(invoice);
         database.saveInvoice(secondInvoice);
         database.saveInvoice(thirdInvoice);
 
-        when(invoice.getIssueDate()).thenReturn(firstIssueDate);
-        when(secondInvoice.getIssueDate()).thenReturn(secondIssueDate);
-        when(thirdInvoice.getIssueDate()).thenReturn(thirdIssueDate);
-
-        LocalDate startDateToCompare;
-        LocalDate endDateToCompare;
-
-        if (startDate == null && endDate == null) {
-            startDateToCompare = LocalDate.MIN;
-            endDateToCompare = LocalDate.MAX;
-        } else if (startDate == null) {
-            startDateToCompare = LocalDate.MIN;
-            endDateToCompare = endDate.plusDays(1);
-        } else if (endDate == null) {
-            startDateToCompare = startDate.minusDays(1);
-            endDateToCompare = LocalDate.MAX;
-        } else {
-            startDateToCompare = startDate.minusDays(1);
-            endDateToCompare = endDate.plusDays(1);
-        }
+        when(invoice.getIssueDate()).thenReturn(issueDates.get(0));
+        when(secondInvoice.getIssueDate()).thenReturn(issueDates.get(1));
+        when(thirdInvoice.getIssueDate()).thenReturn(issueDates.get(2));
 
         // When
         List<Invoice> invoices = database.getInvoices(startDate, endDate);
@@ -136,7 +121,7 @@ class InMemoryDatabaseTest {
         // Then
         Exception exception = assertThrows(InvoiceNotFoundException.class, () -> database.updateInvoice(id, invoice));
         assertThat(exception.getMessage(), is(
-                "Provided updatedInvoice does not exist in database. "
+                "Invoice with provided id does not exist in database. "
                         + "Invoice id: " + id + " not found."));
     }
 
@@ -163,104 +148,143 @@ class InMemoryDatabaseTest {
         // Then
         Exception exception = assertThrows(InvoiceNotFoundException.class, () -> database.deleteInvoice(1L));
         assertThat(exception.getMessage(), is(
-                "Provided id: "
-                        + "1"
-                        + " not found in Database."));
+                "Invoice with provided id does not exist in database. "
+                        + "Invoice id: " + "1" + " not found."));
     }
 
     private static Stream<Arguments> getInvoicesLocalDateArguments() {
         return Stream.of(
                 Arguments.of(
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3)
+                        )),
                         LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
                         LocalDate.of(2020, 3, 3),
-                        LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 3, 3),
-                        3),
+                        3,
+                        LocalDate.of(2019, 12, 31),
+                        LocalDate.of(2020, 3, 4)),
                 Arguments.of(
-                        LocalDate.of(2019, 1, 1),
-                        LocalDate.of(2019, 2, 2),
-                        LocalDate.of(2019, 3, 3),
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2019, 1, 1),
+                                LocalDate.of(2019, 2, 2),
+                                LocalDate.of(2019, 3, 3))),
                         LocalDate.of(2018, 12, 15),
                         LocalDate.of(2020, 1, 1),
-                        3),
+                        3,
+                        LocalDate.of(2018, 12, 14),
+                        LocalDate.of(2020, 1, 2)),
                 Arguments.of(
-                        LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         LocalDate.of(2020, 1, 2),
                         LocalDate.of(2020, 2, 28),
-                        1),
-                Arguments.of(
+                        1,
                         LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        LocalDate.of(2020, 2, 29)),
+                Arguments.of(
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         LocalDate.of(2020, 1, 2),
                         LocalDate.of(2020, 3, 4),
-                        2),
-                Arguments.of(
+                        2,
                         LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        LocalDate.of(2020, 3, 5)),
+                Arguments.of(
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         LocalDate.of(2020, 2, 3),
                         LocalDate.of(2020, 4, 4),
-                        1),
-                Arguments.of(
-                        LocalDate.of(2020, 1, 1),
+                        1,
                         LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        LocalDate.of(2020, 4, 5)),
+                Arguments.of(
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         LocalDate.of(2019, 1, 1),
                         LocalDate.of(2020, 2, 1),
-                        1),
+                        1,
+                        LocalDate.of(2018, 12, 31),
+                        LocalDate.of(2020, 2, 2)),
                 Arguments.of(
-                        LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         LocalDate.of(2019, 1, 1),
                         LocalDate.of(2020, 2, 3),
-                        2),
+                        2,
+                        LocalDate.of(2018, 12, 31),
+                        LocalDate.of(2020, 2, 4)),
                 Arguments.of(
-                        LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         null,
                         LocalDate.of(2021, 1, 1),
-                        3),
+                        3,
+                        LocalDate.MIN,
+                        LocalDate.of(2021, 1, 2)),
                 Arguments.of(
-                        LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         LocalDate.of(2010, 1, 1),
                         null,
-                        3),
+                        3,
+                        LocalDate.of(2009, 12, 31),
+                        LocalDate.MAX),
                 Arguments.of(
-                        LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         null,
                         null,
-                        3),
+                        3,
+                        LocalDate.MIN,
+                        LocalDate.MAX),
                 Arguments.of(
-                        LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         LocalDate.of(2020, 4, 4),
                         LocalDate.of(2020, 6, 6),
-                        0),
+                        0,
+                        LocalDate.of(2020, 4, 3),
+                        LocalDate.of(2020, 6, 7)),
                 Arguments.of(
-                        LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         LocalDate.of(2019, 1, 1),
                         LocalDate.of(2019, 3, 3),
-                        0),
+                        0,
+                        LocalDate.of(2018, 12, 31),
+                        LocalDate.of(2019, 3, 4)),
                 Arguments.of(
-                        LocalDate.of(2020, 1, 1),
-                        LocalDate.of(2020, 2, 2),
-                        LocalDate.of(2020, 3, 3),
+                        new ArrayList<>(Arrays.asList(
+                                LocalDate.of(2020, 1, 1),
+                                LocalDate.of(2020, 2, 2),
+                                LocalDate.of(2020, 3, 3))),
                         LocalDate.of(2020, 1, 1),
                         LocalDate.of(2019, 3, 3),
-                        0)
+                        0,
+                        LocalDate.of(2019, 12, 31),
+                        LocalDate.of(2019, 3, 4))
         );
     }
 }
