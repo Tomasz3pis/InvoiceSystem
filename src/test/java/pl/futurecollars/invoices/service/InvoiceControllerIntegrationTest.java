@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class InvoiceControllerTest {
+class InvoiceControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

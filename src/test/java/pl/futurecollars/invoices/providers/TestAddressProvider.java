@@ -4,7 +4,7 @@ import pl.futurecollars.invoices.model.PostalAddress;
 
 public class TestAddressProvider {
 
-    static PostalAddress addressRoseville() {
+    public static PostalAddress addressRoseville() {
         return new PostalAddress(
                 "Integer Rd.",
                 "11",
@@ -13,7 +13,7 @@ public class TestAddressProvider {
                 "Roseville");
     }
 
-    static PostalAddress addressLatrobe() {
+    public static PostalAddress addressLatrobe() {
         return new PostalAddress(
                 "Viverra Avenue",
                 "101",
@@ -22,7 +22,7 @@ public class TestAddressProvider {
                 "Latrobe");
     }
 
-    static PostalAddress addressRhodeIsland() {
+    public static PostalAddress addressRhodeIsland() {
         return new PostalAddress(
                 "Nunc Road",
                 "1101",
@@ -31,7 +31,7 @@ public class TestAddressProvider {
                 "Rhode Island");
     }
 
-    static PostalAddress addressWoodruff() {
+    public static PostalAddress addressWoodruff() {
         return new PostalAddress(
                 "Curabitur Rd.",
                 "99",
@@ -40,7 +40,7 @@ public class TestAddressProvider {
                 "Woodruff");
     }
 
-    static PostalAddress addressIdahoFalls() {
+    public static PostalAddress addressIdahoFalls() {
         return new PostalAddress(
                 "Lacinia Avenue",
                 "909",
@@ -49,21 +49,12 @@ public class TestAddressProvider {
                 "Idaho Falls");
     }
 
-    static PostalAddress addressFortDodge() {
+    public static PostalAddress addressFortDodge() {
         return new PostalAddress(
                 "Aliquet St.",
                 "9",
                 "",
                 "90-900",
                 "Fort Dodge");
-    }
-
-    static PostalAddress addressWithOffset(int offset) {
-        return new PostalAddress(
-                "SomeStreetName " + offset,
-                "10" + String.format("%02d", offset).substring(0, 2),
-                "" + String.format("%02d", offset).substring(0, 2),
-                "99-" + String.format("%03d", offset).substring(0, 3),
-                "SomeCityName " + offset);
     }
 }

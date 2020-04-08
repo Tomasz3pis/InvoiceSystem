@@ -11,7 +11,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-public final class Invoice {
+public class Invoice {
 
     private long id;
 
@@ -29,7 +29,7 @@ public final class Invoice {
 
     private List<@Valid InvoiceEntry> entries;
 
-    private Invoice() {
+    public Invoice() {
     }
 
     public long getId() {

@@ -1,17 +1,14 @@
 package pl.futurecollars.invoices.providers;
 
-import static pl.futurecollars.invoices.providers.TestCompanyProvider.buyerWithOffset;
 import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyBestBuy;
 import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyBoughtt;
 import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyBuyMore;
 import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyBuySome;
 import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyGiftShops;
 import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyPurchasey;
-import static pl.futurecollars.invoices.providers.TestCompanyProvider.sellerWithOffset;
 import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountFour;
 import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountOne;
 import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountThree;
-import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesWithOffset;
 
 import pl.futurecollars.invoices.model.Invoice;
 
@@ -46,17 +43,6 @@ public class TestInvoiceProvider {
                 .setSeller(companyGiftShops())
                 .setBuyer(companyBoughtt())
                 .setEntries(invoiceEntriesCountFour())
-                .build();
-    }
-
-    public static Invoice getInvoice(int offset, int numberOfEntries) {
-
-        return new Invoice.InvoiceBuilder()
-                .setIssueDate(LocalDate.of(2020, 1, 2))
-                .setSaleDate(LocalDate.of(2020, 1, 1))
-                .setSeller(sellerWithOffset(offset))
-                .setBuyer(buyerWithOffset(offset))
-                .setEntries(invoiceEntriesWithOffset(offset, numberOfEntries))
                 .build();
     }
 }

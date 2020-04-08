@@ -1,8 +1,7 @@
-package pl.futurecollars.invoices;
+package pl.futurecollars.invoices.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoice;
 import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceOne;
 import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceThree;
 import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceTwo;
@@ -14,14 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.futurecollars.invoices.database.Database;
 import pl.futurecollars.invoices.model.Invoice;
-import pl.futurecollars.invoices.service.InvoiceService;
 
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 @SpringBootTest
-class InvoiceSystemIntegrationTest {
+class InvoiceServiceIntegrationTest {
 
     @Autowired
     private Database database;
@@ -82,8 +80,10 @@ class InvoiceSystemIntegrationTest {
     }
 
     private static Stream<Arguments> invoiceSystemTestArguments() {
+        Invoice invoiceFour = getInvoiceOne();
+        invoiceFour.setSaleDate(LocalDate.of(2020, 3, 3));
         return Stream.of(
-                Arguments.of(getInvoiceOne(), getInvoiceTwo(), getInvoiceThree(), getInvoice(4, 4))
+                Arguments.of(getInvoiceOne(), getInvoiceTwo(), getInvoiceThree(), invoiceFour)
         );
     }
 }

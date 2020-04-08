@@ -38,17 +38,16 @@ public class InMemoryDatabase implements Database {
             return getInvoices();
         }
         if (startDate == null) {
-            startDate = LocalDate.MIN;
-            endDate = endDate.plusDays(1);
-        } else if (endDate == null) {
-            startDate = startDate.minusDays(1);
-            endDate = LocalDate.MAX;
-        } else {
-            startDate = startDate.minusDays(1);
-            endDate = endDate.plusDays(1);
+            startDate = LocalDate.MIN.plusDays(1);
         }
-        LocalDate finalStartDate = startDate;
-        LocalDate finalEndDate = endDate;
+        if (endDate == null) {
+            endDate = LocalDate.MAX.minusDays(1);
+        }
+        startDate = startDate.minusDays(1);
+        endDate = endDate.plusDays(1);
+
+        final LocalDate finalStartDate = startDate;
+        final LocalDate finalEndDate = endDate;
         return getInvoices().stream()
                 .filter(invoice -> invoice.getIssueDate().isAfter(finalStartDate))
                 .filter(invoice -> invoice.getIssueDate().isBefore(finalEndDate))

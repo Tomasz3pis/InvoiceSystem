@@ -1,103 +1,31 @@
 package pl.futurecollars.invoices.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyBoughtt;
+import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyBuyMore;
+import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyBuySome;
+import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyGiftShops;
+import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountOne;
+import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountThree;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import pl.futurecollars.invoices.exceptions.InvoiceNotCompleteException;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
-@ExtendWith(MockitoExtension.class)
 class InvoiceTest {
 
-    @Mock
-    private Company buyer;
-
-    @Mock
-    private Company secondBuyer;
-
-    @Mock
-    private Company seller;
-
-    @Mock
-    private Company secondSeller;
-
-    @Mock
-    private List<InvoiceEntry> entries;
-
-    @Mock
-    private List<InvoiceEntry> secondEntries;
-
-    @ParameterizedTest
-    @MethodSource("invoiceConstructorArguments")
-    void shouldConstructInvoiceGivenArguments(LocalDate issueDate, LocalDate saleDate) {
-        // Given
-
-        // When
-        Invoice invoice = new Invoice.InvoiceBuilder()
-                .setIssueDate(issueDate)
-                .setSaleDate(saleDate)
-                .setSeller(seller)
-                .setBuyer(buyer)
-                .setEntries(entries)
-                .build();
-
-        // Then
-        assertThat(invoice.getIssueDate(), is(issueDate));
-        assertThat(invoice.getSaleDate(), is(saleDate));
-        assertThat(invoice.getSeller(), is(seller));
-        assertThat(invoice.getBuyer(), is(buyer));
-        assertThat(invoice.getEntries(), is(entries));
-    }
-
-    @Test
-    void builderShouldThrowExceptionWhenMissingFields() {
-        Exception exception = assertThrows(InvoiceNotCompleteException.class, () ->
-                new Invoice.InvoiceBuilder().build());
-        assertThat(exception.getMessage(), containsString(
-                "issueDate saleDate seller buyer entries"));
-    }
-
-    @ParameterizedTest
-    @MethodSource("invoiceConstructorArguments")
-    void shouldSetInvoiceFields(LocalDate issueDate, LocalDate saleDate) {
-        // Given
-        Invoice invoice = new Invoice.InvoiceBuilder()
-                .setIssueDate(LocalDate.of(2019, 12, 31))
-                .setSaleDate(LocalDate.of(2019, 12, 31))
-                .setSeller(seller)
-                .setBuyer(buyer)
-                .setEntries(entries)
-                .build();
-
-        // When
-        invoice.setId(1L);
-        invoice.setIssueDate(issueDate);
-        invoice.setSaleDate(saleDate);
-        invoice.setSeller(secondSeller);
-        invoice.setBuyer(secondBuyer);
-        invoice.setEntries(secondEntries);
-
-        // Then
-        assertThat(invoice.getId(), is(1L));
-        assertThat(invoice.getIssueDate(), is(issueDate));
-        assertThat(invoice.getSaleDate(), is(saleDate));
-        assertThat(invoice.getSeller(), is(secondSeller));
-        assertThat(invoice.getBuyer(), is(secondBuyer));
-        assertThat(invoice.getEntries(), is(secondEntries));
-    }
+    private Company buyer = companyBuySome();
+    private Company secondBuyer = companyBuyMore();
+    private Company seller = companyBoughtt();
+    private Company secondSeller = companyGiftShops();
+    private List<InvoiceEntry> entries = invoiceEntriesCountOne();
+    private List<InvoiceEntry> secondEntries = invoiceEntriesCountThree();
 
     @ParameterizedTest
     @MethodSource("invoiceConstructorArguments")

@@ -40,38 +40,6 @@ class PostalAddressTest {
 
     @ParameterizedTest
     @MethodSource("addressConstructorArguments")
-    void shouldSetAddressFields(
-            String streetName,
-            String streetNumber,
-            String apartmentNumber,
-            String postalCode,
-            String city) {
-        // Given
-
-        PostalAddress postalAddress = new PostalAddress(
-                "",
-                "",
-                "",
-                "00-000",
-                "");
-
-        // When
-        postalAddress.setStreetName(streetName);
-        postalAddress.setStreetNumber(streetNumber);
-        postalAddress.setApartmentNumber(apartmentNumber);
-        postalAddress.setPostalCode(postalCode);
-        postalAddress.setCity(city);
-
-        // Then
-        assertThat(postalAddress.getStreetName(), is(streetName));
-        assertThat(postalAddress.getStreetNumber(), is(streetNumber));
-        assertThat(postalAddress.getApartmentNumber(), is(apartmentNumber));
-        assertThat(postalAddress.getPostalCode(), is(postalCode));
-        assertThat(postalAddress.getCity(), is(city));
-    }
-
-    @ParameterizedTest
-    @MethodSource("addressConstructorArguments")
     void shouldReturnTrueForEqualAddresses(
             String streetName,
             String streetNumber,

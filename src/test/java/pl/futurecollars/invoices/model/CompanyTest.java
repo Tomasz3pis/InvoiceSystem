@@ -3,24 +3,19 @@ package pl.futurecollars.invoices.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static pl.futurecollars.invoices.providers.TestAddressProvider.addressLatrobe;
+import static pl.futurecollars.invoices.providers.TestAddressProvider.addressRoseville;
 
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.stream.Stream;
 
-@ExtendWith(MockitoExtension.class)
 class CompanyTest {
 
-    @Mock
-    private PostalAddress postalAddress;
-
-    @Mock
-    private PostalAddress secondPostalAddress;
+    private PostalAddress postalAddress = addressRoseville();
+    private PostalAddress secondPostalAddress = addressLatrobe();
 
     @ParameterizedTest
     @MethodSource("companyConstructorArguments")
@@ -34,23 +29,6 @@ class CompanyTest {
         assertThat(company.getTaxIdentificationNumber(), is(taxIdentificationNumber));
         assertThat(company.getName(), is(name));
         assertThat(company.getAddress(), is(postalAddress));
-    }
-
-    @ParameterizedTest
-    @MethodSource("companyConstructorArguments")
-    void shouldSetCompanyFields(String taxIdentificationNumber, String name) {
-        // Given
-        Company company = new Company("000 000 00 00", "", postalAddress);
-
-        // When
-        company.setTaxIdentificationNumber(taxIdentificationNumber);
-        company.setName(name);
-        company.setAddress(secondPostalAddress);
-
-        // Then
-        assertThat(company.getTaxIdentificationNumber(), is(taxIdentificationNumber));
-        assertThat(company.getName(), is(name));
-        assertThat(company.getAddress(), is(secondPostalAddress));
     }
 
     @ParameterizedTest

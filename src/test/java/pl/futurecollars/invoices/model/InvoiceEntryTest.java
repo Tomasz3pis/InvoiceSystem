@@ -3,7 +3,6 @@ package pl.futurecollars.invoices.model;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static pl.futurecollars.invoices.model.Vat.VAT_0;
 import static pl.futurecollars.invoices.model.Vat.VAT_23;
 import static pl.futurecollars.invoices.model.Vat.VAT_8;
 import static pl.futurecollars.invoices.model.Vat.VAT_ZW;
@@ -24,26 +23,6 @@ class InvoiceEntryTest {
 
         // When
         InvoiceEntry entry = new InvoiceEntry(itemName, quantity, netPrice, vat);
-
-        // Then
-        assertThat(entry.getItemName(), is(itemName));
-        assertThat(entry.getQuantity(), is(quantity));
-        assertThat(entry.getNetPrice(), is(netPrice));
-        assertThat(entry.getVat(), is(vat));
-    }
-
-    @ParameterizedTest
-    @MethodSource("entryConstructorArguments")
-    void shouldSetEntryFields(String itemName, int quantity, BigDecimal netPrice, Vat vat) {
-        // Given
-
-        InvoiceEntry entry = new InvoiceEntry("someName", 0, BigDecimal.valueOf(0), VAT_0);
-
-        // When
-        entry.setItemName(itemName);
-        entry.setQuantity(quantity);
-        entry.setNetPrice(netPrice);
-        entry.setVat(vat);
 
         // Then
         assertThat(entry.getItemName(), is(itemName));

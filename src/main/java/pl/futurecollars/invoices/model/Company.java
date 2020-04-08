@@ -29,24 +29,12 @@ public class Company {
         return taxIdentificationNumber;
     }
 
-    public void setTaxIdentificationNumber(String taxIdentificationNumber) {
-        this.taxIdentificationNumber = taxIdentificationNumber;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public PostalAddress getAddress() {
         return address;
-    }
-
-    public void setAddress(PostalAddress address) {
-        this.address = address;
     }
 
     @Override
