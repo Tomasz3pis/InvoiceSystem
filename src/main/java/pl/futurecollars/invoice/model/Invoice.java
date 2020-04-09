@@ -16,10 +16,10 @@ public class Invoice {
 
     private long id;
 
-    @Valid
+    @NotNull
     private Company seller;
 
-    @Valid
+    @NotNull
     private Company buyer;
 
     private List<@Valid InvoiceEntry> entries;

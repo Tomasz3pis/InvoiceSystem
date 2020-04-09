@@ -1,5 +1,6 @@
 package pl.futurecollars.invoice;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,8 +35,8 @@ class IntegrationTest {
 
         //then
         assertEquals(database.getInvoices().size(), 2);
-        assertTrue(database.getInvoices().contains(firstInvoice));
-        assertTrue(database.getInvoices().contains(secondInvoice));
+        assertThat(database.getInvoices().contains(firstInvoice));
+        assertThat(database.getInvoices().contains(secondInvoice));
         assertEquals(invoiceService.findInvoiceById(firstInvoice.getId()), firstInvoice);
         assertEquals(invoiceService.findInvoiceById(secondInvoice.getId()), secondInvoice);
     }

@@ -7,6 +7,7 @@ import pl.futurecollars.invoice.model.Invoice;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class InvoiceService {
@@ -22,7 +23,7 @@ public class InvoiceService {
         database.saveInvoice(invoice);
     }
 
-    public final Invoice findInvoiceById(final long id) {
+    public final Optional<Invoice> findInvoiceById(final long id) {
         return database.getInvoiceById(id);
     }
 

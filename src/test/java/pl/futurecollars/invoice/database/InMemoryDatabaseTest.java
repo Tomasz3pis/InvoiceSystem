@@ -13,6 +13,7 @@ import pl.futurecollars.invoice.model.InvoiceNotFoundException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 class InMemoryDatabaseTest {
 
@@ -98,10 +99,11 @@ class InMemoryDatabaseTest {
 
         //when
         inMemoryDatabase.saveInvoice(invoice);
-        Invoice actual = inMemoryDatabase.getInvoiceById(invoice.getId());
+        Optional<Invoice> actual = inMemoryDatabase.getInvoiceById(invoice.getId());
 
         //then
-        assertEquals(actual, invoice);
+        assertTrue(actual.isPresent());
+        assertEquals(actual.get(), invoice);
     }
 
     @Test

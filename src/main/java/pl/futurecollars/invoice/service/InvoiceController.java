@@ -1,6 +1,5 @@
 package pl.futurecollars.invoice.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.validation.annotation.Validated;
@@ -13,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.futurecollars.invoice.database.Database;
 import pl.futurecollars.invoice.model.Invoice;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 
 @RestController
@@ -25,26 +25,26 @@ import javax.validation.Valid;
 @Validated
 public class InvoiceController {
 
-    @Autowired
-    private Database database;
-
-    @Autowired
     private InvoiceService invoiceService;
 
+    InvoiceController(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
+
     @GetMapping
-    public Collection<Invoice> getInvoicesInDataRange(@RequestParam(name = "start", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
-                                                      @RequestParam(name = "end", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
-        return invoiceService.getInvoices(startDate, endDate);
+    public List<Invoice> getInvoicesInDataRange(@RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
+                                                @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
+        return new ArrayList<>(invoiceService.getInvoices(startDate, endDate));
     }
 
     @GetMapping("/{id}")
-    public Invoice findInvoiceById(@PathVariable("id") Long id) {
+    public Optional<Invoice> findInvoiceById(@PathVariable("id") Long id) {
         return invoiceService.findInvoiceById(id);
     }
 
     @PostMapping
-    public void newInvoice(@Valid @RequestBody Invoice newInvoice) {
-        invoiceService.saveInvoice(newInvoice);
+    public void saveInvoice(@Valid @RequestBody Invoice invoice) {
+        invoiceService.saveInvoice(invoice);
     }
 
     @DeleteMapping("/{id}")

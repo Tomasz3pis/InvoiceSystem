@@ -6,8 +6,8 @@ import pl.futurecollars.invoice.model.InvoiceNotFoundException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -21,7 +21,7 @@ public class InMemoryDatabase implements Database {
 
     @Override
     public final void saveInvoice(final Invoice invoice) {
-        invoice.setId(getLastUsedId().incrementAndGet());
+        invoice.setId(lastUsedId.incrementAndGet());
         invoices.put(invoice.getId(), invoice);
     }
 
@@ -43,38 +43,33 @@ public class InMemoryDatabase implements Database {
     }
 
     @Override
-    public final Invoice getInvoiceById(final long id) {
-        if (!invoices.containsKey(id)) {
-            Optional<Invoice> empty = Optional.empty();
-            return empty.get();
-        }
-        return invoices.get(id);
+    public final Optional<Invoice> getInvoiceById(final long id) {
+        return Optional.ofNullable(invoices.get(id));
     }
 
     @Override
-    public final Collection<Invoice> getInvoices() {
+    public final List<Invoice> getInvoices() {
         return new ArrayList<>(invoices.values());
     }
 
     @Override
-    public Collection<Invoice> getInvoices(LocalDate startDate, LocalDate endDate) {
+    public List<Invoice> getInvoices(LocalDate startDate, LocalDate endDate) {
         if (startDate == null) {
             startDate = LocalDate.MIN;
         }
         if (endDate == null) {
             endDate = LocalDate.MAX;
         }
+
         LocalDate finalStartDate = startDate;
         LocalDate finalEndDate = endDate;
 
         return getInvoices()
                 .stream()
                 .filter(invoice -> invoice.getData()
-                        .isAfter(finalStartDate) && invoice.getData().isBefore(finalEndDate))
+                        .isAfter(finalStartDate))
+                .filter(invoice -> invoice.getData()
+                        .isBefore(finalEndDate))
                 .collect(Collectors.toList());
-    }
-
-    private static AtomicLong getLastUsedId() {
-        return lastUsedId;
     }
 }

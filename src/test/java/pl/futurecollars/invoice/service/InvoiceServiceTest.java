@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class InvoiceServiceTest {
@@ -47,13 +48,13 @@ class InvoiceServiceTest {
     void shouldReturnInvoiceById() {
         //given
         InvoiceService invoiceService = new InvoiceService(database);
-        when(database.getInvoiceById(invoice.getId())).thenReturn(invoice);
+        when(database.getInvoiceById(invoice.getId())).thenReturn(Optional.of(invoice));
 
         //when
-        Invoice actual = invoiceService.findInvoiceById(invoice.getId());
+        Optional<Invoice> actual = invoiceService.findInvoiceById(invoice.getId());
 
         //then
-        assertEquals(invoice, actual);
+        assertEquals(Optional.of(invoice), actual);
         verify(database, times(1)).getInvoiceById(invoice.getId());
     }
 

@@ -22,9 +22,9 @@ public class InvoiceEntry {
     private Vat vatRate;
 
     @Min(1)
-    private long quantity;
+    private BigDecimal quantity;
 
-    public InvoiceEntry(final String description, final BigDecimal unitPrice, final Vat vatRate, final long quantity) {
+    public InvoiceEntry(final String description, final BigDecimal unitPrice, final Vat vatRate, final BigDecimal quantity) {
         this.description = description;
         this.unitPrice = unitPrice;
         this.vatRate = vatRate;
@@ -32,13 +32,13 @@ public class InvoiceEntry {
     }
 
     public BigDecimal getTotalValueWithoutVat() {
-        return new BigDecimal(String.valueOf(unitPrice))
-                .multiply(new BigDecimal(String.valueOf(quantity)));
+        return  unitPrice
+                .multiply(quantity);
     }
 
     public BigDecimal getTotalValueWithVat() {
-        return new BigDecimal(String.valueOf(unitPrice))
-                .multiply(BigDecimal.valueOf(quantity))
+        return unitPrice
+                .multiply(quantity)
                 .multiply(vatRate.getRate());
     }
 
