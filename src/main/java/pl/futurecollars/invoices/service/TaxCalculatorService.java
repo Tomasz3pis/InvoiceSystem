@@ -19,24 +19,23 @@ public class TaxCalculatorService {
     private final Company futureCollars = new Company("0001", "FutureCollars Sp. z o.o.", new PostalAddress("Koronawirusa", "1", "1", "01-001", "Warszawa"));
     private Invoice invoice;
     private BigDecimal sumOfIncomeVAT;
-    private BigDecimal sumOfIncomeCosts;
-    private BigDecimal sumOfCosts;
+    private BigDecimal sumOfOutcomeVat;
     private BigDecimal incomeToCosts;
 
-    public BigDecimal calculateAllEntriesValuesFromOneInvoice(Vat vat) {
+    public BigDecimal calculateAllEntriesValuesFromOneInvoice(Vat vat, BigDecimal taxCost) {
         BigDecimal temporaryValue = BigDecimal.valueOf(0.0);
         for (InvoiceEntry entries : invoice.getEntries()) {
             temporaryValue = entries.getNetPrice().multiply(vat.getRate());
-            temporaryValue.add(temporaryValue);
+            taxCost.add(temporaryValue);
         }
-        return temporaryValue;
+        return taxCost;
     }
 
     public BigDecimal calculationOfIncomeVat(Company company) {
         database.getInvoices()
                 .stream()
                 .filter(value -> (invoice.getSeller().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()))
-                .forEach(value -> calculateAllEntriesValuesFromOneInvoice(Vat.VAT_23));
+                .forEach(value -> calculateAllEntriesValuesFromOneInvoice(Vat.VAT_23, sumOfIncomeVAT));
         return sumOfIncomeVAT;
     }
 
@@ -44,8 +43,8 @@ public class TaxCalculatorService {
         database.getInvoices()
                 .stream()
                 .filter(value -> (invoice.getBuyer().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()))
-                .forEach(value ->calculateAllEntriesValuesFromOneInvoice(Vat.VAT_8));
-        return sumOfIncomeVAT;
+                .forEach(value ->calculateAllEntriesValuesFromOneInvoice(Vat.VAT_8, sumOfOutcomeVat));
+        return sumOfOutcomeVat;
     }
 
     public BigDecimal calculationOfCosts() {
@@ -59,7 +58,7 @@ public class TaxCalculatorService {
 
 }
 
-//TODO policzyć wartości income VAT   outcome VAT     /income / costs  / Ostatnia wartość liczona jest z poprzednich income cost (income - costs)
+//TODO policzyć wartości income VAT wat nalezny 23 moze byc 8 i 5 na towar spozywcze towary lub zwolniony   Outcome VAT  czyli wat naliczony , faktura kosztowa np. faktura za energie placona netto. Doliczanie tak jak w income.   /income / costs  / Ostatnia wartość liczona jest z poprzednich income cost (income - costs)
 //TODO napisać 4 funkcji które będą obliczać wartości. Podajemy ID swojej firmy , iterujemy po wszystkich fakturach na koniec liczymy income, outcome , income VAT, costs oraz income cost(income - costs)
 //TODO zahardkodować swoją firmę
 //TODO policzone wartości zwracamy w Json
