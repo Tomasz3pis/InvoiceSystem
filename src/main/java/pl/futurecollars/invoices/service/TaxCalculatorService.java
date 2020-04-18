@@ -20,7 +20,9 @@ public class TaxCalculatorService {
     private Invoice invoice;
     private BigDecimal sumOfIncomeVAT;
     private BigDecimal sumOfOutcomeVat;
-    private BigDecimal incomeToCosts;
+    private BigDecimal costs;
+    private BigDecimal income;
+    private InvoiceEntry entries;
 
     public BigDecimal calculateAllEntriesValuesFromOneInvoice(Vat vat, BigDecimal taxCost) {
         BigDecimal temporaryValue = BigDecimal.valueOf(0.0);
@@ -39,7 +41,7 @@ public class TaxCalculatorService {
         return sumOfIncomeVAT;
     }
 
-    public BigDecimal calculationOfIncomeCosts(Company company) {
+    public BigDecimal calculationOfOutcomeVat(Company company) {
         database.getInvoices()
                 .stream()
                 .filter(value -> (invoice.getBuyer().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()))
@@ -48,18 +50,16 @@ public class TaxCalculatorService {
     }
 
     public BigDecimal calculationOfCosts() {
-        incomeToCosts = sumOfIncomeVAT.add(sumOfCosts);
-        return incomeToCosts;
+        costs = sumOfIncomeVAT.add(sumOfOutcomeVat);
+        return costs;
     }
 
-    public void calculationOfOutcomeVat(Company company) {
-        // NotEnoughKnowledgeAboutTaxes exception
+    public BigDecimal calculationIncomeToCost(Company company) {
+        database.getInvoices()
+                .stream()
+                .filter(value -> (invoice.getSeller().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()))
+                .forEach(value -> entries.getNetPrice().add(income));
+            return income;
     }
 
 }
-
-//TODO policzyć wartości income VAT wat nalezny 23 moze byc 8 i 5 na towar spozywcze towary lub zwolniony   Outcome VAT  czyli wat naliczony , faktura kosztowa np. faktura za energie placona netto. Doliczanie tak jak w income.   /income / costs  / Ostatnia wartość liczona jest z poprzednich income cost (income - costs)
-//TODO napisać 4 funkcji które będą obliczać wartości. Podajemy ID swojej firmy , iterujemy po wszystkich fakturach na koniec liczymy income, outcome , income VAT, costs oraz income cost(income - costs)
-//TODO zahardkodować swoją firmę
-//TODO policzone wartości zwracamy w Json
-//TODO Stworzyć generyczną funkcję, która przyjmuje funkcję którą wsadzamy w jednego if
