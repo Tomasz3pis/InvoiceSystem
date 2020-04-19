@@ -74,3 +74,4 @@ public class TaxCalculatorService {
 
 //TODO 1.  Jedna funkcja validująca consumer lub supplier
 //TODO 2.  Funkcja musi przyjmość List of INvoice , iterujemy po invoicash i po entries, Function od Inovice, Company .getbuyer i get seller
+//TODO 3.  Rozszerzyć metodą calculateAllEntriesValuesFromOneInvoice zeby robiła to co zrobiłem poniżej i wiedziała co zrobić jak na polu company.getBuyer jest nasza firma albo jej nie ma. Potem policzyć odpowiedni VAT
