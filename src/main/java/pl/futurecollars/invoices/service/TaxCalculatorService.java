@@ -10,6 +10,8 @@ import pl.futurecollars.invoices.model.PostalAddress;
 import pl.futurecollars.invoices.model.Vat;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.function.Function;
 
 @Service
 public class TaxCalculatorService {
@@ -22,15 +24,21 @@ public class TaxCalculatorService {
     private BigDecimal sumOfOutcomeVat;
     private BigDecimal costs;
     private BigDecimal income;
-    private InvoiceEntry entries;
 
-    public BigDecimal calculateAllEntriesValuesFromOneInvoice(Vat vat, BigDecimal taxCost) {
-        BigDecimal temporaryValue = BigDecimal.valueOf(0.0);
-        for (InvoiceEntry entries : invoice.getEntries()) {
-            temporaryValue = entries.getNetPrice().multiply(vat.getRate());
-            taxCost.add(temporaryValue);
+    private BigDecimal calculateAllEntriesValuesFromOneInvoice(List<InvoiceEntry> entries, Function<InvoiceEntry, BigDecimal> functionToApply) {
+        BigDecimal taxCost = BigDecimal.valueOf(0.0);
+        for (InvoiceEntry entry : entries) {
+            taxCost.add(functionToApply.apply(entry));
         }
         return taxCost;
+    }
+
+    private BigDecimal calculateVatValue(List<InvoiceEntry> entries) {
+        return calculateAllEntriesValuesFromOneInvoice(entries, entry-> entry.getNetPrice().multiply(entry.getVat().getRate()));
+    }
+
+    private BigDecimal calculateNetValue(List<InvoiceEntry> entries) {
+        return calculateAllEntriesValuesFromOneInvoice(entries, InvoiceEntry::getNetPrice);
     }
 
     public BigDecimal calculationOfIncomeVat(Company company) {
@@ -63,3 +71,6 @@ public class TaxCalculatorService {
     }
 
 }
+
+//TODO 1.  Jedna funkcja validująca consumer lub supplier
+//TODO 2.  Funkcja musi przyjmość List of INvoice , iterujemy po invoicash i po entries, Function od Inovice, Company .getbuyer i get seller
