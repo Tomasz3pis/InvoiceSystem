@@ -1,5 +1,7 @@
 package pl.futurecollars.invoices.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,14 +13,17 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+@ApiModel(description = "Invoice object")
 public class Invoice {
 
     private long id;
 
     @NotNull
+    @ApiModelProperty(value = "The date this invoice was issued at.", example = "2020-01-10")
     private LocalDate issueDate;
 
     @NotNull
+    @ApiModelProperty(value = "The date of an actual sale or service.", example = "2020-01-09")
     private LocalDate saleDate;
 
     @Valid

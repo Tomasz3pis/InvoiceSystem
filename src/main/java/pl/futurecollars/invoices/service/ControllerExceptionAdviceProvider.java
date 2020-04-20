@@ -14,7 +14,7 @@ public class ControllerExceptionAdviceProvider {
     @ExceptionHandler(ConstraintViolationException.class)
     ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException exception) {
         return new ResponseEntity<>(
-                "Path variable validation failed with message: " + exception.getMessage(),
+                "Input validation failed with message: " + exception.getMessage(),
                 HttpStatus.BAD_REQUEST);
     }
 

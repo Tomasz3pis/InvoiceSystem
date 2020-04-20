@@ -1,5 +1,7 @@
 package pl.futurecollars.invoices.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -8,12 +10,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
+@ApiModel(description = "Company data")
 public class Company {
 
     @NotBlank
+    @ApiModelProperty(value = "Tax identification number", example = "5002009966")
     private String taxIdentificationNumber;
 
     @NotBlank
+    @ApiModelProperty(value = "Company full name", example = "BestBuy inc.")
     private String name;
 
     @Valid
