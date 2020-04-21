@@ -7,7 +7,6 @@ import pl.futurecollars.invoices.model.Company;
 import pl.futurecollars.invoices.model.Invoice;
 import pl.futurecollars.invoices.model.InvoiceEntry;
 import pl.futurecollars.invoices.model.PostalAddress;
-import pl.futurecollars.invoices.model.Vat;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,56 +21,44 @@ public class TaxCalculatorService {
     private Invoice invoice;
     private BigDecimal sumOfIncomeVAT;
     private BigDecimal sumOfOutcomeVat;
-    private BigDecimal costs;
+    private BigDecimal vatValue;
     private BigDecimal income;
 
+    private BigDecimal calculateIncomeForCompany(List<Invoice> invoices, Company company) {
+        invoices
+                .stream()
+                .filter(value -> (invoice.getSeller().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()))
+                .forEach(invoice1 -> income = income.add(calculateNetValue(invoice.getEntries())));
+        return income;
+    }
+
+    private BigDecimal calculateVatForCompany(List<Invoice> invoices, Company company) {
+        invoices
+                .stream()
+                .forEach(invoice1 -> {
+                    if (invoice.getSeller().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()) {
+                        vatValue = vatValue.add(calculateVatValue(invoice.getEntries()));
+                    } else if (invoice.getBuyer().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()) {
+                        vatValue = vatValue.add(calculateVatValue(invoice.getEntries()));
+                    }
+                });
+        return vatValue;
+    }
+
     private BigDecimal calculateAllEntriesValuesFromOneInvoice(List<InvoiceEntry> entries, Function<InvoiceEntry, BigDecimal> functionToApply) {
-        BigDecimal taxCost = BigDecimal.valueOf(0.0);
+        BigDecimal value = BigDecimal.valueOf(0.0);
         for (InvoiceEntry entry : entries) {
-            taxCost.add(functionToApply.apply(entry));
+            value.add(functionToApply.apply(entry));
         }
-        return taxCost;
+        return value;
     }
 
     private BigDecimal calculateVatValue(List<InvoiceEntry> entries) {
-        return calculateAllEntriesValuesFromOneInvoice(entries, entry-> entry.getNetPrice().multiply(entry.getVat().getRate()));
+        return calculateAllEntriesValuesFromOneInvoice(entries, entry -> entry.getNetPrice().multiply(entry.getVat().getRate()));
     }
 
     private BigDecimal calculateNetValue(List<InvoiceEntry> entries) {
         return calculateAllEntriesValuesFromOneInvoice(entries, InvoiceEntry::getNetPrice);
     }
 
-    public BigDecimal calculationOfIncomeVat(Company company) {
-        database.getInvoices()
-                .stream()
-                .filter(value -> (invoice.getSeller().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()))
-                .forEach(value -> calculateAllEntriesValuesFromOneInvoice(Vat.VAT_23, sumOfIncomeVAT));
-        return sumOfIncomeVAT;
-    }
-
-    public BigDecimal calculationOfOutcomeVat(Company company) {
-        database.getInvoices()
-                .stream()
-                .filter(value -> (invoice.getBuyer().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()))
-                .forEach(value ->calculateAllEntriesValuesFromOneInvoice(Vat.VAT_8, sumOfOutcomeVat));
-        return sumOfOutcomeVat;
-    }
-
-    public BigDecimal calculationOfCosts() {
-        costs = sumOfIncomeVAT.add(sumOfOutcomeVat);
-        return costs;
-    }
-
-    public BigDecimal calculationIncomeToCost(Company company) {
-        database.getInvoices()
-                .stream()
-                .filter(value -> (invoice.getSeller().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()))
-                .forEach(value -> entries.getNetPrice().add(income));
-            return income;
-    }
-
 }
-
-//TODO 1.  Jedna funkcja validująca consumer lub supplier
-//TODO 2.  Funkcja musi przyjmość List of INvoice , iterujemy po invoicash i po entries, Function od Inovice, Company .getbuyer i get seller
-//TODO 3.  Rozszerzyć metodą calculateAllEntriesValuesFromOneInvoice zeby robiła to co zrobiłem poniżej i wiedziała co zrobić jak na polu company.getBuyer jest nasza firma albo jej nie ma. Potem policzyć odpowiedni VAT
