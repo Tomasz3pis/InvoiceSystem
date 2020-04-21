@@ -1,12 +1,8 @@
 package pl.futurecollars.invoices.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.futurecollars.invoices.database.Database;
-import pl.futurecollars.invoices.model.Company;
 import pl.futurecollars.invoices.model.Invoice;
 import pl.futurecollars.invoices.model.InvoiceEntry;
-import pl.futurecollars.invoices.model.PostalAddress;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,34 +11,35 @@ import java.util.function.Function;
 @Service
 public class TaxCalculatorService {
 
-    @Autowired
-    private Database database;
-    private final Company futureCollars = new Company("0001", "FutureCollars Sp. z o.o.", new PostalAddress("Koronawirusa", "1", "1", "01-001", "Warszawa"));
     private Invoice invoice;
-    private BigDecimal sumOfIncomeVAT;
-    private BigDecimal sumOfOutcomeVat;
     private BigDecimal vatValue;
     private BigDecimal income;
+    private BigDecimal incomeToCosts;
 
-    private BigDecimal calculateIncomeForCompany(List<Invoice> invoices, Company company) {
-        invoices
-                .stream()
-                .filter(value -> (invoice.getSeller().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()))
-                .forEach(invoice1 -> income = income.add(calculateNetValue(invoice.getEntries())));
+    private BigDecimal calculateIncomeForCompany(List<Invoice> invoices, String taxIdentificationNumber, Function<List<InvoiceEntry>, BigDecimal> functionToApply) {
+        BigDecimal income = BigDecimal.valueOf(0.0);
+        invoices.stream()
+                .filter(value -> (invoice.getSeller().getTaxIdentificationNumber() == taxIdentificationNumber))
+                .forEach(invoice1 -> income.add(functionToApply.apply(invoice.getEntries())));
         return income;
     }
 
-    private BigDecimal calculateVatForCompany(List<Invoice> invoices, Company company) {
-        invoices
-                .stream()
+    private BigDecimal calculateVatForCompany(List<Invoice> invoices, String taxIdentificationNumber, Function<List<InvoiceEntry>, BigDecimal> functionToApply) {
+        BigDecimal vatValue = BigDecimal.valueOf(0.0);
+        invoices.stream()
                 .forEach(invoice1 -> {
-                    if (invoice.getSeller().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()) {
-                        vatValue = vatValue.add(calculateVatValue(invoice.getEntries()));
-                    } else if (invoice.getBuyer().getTaxIdentificationNumber() == company.getTaxIdentificationNumber()) {
-                        vatValue = vatValue.add(calculateVatValue(invoice.getEntries()));
+                    if (invoice.getSeller().getTaxIdentificationNumber() == taxIdentificationNumber) {
+                        vatValue.add(functionToApply.apply(invoice.getEntries()));
+                    } else if (invoice.getBuyer().getTaxIdentificationNumber() == taxIdentificationNumber) {
+                        vatValue.add(functionToApply.apply(invoice.getEntries()));
                     }
                 });
         return vatValue;
+    }
+
+    private BigDecimal calculateIncomeToCosts(List<Invoice> invoices, String taxIdentificationNumber, Function<List<InvoiceEntry>, BigDecimal> functionToApply) {
+        incomeToCosts = calculateIncomeForCompany(invoices, taxIdentificationNumber, functionToApply).subtract(calculateVatForCompany(invoices, taxIdentificationNumber, functionToApply));
+        return incomeToCosts;
     }
 
     private BigDecimal calculateAllEntriesValuesFromOneInvoice(List<InvoiceEntry> entries, Function<InvoiceEntry, BigDecimal> functionToApply) {
