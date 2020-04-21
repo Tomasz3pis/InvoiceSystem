@@ -1,6 +1,34 @@
-/.idea/
-/.mvn/wrapper/
-/target/
-/invoice-system.iml
-/mvnw
-/mvnw.cmd
+##############################
+## Java
+##############################
+HELP.md
+README.md
+invoice.iml
+release.properties
+invoice.iml
+##############################
+## IntelliJ
+##############################
+out/
+.idea/
+.idea_modules/
+.idea/compiler.xml
+.idea/workspace.xml
+*.iml
+*.ipr
+*.iws
+##############################
+## Maven
+##############################
+target/
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/
+mvnw
+mvnw.iml
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+libraries/
