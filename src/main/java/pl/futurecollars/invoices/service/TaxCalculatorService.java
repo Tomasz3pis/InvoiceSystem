@@ -19,7 +19,7 @@ public class TaxCalculatorService {
     private BigDecimal calculateIncomeForCompany(List<Invoice> invoices, String taxIdentificationNumber, Function<List<InvoiceEntry>, BigDecimal> functionToApply) {
         BigDecimal income = BigDecimal.valueOf(0.0);
         invoices.stream()
-                .filter(value -> (invoice.getSeller().getTaxIdentificationNumber() == taxIdentificationNumber))
+                .filter(value -> (invoice.getSeller().getTaxIdentificationNumber().equals(taxIdentificationNumber)))
                 .forEach(invoice1 -> income.add(functionToApply.apply(invoice.getEntries())));
         return income;
     }
@@ -28,9 +28,9 @@ public class TaxCalculatorService {
         BigDecimal vatValue = BigDecimal.valueOf(0.0);
         invoices.stream()
                 .forEach(invoice1 -> {
-                    if (invoice.getSeller().getTaxIdentificationNumber() == taxIdentificationNumber) {
+                    if (invoice.getSeller().getTaxIdentificationNumber().equals(taxIdentificationNumber)) {
                         vatValue.add(functionToApply.apply(invoice.getEntries()));
-                    } else if (invoice.getBuyer().getTaxIdentificationNumber() == taxIdentificationNumber) {
+                    } else if (invoice.getBuyer().getTaxIdentificationNumber().equals(taxIdentificationNumber)) {
                         vatValue.add(functionToApply.apply(invoice.getEntries()));
                     }
                 });
