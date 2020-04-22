@@ -17,7 +17,6 @@ public class TaxCalculatorService {
     private BigDecimal incomeToCosts;
 
     private BigDecimal calculateIncomeForCompany(List<Invoice> invoices, String taxIdentificationNumber, Function<List<InvoiceEntry>, BigDecimal> functionToApply) {
-        BigDecimal income = BigDecimal.valueOf(0.0);
         invoices.stream()
                 .filter(value -> (invoice.getSeller().getTaxIdentificationNumber().equals(taxIdentificationNumber)))
                 .forEach(invoice1 -> income.add(functionToApply.apply(invoice.getEntries())));
@@ -25,7 +24,6 @@ public class TaxCalculatorService {
     }
 
     private BigDecimal calculateVatForCompany(List<Invoice> invoices, String taxIdentificationNumber, Function<List<InvoiceEntry>, BigDecimal> functionToApply) {
-        BigDecimal vatValue = BigDecimal.valueOf(0.0);
         invoices.stream()
                 .forEach(invoice1 -> {
                     if (invoice.getSeller().getTaxIdentificationNumber().equals(taxIdentificationNumber)) {
