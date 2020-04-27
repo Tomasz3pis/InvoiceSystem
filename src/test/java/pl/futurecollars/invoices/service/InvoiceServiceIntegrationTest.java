@@ -6,6 +6,7 @@ import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoice
 import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceThree;
 import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceTwo;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,7 +30,7 @@ class InvoiceServiceIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("invoiceSystemTestArguments")
-    void shouldSaveGivenInvoices(Invoice firstInvoice, Invoice secondInvoice) {
+    void shouldSaveGivenInvoices(Invoice firstInvoice, Invoice secondInvoice) throws JsonProcessingException {
         // Given
 
         // When
@@ -44,7 +45,7 @@ class InvoiceServiceIntegrationTest {
     @ParameterizedTest
     @MethodSource("invoiceSystemTestArguments")
     void shouldModifyGivenInvoice(
-            Invoice firstInvoice, Invoice secondInvoice, Invoice thirdInvoice, Invoice fourthInvoice) {
+            Invoice firstInvoice, Invoice secondInvoice, Invoice thirdInvoice, Invoice fourthInvoice) throws JsonProcessingException {
         // Given
         invoiceService.saveInvoice(thirdInvoice);
         invoiceService.saveInvoice(fourthInvoice);
@@ -63,7 +64,7 @@ class InvoiceServiceIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("invoiceSystemTestArguments")
-    void shouldRemoveGivenInvoice(Invoice fifthInvoice, Invoice sixthInvoice) {
+    void shouldRemoveGivenInvoice(Invoice fifthInvoice, Invoice sixthInvoice) throws JsonProcessingException {
         // Given
         invoiceService.saveInvoice(fifthInvoice);
         invoiceService.saveInvoice(sixthInvoice);

@@ -1,15 +1,18 @@
 package pl.futurecollars.invoices.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import pl.futurecollars.invoices.database.Database;
+import pl.futurecollars.invoices.database.FileHelper;
 import pl.futurecollars.invoices.model.Invoice;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
 
 @Service
 @Validated
@@ -18,7 +21,7 @@ public class InvoiceService {
     @Autowired
     private Database database;
 
-    public long saveInvoice(@Valid Invoice invoice) {
+    public long saveInvoice(@Valid Invoice invoice) throws JsonProcessingException {
         return database.saveInvoice(invoice);
     }
 

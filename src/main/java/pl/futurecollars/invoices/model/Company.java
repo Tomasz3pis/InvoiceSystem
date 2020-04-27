@@ -19,6 +19,8 @@ public class Company {
     @Valid
     private PostalAddress address;
 
+    public Company() { }
+
     public Company(String taxIdentificationNumber, String name, PostalAddress address) {
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.name = name;

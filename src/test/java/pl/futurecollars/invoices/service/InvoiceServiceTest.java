@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +30,7 @@ class InvoiceServiceTest {
     private InvoiceService injectedInvoiceService;
 
     @Test
-    void shouldSaveInvoiceGivenData() {
+    void shouldSaveInvoiceGivenData() throws JsonProcessingException {
         // Given
         long id = 1L;
         when(database.getInvoiceById(id)).thenReturn(Optional.of(invoice));

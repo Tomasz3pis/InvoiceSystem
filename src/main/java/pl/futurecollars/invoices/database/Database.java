@@ -1,5 +1,6 @@
 package pl.futurecollars.invoices.database;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import pl.futurecollars.invoices.model.Invoice;
 
 import java.time.LocalDate;
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface Database {
 
-    long saveInvoice(Invoice invoice);
+    long saveInvoice(Invoice invoice) throws JsonProcessingException;
 
     List<Invoice> getInvoices();
 

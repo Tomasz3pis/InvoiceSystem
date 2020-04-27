@@ -22,6 +22,9 @@ public class PostalAddress {
     @NotBlank
     private String city;
 
+    public PostalAddress() {
+    }
+
     public PostalAddress(
             String streetName,
             String streetNumber,

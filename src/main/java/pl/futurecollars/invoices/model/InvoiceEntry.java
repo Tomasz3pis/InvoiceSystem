@@ -21,6 +21,9 @@ public class InvoiceEntry {
     @NotNull
     private Vat vat;
 
+    public InvoiceEntry() {
+    }
+
     public InvoiceEntry(String itemName, int quantity, BigDecimal netPrice, Vat vat) {
         this.itemName = itemName;
         this.quantity = quantity;
