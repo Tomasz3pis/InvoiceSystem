@@ -1,5 +1,7 @@
 package pl.futurecollars.invoices.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -8,14 +10,18 @@ import java.math.BigDecimal;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@ApiModel(description = "Invoice entry data")
 public class InvoiceEntry {
 
     @NotBlank
+    @ApiModelProperty(value = "Name of an item (sale unit or service name).", example = "Wireless keyboard set")
     private String itemName;
 
+    @ApiModelProperty(value = "Number of units sold.", example = "10")
     private int quantity;
 
     @NotNull
+    @ApiModelProperty(value = "Net price of a single sale / service unit.", example = "129.90")
     private BigDecimal netPrice;
 
     @NotNull

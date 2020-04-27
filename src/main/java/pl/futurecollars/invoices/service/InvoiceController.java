@@ -1,6 +1,5 @@
 package pl.futurecollars.invoices.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -50,7 +49,7 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public long saveInvoice(@RequestBody Invoice invoice) throws JsonProcessingException {
+    public long saveInvoice(@RequestBody Invoice invoice) {
         validatingService.validateInput(invoice);
         return invoiceService.saveInvoice(invoice);
     }
