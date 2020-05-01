@@ -4,27 +4,30 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JsonParserHelper<T> {
+public class JsonParserHelper {
 
-    final Logger logger = LoggerFactory.getLogger(JsonParserHelper.class);
+    private final Logger logger = LoggerFactory.getLogger(JsonParserHelper.class);
+
+    @Autowired
+    private ObjectMapper mapper;
 
     public String objectToJson(Object o) {
         try {
-            ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(o);
-        } catch (
-                JsonProcessingException e) {
-            logger.error("Wrong input format");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
-    public T jsonToObject(String json, Class<T> clazz) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(json, clazz);
+    public Invoice jsonToInvoice(String json) {
+        try {
+            return mapper.readValue(json, Invoice.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 }

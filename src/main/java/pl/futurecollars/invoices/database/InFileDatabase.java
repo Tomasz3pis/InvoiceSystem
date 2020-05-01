@@ -1,7 +1,5 @@
 package pl.futurecollars.invoices.database;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +16,11 @@ import java.util.Optional;
 @Repository
 public class InFileDatabase implements Database {
 
-    final Logger logger = LoggerFactory.getLogger(InFileDatabase.class);
-
+    private final Logger logger = LoggerFactory.getLogger(InFileDatabase.class);
 
     @Autowired
     private JsonParserHelper jsonParserHelper;
+    
     @Autowired
     private FileHelper fileHelper;
 
@@ -41,7 +39,7 @@ public class InFileDatabase implements Database {
 
     @Override
     public List<Invoice> getInvoices(LocalDate startDate, LocalDate endDate) {
-        return fileHelper.findAll() ;
+        return fileHelper.findAll(startDate, endDate) ;
     }
 
     @Override

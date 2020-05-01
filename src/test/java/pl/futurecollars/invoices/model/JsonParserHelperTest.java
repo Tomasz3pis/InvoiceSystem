@@ -27,11 +27,11 @@ class JsonParserHelperTest {
     }
 
     @Test
-    public void testJsonToObject() throws JsonProcessingException {
+    public void testJsonToInvoice() throws JsonProcessingException {
         // given
         String json = "{\"id\":65000}";
         // when
-        Invoice result = (Invoice) jsonParserHelper.jsonToObject(json, Invoice.class);
+        Invoice result = jsonParserHelper.jsonToInvoice(json);
         // then
         assertThat(result.getId()).isEqualTo(65000L);
     }

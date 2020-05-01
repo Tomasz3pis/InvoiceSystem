@@ -21,7 +21,7 @@ public class InvoiceService {
     @Autowired
     private Database database;
 
-    public long saveInvoice(@Valid Invoice invoice) throws JsonProcessingException {
+    public long saveInvoice(@Valid Invoice invoice) {
         return database.saveInvoice(invoice);
     }
 
@@ -30,6 +30,9 @@ public class InvoiceService {
     }
 
     public List<Invoice> getInvoices(LocalDate startDate, LocalDate endDate) {
+        if(startDate == null || endDate == null){
+           return getInvoices();
+        }
         return database.getInvoices(startDate, endDate);
     }
 

@@ -1,5 +1,6 @@
 package pl.futurecollars.invoices.database;
 
+import org.apache.el.util.ReflectionUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,22 +11,23 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.ReflectionUtils;
+import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
 import pl.futurecollars.invoices.model.JsonParserHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -36,8 +38,6 @@ class FileHelperTest {
     @InjectMocks
     private FileHelper fileHelper;
 
-    @Mock
-    private InFileDbConfig inFileDbConfig;
     @Mock
     private JsonParserHelper jsonParserHelper;
 
@@ -50,6 +50,8 @@ class FileHelperTest {
     public void setUp() throws IOException {
         db = new File(tempDir.getAbsolutePath() + "/db.txt");
         counter = new File(tempDir.getAbsolutePath() + "/counter.txt");
+        ReflectionTestUtils.setField(fileHelper, "inFileDbPath", db.getAbsolutePath());
+        ReflectionTestUtils.setField(fileHelper, "inFileCounterPath", counter.getAbsolutePath());
         FileWriter writer = new FileWriter(counter, true);
         writer.write("0");
         writer.close();
@@ -57,14 +59,14 @@ class FileHelperTest {
 
     @AfterEach
     public void tearDown() {
-
+        db.delete();
+        counter.delete();
     }
 
     @Test
     void shouldAppendLine() throws IOException {
         //given
         String json = "testString";
-        when(inFileDbConfig.getDbFilePath()).thenReturn(db.getAbsolutePath());
         //when
         fileHelper.appendLine(json);
         //then
@@ -76,19 +78,19 @@ class FileHelperTest {
     @Test
     void findById() throws IOException {
         // given
-        String json = "{\"id\":65}";
+        String json = "{\"id\":65, \"\"}";
         Invoice invoice = new Invoice();
         invoice.setId(65L);
-        String json2 = "{\"id\":102}";
+        String json2 = "{\"id\":102, \"\"}";
         Invoice invoice2 = new Invoice();
         invoice2.setId(102L);
         FileWriter writer = new FileWriter(db, true);
         writer.write(json+"\n");
         writer.write(json2);
         writer.close();
-        when(inFileDbConfig.getDbFilePath()).thenReturn(db.getAbsolutePath());
-        when(jsonParserHelper.jsonToObject(eq(json), eq(Invoice.class))).thenReturn(invoice);
-        when(jsonParserHelper.jsonToObject(eq(json2), eq(Invoice.class))).thenReturn(invoice2);
+
+        when(jsonParserHelper.jsonToInvoice(json)).thenReturn(invoice);
+        when(jsonParserHelper.jsonToInvoice(json2)).thenReturn(invoice2);
         //when
         Invoice result = fileHelper.findById(102L);
         //then
@@ -96,7 +98,20 @@ class FileHelperTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteById() throws IOException {
+        // given
+        String json = "{\"id\":65, \"\"}";
+        Invoice invoice = new Invoice();
+        invoice.setId(65L);
+        FileWriter writer = new FileWriter(db, true);
+        writer.write(json+"\n");
+        writer.close();
+        // when
+        fileHelper.deleteById(65L);
+        // then
+        InvoiceNotFoundException exception = catchThrowableOfType(()-> fileHelper.findById(65L),InvoiceNotFoundException.class);
+        assertThat(exception).isNotNull();
+
     }
 
     @Test

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface Database {
 
-    long saveInvoice(Invoice invoice) throws JsonProcessingException;
+    long saveInvoice(Invoice invoice);
 
     List<Invoice> getInvoices();
 
