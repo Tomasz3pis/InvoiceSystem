@@ -16,6 +16,7 @@ import pl.futurecollars.invoices.database.Database;
 import pl.futurecollars.invoices.model.Invoice;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -69,6 +70,7 @@ class InvoiceServiceIntegrationTest {
         invoiceService.saveInvoice(fifthInvoice);
         invoiceService.saveInvoice(sixthInvoice);
         assertThat(database.getInvoiceById(fifthInvoice.getId()), is(Optional.of(fifthInvoice)));
+        List<Invoice> xd = database.getInvoices();
         int expectedInvoiceCount = invoiceService.getInvoices().size() - 1;
 
         // When

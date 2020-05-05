@@ -27,8 +27,8 @@ public class InFileDatabase implements Database {
     @Override
     public long saveInvoice(Invoice invoice) {
         invoice.setId(fileHelper.readNextCounter());
-        String json = jsonParserHelper.objectToJson(invoice);
-        fileHelper.appendLine(json);
+        String parsedInvoiceJson = jsonParserHelper.objectToJson(invoice);
+        fileHelper.appendLine(parsedInvoiceJson);
         return 0;
     }
 

@@ -9,6 +9,7 @@ import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
 import pl.futurecollars.invoices.model.JsonParserHelper;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -18,7 +19,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -42,46 +42,44 @@ public class FileHelper {
 
     public void appendLine(String json) {
         File file = new File(inFileDbPath);
-        try (FileWriter writer = new FileWriter(file, true)) {
-            json = String.format("%s\n", json);
-            writer.write(json);
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, true))) {
+            bufferedWriter.write(json + "\n");
         } catch (IOException ex) {
-            logger.error("Error writing to file");
+            logger.error("Error opening file");
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
     }
 
     public Invoice findById(Long invoiceId) {
         File file = new File(inFileDbPath);
         String patternString = constructIdPattern(invoiceId);
-        Pattern pattern = Pattern.compile(patternString);
-        Optional<String> json = null;
+        Pattern specifiedIdPattern = Pattern.compile(patternString);
         try (Stream<String> lines = Files.lines(file.toPath())) {
-            json = lines
-                    .filter(line -> pattern.matcher(line).matches())
-                    .findFirst();
-        } catch (IOException e) {
-            logger.error("File could not be opened");
-        }
-        if (json.isPresent()) {
-            return jsonParserHelper.jsonToInvoice(json.get());
-        } else {
-            throw new InvoiceNotFoundException(invoiceId);
+            return lines.filter(line -> specifiedIdPattern.matcher(line).matches())
+                    .findFirst()
+                    .map(matchingLine -> jsonParserHelper.jsonToInvoice(matchingLine))
+                    .orElse(null);
+        } catch (IOException ex) {
+            logger.error("Error opening file");
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
     }
 
     public List<Invoice> findAll(LocalDate startDate, LocalDate endDate) {
         File file = new File(inFileDbPath);
-        List<Invoice> out = new ArrayList<>();
         try (Stream<String> lines = Files.lines(file.toPath())) {
-            out = lines
+            return lines
                     .map(line -> jsonParserHelper.jsonToInvoice(line))
-                    .filter(invoice -> invoice.getIssueDate().isAfter(startDate) &&
-                            invoice.getIssueDate().isBefore(endDate))
+                    .filter(invoice -> invoice.getIssueDate().isAfter(startDate))
+                    .filter(invoice -> invoice.getIssueDate().isBefore(endDate))
                     .collect(Collectors.toList());
         } catch (IOException ex) {
             logger.error("File with input date cannot be opened");
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
-        return out;
     }
 
     public Invoice deleteById(Long invoiceId) {
@@ -93,6 +91,8 @@ public class FileHelper {
             Files.write(file.toPath(), out, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException ex) {
             logger.error("File cannot be opened");
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
         return null;
     }
@@ -103,19 +103,16 @@ public class FileHelper {
     }
 
     public List<Invoice> findAll() {
-        List<Invoice> listOfAll = new ArrayList<>();
-        try (
-                FileInputStream fis = new FileInputStream(inFileDbPath);
-                Scanner sc = new Scanner(fis)
-        ) {
-            while (sc.hasNextLine()) {
-                String json = sc.nextLine();
-                listOfAll.add(jsonParserHelper.jsonToInvoice(json));
-            }
+        File file = new File(inFileDbPath);
+        try (Stream<String> lines = Files.lines(file.toPath())) {
+            return lines
+                    .map(jsonParserHelper::jsonToInvoice)
+                    .collect(Collectors.toList());
         } catch (IOException ex) {
-            logger.error("Error while searching for record.");
+            logger.error("File cannot be opened");
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
-        return listOfAll;
     }
 
     public Long readNextCounter() {

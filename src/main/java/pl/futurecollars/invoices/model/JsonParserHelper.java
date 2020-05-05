@@ -19,6 +19,8 @@ public class JsonParserHelper {
         try {
             return mapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
+            logger.error("Error processing Invoice object to json.");
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -27,6 +29,8 @@ public class JsonParserHelper {
         try {
             return mapper.readValue(json, Invoice.class);
         } catch (JsonProcessingException e) {
+            logger.error("Error processing json to Invoice object.");
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

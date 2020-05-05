@@ -1,6 +1,7 @@
 package pl.futurecollars.invoices.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -17,9 +18,11 @@ public class Invoice {
     private long id;
 
     @NotNull
+    @ApiModelProperty(value = "The date this invoice was issued at.", example = "2020-01-10")
     private LocalDate issueDate;
 
     @NotNull
+    @ApiModelProperty(value = "The date of an actual sale or service.", example = "2020-01-09")
     private LocalDate saleDate;
 
     @Valid
