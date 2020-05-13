@@ -1,17 +1,12 @@
 package pl.futurecollars.invoices.service;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceOne;
-import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceThree;
-import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceTwo;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import pl.futurecollars.invoices.database.Database;
 import pl.futurecollars.invoices.model.Invoice;
 
@@ -20,7 +15,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceOne;
+import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceThree;
+import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceTwo;
+
 @SpringBootTest
+@ContextConfiguration(initializers = TemporaryFolderInitializer.class)
 class InvoiceServiceIntegrationTest {
 
     @Autowired
