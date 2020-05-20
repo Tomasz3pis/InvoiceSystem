@@ -11,7 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
-import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
 import pl.futurecollars.invoices.model.JsonParserHelper;
 
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -107,9 +105,8 @@ class FileHelperTest {
         // when
         fileHelper.deleteById(65L);
         // then
-        InvoiceNotFoundException exception = catchThrowableOfType(() -> fileHelper.findById(65L), InvoiceNotFoundException.class);
-        assertThat(exception).isNotNull();
-
+        Invoice existingInvoice = fileHelper.findById(65L);
+        assertThat(existingInvoice).isNull();
     }
 
     @Test

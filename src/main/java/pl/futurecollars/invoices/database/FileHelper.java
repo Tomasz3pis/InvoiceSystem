@@ -59,7 +59,7 @@ public class FileHelper {
             return lines.filter(line -> specifiedIdPattern.matcher(line).matches())
                     .findFirst()
                     .map(matchingLine -> jsonParserHelper.jsonToInvoice(matchingLine))
-                    .orElseThrow(()-> new InvoiceNotFoundException(invoiceId));
+                    .orElse(null);
         } catch (IOException ex) {
             logger.error("Error opening file");
             ex.printStackTrace();
