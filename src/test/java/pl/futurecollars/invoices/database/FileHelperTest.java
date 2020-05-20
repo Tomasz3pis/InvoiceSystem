@@ -40,12 +40,14 @@ class FileHelperTest {
 
     @TempDir
     public File tempDir;
+
     private File db;
     private File counter;
 
     @BeforeEach
     public void setUp() throws IOException {
         db = new File(tempDir.getAbsolutePath() + "/db.txt");
+        db.createNewFile();
         counter = new File(tempDir.getAbsolutePath() + "/counter.txt");
         ReflectionTestUtils.setField(fileHelper, "inFileDbPath", db.getAbsolutePath());
         ReflectionTestUtils.setField(fileHelper, "inFileCounterPath", counter.getAbsolutePath());
