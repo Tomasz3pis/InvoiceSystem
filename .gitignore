@@ -4,3 +4,9 @@
 /invoice-system.iml
 /mvnw
 /mvnw.cmd
+/src/main/resources/CurrentID.txt
+/src/main/resources/Invoices
+/src/test/resources/CurrentID.txt
+/src/test/resources/Invoices
+/src/test/resources/testFile.txt
+/invoice.iml

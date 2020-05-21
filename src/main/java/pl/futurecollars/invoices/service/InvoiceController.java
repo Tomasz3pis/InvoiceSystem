@@ -56,6 +56,9 @@ public class InvoiceController implements InvoiceApi {
     }
 
     public void deleteInvoice(@PathVariable("id") long id) {
+        if (invoiceService.getInvoice(id).isEmpty()) {
+            throw new InvoiceNotFoundException(id);
+        }
         invoiceService.deleteInvoice(id);
     }
 }
