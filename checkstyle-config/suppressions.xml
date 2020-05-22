@@ -7,6 +7,7 @@
 <suppressions>
     <suppress checks="MagicNumber"
               files=".*[\\/]src[\\/]test[\\/]"/>
+    <suppress checks="VisibilityModifier" files="IntegrationTestBase.java"/>
     <suppress checks="JavadocPackage" files=".*"/>
     <suppress checks="Header" files=".*"/>
     <suppress checks="JavadocMethod" files=".*"/>

@@ -38,16 +38,32 @@ public class InvoiceEntry {
         return itemName;
     }
 
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public BigDecimal getNetPrice() {
         return netPrice;
     }
 
+    public void setNetPrice(BigDecimal netPrice) {
+        this.netPrice = netPrice;
+    }
+
     public Vat getVat() {
         return vat;
+    }
+
+    public void setVat(Vat vat) {
+        this.vat = vat;
     }
 
     @Override
