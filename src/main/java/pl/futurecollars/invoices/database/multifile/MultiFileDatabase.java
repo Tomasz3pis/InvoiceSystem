@@ -11,6 +11,7 @@ import pl.futurecollars.invoices.database.AbstractDatabase;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -46,6 +47,22 @@ public class MultiFileDatabase extends AbstractDatabase {
 
     @Value("${multifile.id.path}")
     private String idFile;
+
+    @PostConstruct
+    public void initilizeCache() {
+        try {
+                for (File file : findAllFiles()) {
+                   List<Invoice> invoices = (mapper.readValue(file, mapper.getTypeFactory()
+                            .constructCollectionType(List.class, Invoice.class)));
+                   for (Invoice invoice : invoices) {
+                       cache.add(invoice.getId(), file);
+                   }
+                }
+            } catch (IOException e) {
+                LOGGER.error("Cannot read invoices. Files do not exist or are unable to read. ", e);
+            }
+        }
+
 
     @Override
     public long saveInvoice(Invoice invoice) {

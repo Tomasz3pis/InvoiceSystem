@@ -93,6 +93,11 @@ public class Invoice {
             return this;
         }
 
+        public InvoiceBuilder setId(long id) {
+            this.builderInvoice.setId(id);
+            return this;
+        }
+
         public InvoiceBuilder setSaleDate(LocalDate saleDate) {
             this.builderInvoice.setSaleDate(saleDate);
             return this;
@@ -160,6 +165,6 @@ public class Invoice {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
     }
 }

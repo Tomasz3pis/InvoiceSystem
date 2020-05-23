@@ -6,8 +6,13 @@ import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyBuy
 import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyBuySome;
 import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyGiftShops;
 import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyPurchasey;
+import static pl.futurecollars.invoices.providers.TestCompanyProvider.futureCollars;
+import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountEight;
+import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountFive;
 import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountFour;
 import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountOne;
+import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountSeven;
+import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountSix;
 import static pl.futurecollars.invoices.providers.TestEntriesProvider.invoiceEntriesCountThree;
 
 import pl.futurecollars.invoices.model.Invoice;
@@ -45,4 +50,50 @@ public class TestInvoiceProvider {
                 .setEntries(invoiceEntriesCountFour())
                 .build();
     }
+
+
+    public static Invoice getInvoiceForGrocery() {
+        return new Invoice.InvoiceBuilder()
+                .setId(6)
+                .setIssueDate(LocalDate.of(2020, 01, 15))
+                .setSaleDate(LocalDate.of(2020, 01, 24))
+                .setSeller(futureCollars())
+                .setBuyer(companyBoughtt())
+                .setEntries(invoiceEntriesCountFive())
+                .build();
+    }
+
+    public static Invoice getInvoiceForFruits() {
+        return new Invoice.InvoiceBuilder()
+                .setId(3)
+                .setIssueDate(LocalDate.of(2020, 04, 01))
+                .setSaleDate(LocalDate.of(2020, 01, 22))
+                .setSeller(futureCollars())
+                .setBuyer(companyBoughtt())
+                .setEntries(invoiceEntriesCountSix())
+                .build();
+    }
+
+    public static Invoice getInvoiceForGames() {
+        return new Invoice.InvoiceBuilder()
+                .setId(2)
+                .setIssueDate(LocalDate.of(2020, 04, 01))
+                .setSaleDate(LocalDate.of(2020, 01, 22))
+                .setSeller(companyBuyMore())
+                .setBuyer(futureCollars())
+                .setEntries(invoiceEntriesCountSeven())
+                .build();
+    }
+
+    public static Invoice getInvoiceForSoftWare() {
+        return new Invoice.InvoiceBuilder()
+                .setId(1)
+                .setIssueDate(LocalDate.of(2020, 04, 01))
+                .setSaleDate(LocalDate.of(2020, 01, 22))
+                .setSeller(companyBuyMore())
+                .setBuyer(futureCollars())
+                .setEntries(invoiceEntriesCountEight())
+                .build();
+    }
+
 }

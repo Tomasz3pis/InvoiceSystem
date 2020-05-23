@@ -41,15 +41,22 @@ public class TestCompanyProvider {
 
     public static Company companyPurchasey() {
         return new Company(
-                "9009998765",
+                "3",
                 "Purchasey",
                 addressIdahoFalls());
     }
 
     public static Company companyBoughtt() {
         return new Company(
-                "9990000999",
+                "2",
                 "Boughtt",
                 addressFortDodge());
+    }
+
+    public static Company futureCollars() {
+        return new Company(
+                "1",
+                "FutureCollars",
+                addressLatrobe());
     }
 }

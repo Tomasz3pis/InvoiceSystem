@@ -6,10 +6,12 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
+@Component
 @ApiModel(description = "Company data")
 public class Company {
 
@@ -23,6 +25,9 @@ public class Company {
 
     @Valid
     private PostalAddress address;
+
+    public Company() {
+    }
 
     public Company(String taxIdentificationNumber, String name, PostalAddress address) {
         this.taxIdentificationNumber = taxIdentificationNumber;
@@ -62,6 +67,6 @@ public class Company {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+                ToStringStyle.SIMPLE_STYLE);
     }
 }

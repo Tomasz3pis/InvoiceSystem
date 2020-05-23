@@ -1,7 +1,7 @@
 package pl.futurecollars.invoices.database;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceOne;
@@ -52,8 +52,9 @@ class MultiFileDatabaseTest {
         database.saveInvoice(invoiceOne);
         database.saveInvoice(invoiceTwo);
 
+
         //then
-        assertThat(database.getInvoices(), contains(invoiceOne, invoiceTwo));
+        assertThat(database.getInvoices(), hasItems(invoiceOne, invoiceTwo));
         assertThat(database.getInvoiceById(invoiceOne.getId()), is(Optional.of(invoiceOne)));
     }
 
@@ -76,11 +77,11 @@ class MultiFileDatabaseTest {
         database.saveInvoice(invoiceOne);
 
         //when
-        assertThat(database.getInvoices(), contains(invoiceOne));
+        assertThat(database.getInvoices(), hasItems(invoiceOne));
         database.updateInvoice(invoiceOne.getId(), invoiceTwo);
 
         //then
-        assertThat(database.getInvoices(), contains(invoiceTwo));
+        assertThat(database.getInvoices(), hasItems(invoiceTwo));
     }
 
     @Test
@@ -140,8 +141,8 @@ class MultiFileDatabaseTest {
         LocalDate dateTwo = LocalDate.of(2020, 1, 1);
 
         //then
-        assertThat(database.getInvoices(null, null), contains(invoiceOne, invoiceTwo));
-        assertThat(database.getInvoices(null, dateTwo), contains(invoiceOne));
-        assertThat(database.getInvoices(dateOne, dateTwo), contains(invoiceOne));
+        assertThat(database.getInvoices(null, null), hasItems(invoiceOne, invoiceTwo));
+        assertThat(database.getInvoices(null, dateTwo), hasItems(invoiceOne));
+        assertThat(database.getInvoices(dateOne, dateTwo), hasItems(invoiceOne));
     }
 }
