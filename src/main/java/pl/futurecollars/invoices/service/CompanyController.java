@@ -9,22 +9,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.futurecollars.invoices.database.Database;
-import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
-import pl.futurecollars.invoices.model.Invoice;
+import pl.futurecollars.invoices.database.company.CompanyDatabase;
+import pl.futurecollars.invoices.exceptions.CompanyNotFoundException;
+import pl.futurecollars.invoices.model.Company;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/{companyId}")
+@RequestMapping("/companies")
 @Validated
 public class CompanyController {
 
     @Autowired
-    private Database database;
+    private CompanyDatabase database;
 
     @Autowired
     private CompanyService companyService;
@@ -32,45 +30,36 @@ public class CompanyController {
     @Autowired
     private ValidatingService validatingService;
 
-    @GetMapping("/invoices")
-    public List<Invoice> getInvoices(@RequestParam(name = "startDate", required = false) String startDate,
-                                     @RequestParam(name = "endDate", required = false) String endDate) {
-        LocalDate startDateLocal = null;
-        LocalDate endDateLocal = null;
-        if (startDate != null) {
-            startDateLocal = LocalDate.parse(startDate);
-        }
-        if (endDate != null) {
-            endDateLocal = LocalDate.parse(endDate);
-        }
-        return companyService.getInvoices(startDateLocal, endDateLocal);
+    @GetMapping()
+    public List<Company> getCompanies() {
+        return companyService.getCompanies();
     }
 
-    @GetMapping("/invoices/{invoiceId}")
-    public Invoice getInvoiceById(@PathVariable("id") long id) {
-        if (companyService.getInvoice(id).isEmpty()) {
-            throw new InvoiceNotFoundException(id);
+    @GetMapping("/{companyId}")
+    public Company getCompanyById(@PathVariable("id") long id) {
+        if (companyService.getCompany(id).isEmpty()) {
+            throw new CompanyNotFoundException(id);
         }
-        return companyService.getInvoice(id).get();
+        return companyService.getCompany(id).get();
     }
 
-    @PostMapping("/invoices")
-    public long saveInvoice(@RequestBody Invoice invoice) {
-        validatingService.validateInput(invoice);
-        return companyService.saveInvoice(invoice);
+    @PostMapping()
+    public long saveCompany(@RequestBody Company company) {
+        validatingService.validateInput(company);
+        return companyService.saveCompany(company);
     }
 
-    @PutMapping("/invoices/{invoiceId}")
-    public void updateInvoice(@PathVariable("id") long id, @RequestBody Invoice updatedInvoice) {
-        validatingService.validateInput(updatedInvoice);
-        companyService.updateInvoice(id, updatedInvoice);
+    @PutMapping("/{companyId}")
+    public void updateCompany(@PathVariable("id") long id, @RequestBody Company updatedCompany) {
+        validatingService.validateInput(updatedCompany);
+        companyService.updateCompany(id, updatedCompany);
     }
 
-    @DeleteMapping("/invoices/{invoiceId}")
-    public void deleteInvoice(@PathVariable("id") long id) {
-        if (companyService.getInvoice(id).isEmpty()) {
-            throw new InvoiceNotFoundException(id);
+    @DeleteMapping("/{companyId}")
+    public void deleteCompany(@PathVariable("id") long id) {
+        if (companyService.getCompany(id).isEmpty()) {
+            throw new CompanyNotFoundException(id);
         }
-        companyService.deleteInvoice(id);
+        companyService.deleteCompany(id);
     }
 }

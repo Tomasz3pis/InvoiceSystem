@@ -2,11 +2,9 @@ package pl.futurecollars.invoices.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.futurecollars.invoices.database.Database;
-import pl.futurecollars.invoices.model.Invoice;
+import pl.futurecollars.invoices.database.company.CompanyDatabase;
+import pl.futurecollars.invoices.model.Company;
 
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -15,25 +13,25 @@ import javax.validation.Valid;
 public class CompanyService {
 
     @Autowired
-    private Database database;
+    private CompanyDatabase database;
 
-    public List<Invoice> getInvoices(LocalDate startDateLocal, LocalDate endDateLocal) {
-        return Collections.emptyList();
+    public List<Company> getCompanies() {
+        return database.getCompanies();
     }
 
-    public Optional<Invoice> getInvoice(long id) {
-        return Optional.empty();
+    public Optional<Company> getCompany(long id) {
+        return database.getCompanyById(id);
     }
 
-    public long saveInvoice(@Valid Invoice invoice) {
-        return invoice.getId();
+    public long saveCompany(@Valid Company company) {
+        return database.saveCompany(company);
     }
 
-    public void updateInvoice(long id, Invoice updatedInvoice) {
-
+    public void updateCompany(long id, @Valid Company updatedCompany) {
+        database.updateCompany(id, updatedCompany);
     }
 
-    public void deleteInvoice(long id) {
-
+    public void deleteCompany(long id) {
+        database.deleteCompany(id);
     }
 }
