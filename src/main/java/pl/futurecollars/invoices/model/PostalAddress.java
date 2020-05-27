@@ -6,19 +6,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
-@Entity
 @ApiModel(description = "Postal address info")
 public class PostalAddress {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 
     @NotBlank
     @ApiModelProperty(value = "Street name.", example = "Viverra Avenue")
@@ -38,9 +29,6 @@ public class PostalAddress {
     @NotBlank
     @ApiModelProperty(value = "City name.", example = "Roseville")
     private String city;
-
-    public PostalAddress() {
-    }
 
     public PostalAddress(
             String streetName,
