@@ -36,8 +36,9 @@ class FileHelperTest {
     @Mock
     private JsonParserHelper jsonParserHelper;
 
+    @SuppressWarnings("VisibilityModifier")
     @TempDir
-    public File tempDir;
+    File tempDir;
 
     private File db;
     private File counter;

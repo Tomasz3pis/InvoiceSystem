@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class TemporaryFolderInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
     @TempDir
-    public File tempDir = Files.createTempDir();
+    private File tempDir = Files.createTempDir();
     private File db;
     private File counter;
 
@@ -26,7 +26,9 @@ public class TemporaryFolderInitializer implements ApplicationContextInitializer
         } catch (IOException e) {
             e.printStackTrace();
         }
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(applicationContext, "infile.db.path=" + db.getAbsolutePath().replace("\\", "/"));
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(applicationContext, "infile.counter.path=" + counter.getAbsolutePath().replace("\\", "/"));
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+                applicationContext, "infile.db.path=" + db.getAbsolutePath().replace("\\", "/"));
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+                applicationContext, "infile.counter.path=" + counter.getAbsolutePath().replace("\\", "/"));
     }
 }

@@ -48,7 +48,8 @@ class InvoiceServiceIntegrationTest {
     @ParameterizedTest
     @MethodSource("invoiceSystemTestArguments")
     void shouldModifyGivenInvoice(
-            Invoice firstInvoice, Invoice secondInvoice, Invoice thirdInvoice, Invoice fourthInvoice) throws JsonProcessingException {
+            Invoice firstInvoice, Invoice secondInvoice, Invoice thirdInvoice, Invoice fourthInvoice)
+            throws JsonProcessingException {
         // Given
         invoiceService.saveInvoice(thirdInvoice);
         invoiceService.saveInvoice(fourthInvoice);

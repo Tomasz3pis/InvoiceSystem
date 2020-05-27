@@ -16,4 +16,5 @@
     <suppress checks="DesignForExtension" files=".*"/>
     <suppress checks="HideUtilityClassConstructor" files=".*"/>
     <suppress checks="FinalParameters" files=".*"/>
+    <suppress checks="VisibilityModifier" files=".*FileHelperTest.*"/>
 </suppressions>

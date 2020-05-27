@@ -1,12 +1,9 @@
 package pl.futurecollars.invoices.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import pl.futurecollars.invoices.database.Database;
-import pl.futurecollars.invoices.database.FileHelper;
 import pl.futurecollars.invoices.model.Invoice;
 
 import javax.validation.Valid;
@@ -30,7 +27,7 @@ public class InvoiceService {
     }
 
     public List<Invoice> getInvoices(LocalDate startDate, LocalDate endDate) {
-        if(startDate == null || endDate == null){
+        if (startDate == null || endDate == null) {
            return getInvoices();
         }
         return database.getInvoices(startDate, endDate);

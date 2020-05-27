@@ -1,8 +1,6 @@
 package pl.futurecollars.invoices.database;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import pl.futurecollars.invoices.model.Invoice;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;

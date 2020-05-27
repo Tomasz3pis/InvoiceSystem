@@ -20,7 +20,7 @@ public class InFileDatabase implements Database {
 
     @Autowired
     private JsonParserHelper jsonParserHelper;
-    
+
     @Autowired
     private FileHelper fileHelper;
 
@@ -39,7 +39,7 @@ public class InFileDatabase implements Database {
 
     @Override
     public List<Invoice> getInvoices(LocalDate startDate, LocalDate endDate) {
-        return fileHelper.findAll(startDate, endDate) ;
+        return fileHelper.findAll(startDate, endDate);
     }
 
     @Override

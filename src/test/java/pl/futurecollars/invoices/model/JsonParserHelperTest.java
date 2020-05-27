@@ -66,11 +66,11 @@ class JsonParserHelperTest {
             this.name = name;
         }
 
-        public TestClass(Long id, String name) {
+         TestClass(Long id, String name) {
             this.id = id;
             this.name = name;
         }
 
-        public TestClass() { }
+      TestClass() { }
     }
 }
