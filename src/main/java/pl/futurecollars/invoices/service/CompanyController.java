@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.futurecollars.invoices.database.company.CompanyDatabase;
+import pl.futurecollars.invoices.database.company.CompanyRepository;
 import pl.futurecollars.invoices.exceptions.CompanyNotFoundException;
 import pl.futurecollars.invoices.model.Company;
 
@@ -22,7 +22,7 @@ import java.util.List;
 public class CompanyController {
 
     @Autowired
-    private CompanyDatabase database;
+    private CompanyRepository database;
 
     @Autowired
     private CompanyService companyService;

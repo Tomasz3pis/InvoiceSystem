@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.database.multifile;
+package pl.futurecollars.invoices.database.invoice.multifile;
 
 import org.springframework.context.annotation.Configuration;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;

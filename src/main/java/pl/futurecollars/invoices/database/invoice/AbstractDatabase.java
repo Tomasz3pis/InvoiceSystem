@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.database;
+package pl.futurecollars.invoices.database.invoice;
 
 import pl.futurecollars.invoices.model.Invoice;
 

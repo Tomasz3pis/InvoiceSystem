@@ -3,7 +3,7 @@ package pl.futurecollars.invoices.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import pl.futurecollars.invoices.database.Database;
+import pl.futurecollars.invoices.database.invoice.Database;
 import pl.futurecollars.invoices.model.Invoice;
 
 import java.time.LocalDate;

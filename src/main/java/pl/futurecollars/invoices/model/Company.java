@@ -6,13 +6,17 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.stereotype.Component;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
-@Component
 @ApiModel(description = "Company data")
+@Entity
 public class Company {
 
     @NotBlank
@@ -23,11 +27,16 @@ public class Company {
     @ApiModelProperty(value = "Company full name", example = "BestBuy inc.")
     private String name;
 
+    @Transient
     @Valid
     private PostalAddress address;
 
-    public Company() {
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    public Company(){
+    };
 
     public Company(String taxIdentificationNumber, String name, PostalAddress address) {
         this.taxIdentificationNumber = taxIdentificationNumber;
@@ -45,6 +54,14 @@ public class Company {
 
     public PostalAddress getAddress() {
         return address;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
@@ -67,6 +84,6 @@ public class Company {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.SIMPLE_STYLE);
+                ToStringStyle.MULTI_LINE_STYLE);
     }
 }
