@@ -11,7 +11,6 @@ import pl.futurecollars.invoices.database.invoice.AbstractDatabase;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 
 @Repository
 @Primary
@@ -37,7 +37,7 @@ public class MultiFileDatabase extends AbstractDatabase {
     private static Long currentId;
 
     @Autowired
-    private pl.futurecollars.invoices.database.invoice.multifile.MultiFileDbCache cache;
+    private MultiFileDbCache cache;
 
     @Autowired
     private ObjectMapper mapper;

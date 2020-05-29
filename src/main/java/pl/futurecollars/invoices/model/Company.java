@@ -7,17 +7,24 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
-import javax.validation.Valid;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @ApiModel(description = "Company data")
 @Entity
+@Table(name = "companies")
 public class Company {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @NotBlank
     @ApiModelProperty(value = "Tax identification number", example = "5002009966")
@@ -27,13 +34,9 @@ public class Company {
     @ApiModelProperty(value = "Company full name", example = "BestBuy inc.")
     private String name;
 
-    @Transient
-    @Valid
+    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
+    @NotNull
     private PostalAddress address;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     public Company(){
     };

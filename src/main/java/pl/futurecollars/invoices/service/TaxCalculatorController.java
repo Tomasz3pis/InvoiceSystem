@@ -4,10 +4,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import pl.futurecollars.invoices.database.Database;
+import pl.futurecollars.invoices.database.invoice.Database;
 
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
+import javax.validation.constraints.NotBlank;
 
 @RestController
 @Validated

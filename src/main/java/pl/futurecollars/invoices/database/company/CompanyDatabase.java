@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CompanySpringDataDatabase {
+public class CompanyDatabase {
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -27,9 +27,9 @@ public class CompanySpringDataDatabase {
     }
 
     public void updateCompany(long id, Company updatedCompany) {
+        companyRepository.findById(id);
         updatedCompany.setId(id);
-        companyRepository.deleteById(id);
-        companyRepository.save(updatedCompany);
+       companyRepository.save(updatedCompany);
     }
 
     public void deleteCompany(long id) {

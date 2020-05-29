@@ -1,6 +1,7 @@
 package pl.futurecollars.invoices.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.futurecollars.invoices.database.company.CompanyRepository;
 import pl.futurecollars.invoices.exceptions.CompanyNotFoundException;
 import pl.futurecollars.invoices.model.Company;
 
@@ -20,9 +20,6 @@ import java.util.List;
 @RequestMapping("/companies")
 @Validated
 public class CompanyController {
-
-    @Autowired
-    private CompanyRepository database;
 
     @Autowired
     private CompanyService companyService;
@@ -38,7 +35,7 @@ public class CompanyController {
     @GetMapping("/{companyId}")
     public Company getCompanyById(@PathVariable("id") long id) {
         if (companyService.getCompany(id).isEmpty()) {
-            throw new CompanyNotFoundException(id);
+            ResponseEntity.notFound().build();
         }
         return companyService.getCompany(id).get();
     }
