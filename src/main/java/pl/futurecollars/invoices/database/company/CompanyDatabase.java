@@ -24,13 +24,16 @@ public class CompanyDatabase {
     }
 
     public Optional<Company> getCompanyById(long id) {
+        if (companyRepository.findById(id).isEmpty()) {
+            return Optional.empty();
+        }
         return companyRepository.findById(id);
     }
 
     public void updateCompany(long id, Company updatedCompany) {
         companyRepository.findById(id);
         updatedCompany.setId(id);
-       companyRepository.save(updatedCompany);
+        companyRepository.save(updatedCompany);
     }
 
     public void deleteCompany(long id) {

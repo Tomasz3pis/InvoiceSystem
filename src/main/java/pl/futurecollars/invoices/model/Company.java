@@ -38,13 +38,21 @@ public class Company {
     @NotNull
     private PostalAddress address;
 
-    public Company(){
-    };
+    public Company() {
+    }
 
     public Company(String taxIdentificationNumber, String name, PostalAddress address) {
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.name = name;
         this.address = address;
+    }
+
+    public void setTaxIdentificationNumber(String taxIdentificationNumber) {
+        this.taxIdentificationNumber = taxIdentificationNumber;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTaxIdentificationNumber() {
