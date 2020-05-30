@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 public class Company {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -34,7 +34,7 @@ public class Company {
     @ApiModelProperty(value = "Company full name", example = "BestBuy inc.")
     private String name;
 
-    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @NotNull
     private PostalAddress address;
 

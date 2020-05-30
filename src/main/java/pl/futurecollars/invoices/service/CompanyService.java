@@ -3,7 +3,6 @@ package pl.futurecollars.invoices.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.futurecollars.invoices.database.company.CompanyDatabase;
-import pl.futurecollars.invoices.exceptions.CompanyNotFoundException;
 import pl.futurecollars.invoices.model.Company;
 
 import java.util.List;
@@ -33,9 +32,6 @@ public class CompanyService {
     }
 
     public void deleteCompany(long id) {
-        if (companyDatabase.getCompanyById(id).isEmpty()) {
-            throw new CompanyNotFoundException(id);
-        }
         companyDatabase.deleteCompany(id);
     }
 }
