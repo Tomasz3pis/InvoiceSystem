@@ -5,10 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pl.futurecollars.invoices.exceptions.CompanyNotFoundException;
 import pl.futurecollars.invoices.model.Company;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CompanyController implements CompanyApi {
@@ -17,34 +17,45 @@ public class CompanyController implements CompanyApi {
     private CompanyService companyService;
 
     @Autowired
-    private ValidatingService validatingService;
+    private ValidatingService companyValidatingService;
 
+    @Override
     public List<Company> getCompanies() {
         return companyService.getCompanies();
     }
 
+    @Override
     public ResponseEntity<Company> getCompanyById(@PathVariable("id") long id) {
+        Optional<Company> companyOpt = companyService.getCompany(id);
+        if (companyOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(companyOpt.get());
+    }
+
+    @Override
+    public ResponseEntity<Long> saveCompany(@RequestBody Company company) {
+        companyValidatingService.validateInput(company);
+        long id = companyService.saveCompany(company);
+        return ResponseEntity.ok(id);
+    }
+
+    @Override
+    public  ResponseEntity<Company> updateCompany(@PathVariable("id") long id, @RequestBody Company updatedCompany) {
         if (companyService.getCompany(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        Company company = companyService.getCompany(id).get();
-        return ResponseEntity.ok(company);
-    }
-
-    public long saveCompany(@RequestBody Company company) {
-        validatingService.validateInput(company);
-        return companyService.saveCompany(company);
-    }
-
-    public void updateCompany(@PathVariable("id") long id, @RequestBody Company updatedCompany) {
-        validatingService.validateInput(updatedCompany);
+        companyValidatingService.validateInput(updatedCompany);
         companyService.updateCompany(id, updatedCompany);
+        return ResponseEntity.ok().build();
     }
 
-    public void deleteCompany(@PathVariable("id") long id) {
+    @Override
+    public ResponseEntity<Object> deleteCompany(@PathVariable("id") long id) {
         if (companyService.getCompany(id).isEmpty()) {
-            throw new CompanyNotFoundException(id);
+            return ResponseEntity.notFound().build();
         }
         companyService.deleteCompany(id);
+        return ResponseEntity.ok().build();
     }
 }

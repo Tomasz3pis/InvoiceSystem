@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static pl.futurecollars.invoices.providers.TestCompanyProvider.companyBuyMore;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,18 +22,15 @@ class CompanyServiceTest {
     @Mock
     private CompanyDatabase database;
 
-    @Mock
-    private Company company;
-
     @InjectMocks
-    private CompanyService injectedCompanyService;
+    private CompanyService companyService;
 
     @Test
     void getCompanies() {
         //given
 
         //when
-        injectedCompanyService.getCompanies();
+        companyService.getCompanies();
 
         //then
         verify(database).getCompanies();
@@ -42,13 +40,14 @@ class CompanyServiceTest {
     void saveCompany() {
         //given
         long id = 1L;
+        Company company = companyBuyMore();
         when(database.getCompanyById(id)).thenReturn(Optional.of(company));
 
         //when
-        injectedCompanyService.saveCompany(company);
+        companyService.saveCompany(company);
 
         //then
-        assertThat(injectedCompanyService.getCompany(id),
+        assertThat(companyService.getCompany(id),
                 is(Optional.of(company)));
     }
 
@@ -56,9 +55,10 @@ class CompanyServiceTest {
     void updateCompany() {
         //given
         long id = 1L;
+        Company company = companyBuyMore();
 
         //when
-        injectedCompanyService.updateCompany(id, company);
+        companyService.updateCompany(id, company);
 
         //then
         verify(database).updateCompany(id, company);
@@ -70,7 +70,7 @@ class CompanyServiceTest {
         long id = 1L;
 
         //when
-        injectedCompanyService.deleteCompany(id);
+        companyService.deleteCompany(id);
 
         //then
         verify(database).deleteCompany(id);

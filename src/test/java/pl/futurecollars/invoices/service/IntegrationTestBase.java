@@ -15,16 +15,17 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public abstract class IntegrationTestBase {
 
-    protected static final String URL_TEMPLATE = "/invoices";
+    protected static final String INVOICE_SERVICE_PATH = "/invoices";
+    protected static final String COMPANY_SERVICE_PATH = "/companies";
 
     @Autowired
     protected MockMvc mockMvc;
 
     @Autowired
-    protected InvoiceController invoiceController;
+    protected InvoiceService invoiceService;
 
     @Autowired
-    protected InvoiceService invoiceService;
+    protected CompanyService companyService;
 
     @Autowired
     protected ObjectMapper mapper;

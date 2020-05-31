@@ -1,8 +1,14 @@
 package pl.futurecollars.invoices.service;
 
+import static pl.futurecollars.invoices.config.ApiConstants.BAD_REQUEST_MESSAGE;
+import static pl.futurecollars.invoices.config.ApiConstants.CONTAINER_LIST;
+import static pl.futurecollars.invoices.config.ApiConstants.NOT_FOUND_MESSAGE;
+import static pl.futurecollars.invoices.config.ApiConstants.OK_MESSAGE;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,39 +25,53 @@ import javax.validation.constraints.Min;
 
 @RequestMapping("/companies")
 @Validated
-@Api(value = "Companies", description = "Controller used for basic operations on company objects")
+@Api(tags = {"company-controller"})
 public interface CompanyApi {
 
+    @ApiOperation(value = "Get list of all companies")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = OK_MESSAGE,
+                    response = Company.class, responseContainer = CONTAINER_LIST),
+    })
     @GetMapping
-    @ApiOperation(
-            value = "Get list of all companies",
-            response = Company.class,
-            responseContainer = "List",
-            produces = "application/json")
     List<Company> getCompanies();
 
+    @ApiOperation(value = "Find company by id")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = OK_MESSAGE,
+                    response = CompanyApi.class),
+            @ApiResponse(code = 404, message = NOT_FOUND_MESSAGE),
+    })
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get a company by id", response = ResponseEntity.class, produces = "application/json")
-    ResponseEntity<Company> getCompanyById(@PathVariable("id")
+    ResponseEntity<?> getCompanyById(@PathVariable("id") @Min(1) long id);
 
-                           @ApiParam(value = "id of an existing company to get")
-                           @Min(1) long id);
-
+    @ApiOperation(value = "Create a new company", response = Long.class)
+    @ApiResponses({
+            @ApiResponse(code = 200, message = OK_MESSAGE, response = Long.class),
+            @ApiResponse(code = 400, message = BAD_REQUEST_MESSAGE,
+                    response = String.class, responseContainer = CONTAINER_LIST),
+    })
     @PostMapping
-    @ApiOperation(value = "Save a company to database", response = Long.class)
-    long saveCompany(@RequestBody @ApiParam(value = "body of a company to save") Company company);
+    ResponseEntity<?> saveCompany(@RequestBody Company company);
 
+    @ApiOperation(value = "Update an existing company")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = OK_MESSAGE),
+            @ApiResponse(code = 400, message = BAD_REQUEST_MESSAGE,
+                    response = String.class, responseContainer = CONTAINER_LIST),
+            @ApiResponse(code = 404, message = NOT_FOUND_MESSAGE),
+    })
     @PutMapping("/{id}")
-    @ApiOperation(value = "Update a company at given id", response = Void.class)
-    void updateCompany(@PathVariable("id")
-                       @Min(1)
-                       @ApiParam(value = "id of an existing company to update")
-                               long id,
-                       @RequestBody
-                       @ApiParam(value = "body of a company with updated fields")
-                               Company updatedCompany);
+    ResponseEntity<?> updateCompany(@PathVariable("id") @Min(1) long id,
+                                    @RequestBody Company updatedCompany);
 
+    @ApiOperation(value = "Delete an existing company")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = OK_MESSAGE),
+            @ApiResponse(code = 400, message = BAD_REQUEST_MESSAGE,
+                    response = String.class, responseContainer = CONTAINER_LIST),
+            @ApiResponse(code = 404, message = NOT_FOUND_MESSAGE),
+    })
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete a company at given id", response = Void.class)
-    void deleteCompany(@PathVariable("id") @Min(1) @ApiParam(value = "id of an existing company to delete") long id);
+    ResponseEntity<?> deleteCompany(@PathVariable("id") @Min(1) long id);
 }

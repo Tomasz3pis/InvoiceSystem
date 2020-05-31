@@ -47,7 +47,7 @@ class InvoiceControllerIntegrationTest extends IntegrationTestBase {
         // given
 
         // when
-        String id = mockMvc.perform(post(URL_TEMPLATE)
+        String id = mockMvc.perform(post(INVOICE_SERVICE_PATH)
                 .content(json(invoice))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -56,7 +56,7 @@ class InvoiceControllerIntegrationTest extends IntegrationTestBase {
                 .getContentAsString();
 
         // then
-        mockMvc.perform(get(URL_TEMPLATE + "/" + id))
+        mockMvc.perform(get(INVOICE_SERVICE_PATH + "/" + id))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(Integer.valueOf(id))))
@@ -94,7 +94,7 @@ class InvoiceControllerIntegrationTest extends IntegrationTestBase {
                         is(invoice.getEntries().get(0).getNetPrice().doubleValue())))
                 .andExpect(jsonPath("$.entries.[0].vat", is(invoice.getEntries().get(0).getVat().toString())));
 
-        mockMvc.perform(delete(URL_TEMPLATE + "/" + id))
+        mockMvc.perform(delete(INVOICE_SERVICE_PATH + "/" + id))
                 .andExpect(status().isOk());
     }
 
@@ -113,7 +113,7 @@ class InvoiceControllerIntegrationTest extends IntegrationTestBase {
         // when
 
         // then
-        mockMvc.perform(post(URL_TEMPLATE)
+        mockMvc.perform(post(INVOICE_SERVICE_PATH)
                 .content(json(invoice))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -138,7 +138,7 @@ class InvoiceControllerIntegrationTest extends IntegrationTestBase {
         // when
 
         // then
-        String responseBody = mockMvc.perform(get(URL_TEMPLATE + getRequestParams(startDate, endDate)))
+        String responseBody = mockMvc.perform(get(INVOICE_SERVICE_PATH + getRequestParams(startDate, endDate)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(expectedInvoiceCount)))
@@ -169,7 +169,7 @@ class InvoiceControllerIntegrationTest extends IntegrationTestBase {
         // when
 
         // then
-        mockMvc.perform(get(URL_TEMPLATE + "/999"))
+        mockMvc.perform(get(INVOICE_SERVICE_PATH + "/999"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$",
                         is("Invoice with provided id does not exist in database. Invoice id: 999 not found.")));
@@ -181,7 +181,7 @@ class InvoiceControllerIntegrationTest extends IntegrationTestBase {
         Invoice invoiceOne = getInvoiceOne();
         Invoice invoiceTwo = getInvoiceTwo();
 
-        String id = mockMvc.perform(post(URL_TEMPLATE)
+        String id = mockMvc.perform(post(INVOICE_SERVICE_PATH)
                 .content(json(invoiceOne))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -190,19 +190,19 @@ class InvoiceControllerIntegrationTest extends IntegrationTestBase {
                 .getContentAsString();
 
         // when
-        mockMvc.perform(put(URL_TEMPLATE + "/" + id)
+        mockMvc.perform(put(INVOICE_SERVICE_PATH + "/" + id)
                 .content(json(invoiceTwo))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         // then
-        mockMvc.perform(get(URL_TEMPLATE + "/" + id))
+        mockMvc.perform(get(INVOICE_SERVICE_PATH + "/" + id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(Integer.valueOf(id))))
                 .andExpect(jsonPath("$.seller.taxIdentificationNumber",
                         is(invoiceTwo.getSeller().getTaxIdentificationNumber())));
 
-        mockMvc.perform(delete(URL_TEMPLATE + "/" + id))
+        mockMvc.perform(delete(INVOICE_SERVICE_PATH + "/" + id))
                 .andExpect(status().isOk());
     }
 

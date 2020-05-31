@@ -2,7 +2,6 @@ package pl.futurecollars.invoices.database.company;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import pl.futurecollars.invoices.exceptions.CompanyNotFoundException;
 import pl.futurecollars.invoices.model.Company;
 
 import java.util.List;
@@ -24,22 +23,22 @@ public class CompanyDatabase {
     }
 
     public Optional<Company> getCompanyById(long id) {
-        if (companyRepository.findById(id).isEmpty()) {
+        Optional<Company> byId = companyRepository.findById(id);
+        if (byId.isEmpty()) {
             return Optional.empty();
         }
-        return companyRepository.findById(id);
+        return byId;
     }
 
     public void updateCompany(long id, Company updatedCompany) {
-        companyRepository.findById(id);
-        updatedCompany.setId(id);
-        companyRepository.save(updatedCompany);
+        Company originalCompany = companyRepository.findById(id).get();
+        originalCompany.setTaxIdentificationNumber(updatedCompany.getTaxIdentificationNumber());
+        originalCompany.setName(updatedCompany.getName());
+        originalCompany.setAddress(updatedCompany.getAddress());
+        companyRepository.save(originalCompany);
     }
 
     public void deleteCompany(long id) {
-        if (getCompanyById(id).isEmpty()) {
-            throw new CompanyNotFoundException(id);
-        }
         companyRepository.deleteById(id);
     }
 }

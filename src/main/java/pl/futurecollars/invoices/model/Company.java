@@ -13,13 +13,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @ApiModel(description = "Company data")
 @Entity
-@Table(name = "companies")
 public class Company {
 
     @Id
@@ -75,6 +73,10 @@ public class Company {
         this.id = id;
     }
 
+    public void setAddress(PostalAddress address) {
+        this.address = address;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) {
@@ -95,6 +97,6 @@ public class Company {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+                ToStringStyle.SIMPLE_STYLE);
     }
 }
