@@ -6,6 +6,8 @@ import pl.futurecollars.invoices.model.Company;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Repository
 public class CompanyDatabase {
@@ -19,7 +21,9 @@ public class CompanyDatabase {
     }
 
     public List<Company> getCompanies() {
-        return (List<Company>) companyRepository.findAll();
+        return StreamSupport
+                .stream(companyRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public Optional<Company> getCompanyById(long id) {
