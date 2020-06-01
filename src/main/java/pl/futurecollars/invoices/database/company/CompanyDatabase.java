@@ -16,8 +16,8 @@ public class CompanyDatabase {
     private CompanyRepository companyRepository;
 
     public long saveCompany(Company company) {
-        companyRepository.save(company);
-        return company.getId();
+        Company savedCompany = companyRepository.save(company);
+        return savedCompany.getId();
     }
 
     public List<Company> getCompanies() {
@@ -27,11 +27,7 @@ public class CompanyDatabase {
     }
 
     public Optional<Company> getCompanyById(long id) {
-        Optional<Company> byId = companyRepository.findById(id);
-        if (byId.isEmpty()) {
-            return Optional.empty();
-        }
-        return byId;
+        return companyRepository.findById(id);
     }
 
     public void updateCompany(long id, Company updatedCompany) {

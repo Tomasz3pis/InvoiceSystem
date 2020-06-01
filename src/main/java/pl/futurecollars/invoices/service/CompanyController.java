@@ -26,11 +26,11 @@ public class CompanyController implements CompanyApi {
 
     @Override
     public ResponseEntity<Company> getCompanyById(@PathVariable("id") long id) {
-        Optional<Company> companyOpt = companyService.getCompany(id);
-        if (companyOpt.isEmpty()) {
+        Optional<Company> companyOptional = companyService.getCompany(id);
+        if (companyOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(companyOpt.get());
+        return ResponseEntity.ok(companyOptional.get());
     }
 
     @Override
