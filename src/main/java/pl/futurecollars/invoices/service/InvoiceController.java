@@ -21,9 +21,6 @@ public class InvoiceController implements InvoiceApi {
     @Autowired
     private InvoiceService invoiceService;
 
-    @Autowired
-    private ValidatingService validatingService;
-
     public List<Invoice> getInvoices(@RequestParam(name = "startDate", required = false) String startDate,
                                      @RequestParam(name = "endDate", required = false) String endDate) {
         LocalDate startDateLocal = null;
@@ -46,12 +43,10 @@ public class InvoiceController implements InvoiceApi {
     }
 
     public long saveInvoice(@RequestBody Invoice invoice) {
-        validatingService.validateInput(invoice);
         return invoiceService.saveInvoice(invoice);
     }
 
     public void updateInvoice(@PathVariable("id") long id, @RequestBody Invoice updatedInvoice) {
-        validatingService.validateInput(updatedInvoice);
         invoiceService.updateInvoice(id, updatedInvoice);
     }
 
