@@ -6,14 +6,24 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.stereotype.Component;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-@Component
 @ApiModel(description = "Company data")
+@Entity
 public class Company {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotBlank
     @ApiModelProperty(value = "Tax identification number", example = "5002009966")
@@ -23,6 +33,8 @@ public class Company {
     @ApiModelProperty(value = "Company full name", example = "BestBuy inc.")
     private String name;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @NotNull
     @Valid
     private PostalAddress address;
 
@@ -35,6 +47,14 @@ public class Company {
         this.address = address;
     }
 
+    public void setTaxIdentificationNumber(String taxIdentificationNumber) {
+        this.taxIdentificationNumber = taxIdentificationNumber;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getTaxIdentificationNumber() {
         return taxIdentificationNumber;
     }
@@ -45,6 +65,18 @@ public class Company {
 
     public PostalAddress getAddress() {
         return address;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setAddress(PostalAddress address) {
+        this.address = address;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.database.multifile;
+package pl.futurecollars.invoices.database.invoice.multifile;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.futurecollars.invoices.database.Database;
+import pl.futurecollars.invoices.database.invoice.Database;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
 
@@ -20,9 +20,6 @@ public class InvoiceController implements InvoiceApi {
 
     @Autowired
     private InvoiceService invoiceService;
-
-    @Autowired
-    private ValidatingService validatingService;
 
     public List<Invoice> getInvoices(@RequestParam(name = "startDate", required = false) String startDate,
                                      @RequestParam(name = "endDate", required = false) String endDate) {
@@ -46,12 +43,10 @@ public class InvoiceController implements InvoiceApi {
     }
 
     public long saveInvoice(@RequestBody Invoice invoice) {
-        validatingService.validateInput(invoice);
         return invoiceService.saveInvoice(invoice);
     }
 
     public void updateInvoice(@PathVariable("id") long id, @RequestBody Invoice updatedInvoice) {
-        validatingService.validateInput(updatedInvoice);
         invoiceService.updateInvoice(id, updatedInvoice);
     }
 

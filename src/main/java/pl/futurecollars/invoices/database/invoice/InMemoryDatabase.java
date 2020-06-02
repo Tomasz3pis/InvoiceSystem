@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.database;
+package pl.futurecollars.invoices.database.invoice;
 
 import org.springframework.stereotype.Repository;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;

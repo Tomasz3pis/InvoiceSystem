@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.futurecollars.invoices.database.Database;
+import pl.futurecollars.invoices.database.invoice.Database;
 import pl.futurecollars.invoices.model.Invoice;
 
 import java.time.LocalDate;

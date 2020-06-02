@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.futurecollars.invoices.database.multifile.MultiFileDbCache;
+import pl.futurecollars.invoices.database.invoice.multifile.MultiFileDbCache;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 
 import java.io.File;

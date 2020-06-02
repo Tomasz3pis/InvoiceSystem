@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.database.multifile;
+package pl.futurecollars.invoices.database.invoice.multifile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-import pl.futurecollars.invoices.database.AbstractDatabase;
+import pl.futurecollars.invoices.database.invoice.AbstractDatabase;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 
 @Repository
 @Primary
