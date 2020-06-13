@@ -1,16 +1,4 @@
-package pl.futurecollars.invoices.service;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import pl.futurecollars.invoices.model.Invoice;
+package pl.futurecollars.invoices.service.taxcalculator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -23,6 +11,20 @@ import static pl.futurecollars.invoices.providers.TestCompanyProvider.futureColl
 import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceForFruits;
 import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceForGames;
 import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceForSoftWare;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import pl.futurecollars.invoices.model.Invoice;
+import pl.futurecollars.invoices.service.invoice.InvoiceController;
+import pl.futurecollars.invoices.service.taxcalculator.TaxCalculatorController;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

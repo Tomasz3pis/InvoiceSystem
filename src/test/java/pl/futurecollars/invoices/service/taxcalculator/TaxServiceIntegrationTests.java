@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.service;
+package pl.futurecollars.invoices.service.taxcalculator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import pl.futurecollars.invoices.model.Invoice;
 import pl.futurecollars.invoices.providers.TestCompanyProvider;
+import pl.futurecollars.invoices.service.invoice.InvoiceService;
+import pl.futurecollars.invoices.service.taxcalculator.TaxCalculatorService;
 
 import java.math.BigDecimal;
 import java.util.List;

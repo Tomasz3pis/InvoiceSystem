@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.service;
+package pl.futurecollars.invoices.service.company;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

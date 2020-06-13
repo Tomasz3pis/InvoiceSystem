@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import pl.futurecollars.invoices.database.invoice.AbstractDatabase;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
@@ -28,7 +27,6 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 @Repository
-@Primary
 public class MultiFileDatabase extends AbstractDatabase {
 
     private static final Logger LOGGER =

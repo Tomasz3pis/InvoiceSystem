@@ -1,5 +1,6 @@
 package pl.futurecollars.invoices.database.invoice;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
+@Primary
 public class InMemoryDatabase extends AbstractDatabase {
 
     private Map<Long, Invoice> invoices = new HashMap<>();

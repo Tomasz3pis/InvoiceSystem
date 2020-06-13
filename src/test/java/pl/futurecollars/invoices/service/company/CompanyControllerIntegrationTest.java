@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.service;
+package pl.futurecollars.invoices.service.company;
 
 
 import static org.hamcrest.Matchers.is;
@@ -25,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.futurecollars.invoices.model.Company;
+import pl.futurecollars.invoices.service.IntegrationTestBase;
 
 import java.util.stream.Stream;
 

@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.service;
+package pl.futurecollars.invoices.service.taxcalculator;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;

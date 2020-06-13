@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.service;
+package pl.futurecollars.invoices.service.company;
 
 import static pl.futurecollars.invoices.config.ApiConstants.BAD_REQUEST_MESSAGE;
 import static pl.futurecollars.invoices.config.ApiConstants.CONTAINER_LIST;

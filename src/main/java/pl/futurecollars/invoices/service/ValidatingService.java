@@ -16,7 +16,7 @@ public class ValidatingService {
         this.validator = validator;
     }
 
-    void validateInput(Object input) {
+    public void validateInput(Object input) {
         Set<ConstraintViolation<Object>> violations = validator.validate(input);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);

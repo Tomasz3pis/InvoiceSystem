@@ -1,4 +1,4 @@
-package pl.futurecollars.invoices.service;
+package pl.futurecollars.invoices.service.taxcalculator;
 
 import org.springframework.stereotype.Service;
 import pl.futurecollars.invoices.model.Company;

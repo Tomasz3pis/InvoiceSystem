@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 class InvoiceSystemApplicationTests {
 
     @Test
-    void applicationStarts() {
+    void applicationStarts() throws Exception {
         InvoiceSystemApplication.main(new String[] {});
     }
 }
