@@ -6,8 +6,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import pl.futurecollars.invoices.exceptions.InvoiceNotCompleteException;
 
 import java.time.LocalDate;
@@ -16,10 +14,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @ApiModel(description = "Invoice object")
-@Document(collection = "invoices")
 public class Invoice {
 
-    @Id
     private long id;
 
     @NotNull

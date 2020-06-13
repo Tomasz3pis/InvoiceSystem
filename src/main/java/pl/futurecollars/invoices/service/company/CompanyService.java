@@ -2,7 +2,7 @@ package pl.futurecollars.invoices.service.company;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.futurecollars.invoices.database.company.CompanyDatabase;
+import pl.futurecollars.invoices.database.company.Database;
 import pl.futurecollars.invoices.model.Company;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import javax.validation.Valid;
 public class CompanyService {
 
     @Autowired
-    private CompanyDatabase companyDatabase;
+    private Database companyDatabase;
 
     public List<Company> getCompanies() {
         return companyDatabase.getCompanies();
