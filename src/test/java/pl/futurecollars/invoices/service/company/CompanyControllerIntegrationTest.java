@@ -59,16 +59,18 @@ class CompanyControllerIntegrationTest extends IntegrationTestBase {
                 .andExpect(jsonPath("$.taxIdentificationNumber",
                         is(company.getTaxIdentificationNumber())))
                 .andExpect(jsonPath("$.name", is(company.getName())))
+                .andExpect(jsonPath("$.address.postalCode",
+                        is(company.getAddress().getPostalCode())))
+                .andExpect(jsonPath("$.address.city",
+                        is(company.getAddress().getCity())))
                 .andExpect(jsonPath("$.address.streetName",
                         is(company.getAddress().getStreetName())))
                 .andExpect(jsonPath("$.address.streetNumber",
                         is(company.getAddress().getStreetNumber())))
                 .andExpect(jsonPath("$.address.apartmentNumber",
-                        is(company.getAddress().getApartmentNumber())))
-                .andExpect(jsonPath("$.address.postalCode",
-                        is(company.getAddress().getPostalCode())))
-                .andExpect(jsonPath("$.address.city",
-                        is(company.getAddress().getCity())));
+                        is(company.getAddress().getApartmentNumber())));
+
+
     }
 
     @Test
