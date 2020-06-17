@@ -1,5 +1,11 @@
 package pl.futurecollars.invoices.service.taxcalculator;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceForFruits;
+import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceForGames;
+import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceForGrocery;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -10,17 +16,10 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import pl.futurecollars.invoices.model.Invoice;
 import pl.futurecollars.invoices.providers.TestCompanyProvider;
 import pl.futurecollars.invoices.service.invoice.InvoiceService;
-import pl.futurecollars.invoices.service.taxcalculator.TaxCalculatorService;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceForFruits;
-import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceForGames;
-import static pl.futurecollars.invoices.providers.TestInvoiceProvider.getInvoiceForGrocery;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class TaxServiceIntegrationTests {
@@ -42,7 +41,7 @@ public class TaxServiceIntegrationTests {
 
     @ParameterizedTest
     @MethodSource("invoiceSystemTestArguments")
-    void shouldCaclulateIncomeVat(List<Invoice> invoices) {
+    void shouldCalculateIncomeVat(List<Invoice> invoices) {
         //Given
         for (Invoice invoice : invoices) {
             invoiceService.saveInvoice(invoice);
@@ -54,7 +53,7 @@ public class TaxServiceIntegrationTests {
                         TestCompanyProvider.futureCollars().getTaxIdentificationNumber());
 
         //Then
-        assertThat(actualVatValueInFutureCollarsCompany, is(BigDecimal.valueOf(10795.43)));
+        assertThat(actualVatValueInFutureCollarsCompany, is(BigDecimal.valueOf(13595.43)));
 
     }
 
@@ -89,7 +88,7 @@ public class TaxServiceIntegrationTests {
                         TestCompanyProvider.futureCollars().getTaxIdentificationNumber());
 
         //Then
-        assertThat(actualVatValueInFutureCollarsCompany, is(BigDecimal.valueOf(1357.77)));
+        assertThat(actualVatValueInFutureCollarsCompany, is(BigDecimal.valueOf(1567.77)));
 
     }
 
@@ -107,7 +106,7 @@ public class TaxServiceIntegrationTests {
                         TestCompanyProvider.futureCollars().getTaxIdentificationNumber());
 
         //Then
-        assertThat(actualVatValueInFutureCollarsCompany, is(BigDecimal.valueOf(-15707.86)));
+        assertThat(actualVatValueInFutureCollarsCompany, is(BigDecimal.valueOf(-18297.86)));
 
     }
 
@@ -125,7 +124,7 @@ public class TaxServiceIntegrationTests {
                         TestCompanyProvider.futureCollars().getTaxIdentificationNumber());
 
         //Then
-        assertThat(actualVatValueInFutureCollarsCompany, is(BigDecimal.valueOf(17065.63)));
+        assertThat(actualVatValueInFutureCollarsCompany, is(BigDecimal.valueOf(19865.63)));
     }
 
     private static Stream<Arguments> invoiceSystemTestArguments() {

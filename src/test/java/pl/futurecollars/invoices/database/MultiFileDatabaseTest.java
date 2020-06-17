@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.futurecollars.invoices.database.invoice.Database;
+import pl.futurecollars.invoices.database.invoice.multifile.MultiFileDatabase;
 import pl.futurecollars.invoices.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoices.model.Invoice;
 
@@ -27,7 +27,7 @@ import java.util.Optional;
 class MultiFileDatabaseTest {
 
     @Autowired
-    private Database database;
+    private MultiFileDatabase database;
 
     @Value("${multifile.db.path}")
     private String invoiceFile;

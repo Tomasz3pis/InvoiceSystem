@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Repository
-public class CompanyDatabase implements Database{
+public class CompanyDatabase implements Database {
 
     @Autowired
     private CompanyRepository companyRepository;

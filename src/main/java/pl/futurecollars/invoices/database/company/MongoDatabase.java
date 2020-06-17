@@ -6,6 +6,8 @@ import static pl.futurecollars.invoices.config.DbConstants.COMPANY_ADDRESS;
 import static pl.futurecollars.invoices.config.DbConstants.COMPANY_ID;
 import static pl.futurecollars.invoices.config.DbConstants.COMPANY_NAME;
 import static pl.futurecollars.invoices.config.DbConstants.COMPANY_TAX_IDENTIFICATION_NUMBER;
+import static pl.futurecollars.invoices.config.DbConstants.MONGO_DB_COLLECTION_NAME;
+import static pl.futurecollars.invoices.config.DbConstants.MONGO_DB_NAME;
 import static pl.futurecollars.invoices.config.DbConstants.POSTAL_CODE;
 import static pl.futurecollars.invoices.config.DbConstants.STREET_NAME;
 import static pl.futurecollars.invoices.config.DbConstants.STREET_NUMBER;
@@ -26,10 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.annotation.PostConstruct;
 
 @Repository
 @Primary
-public class MongoDatabase implements Database{
+public class MongoDatabase implements Database {
 
     private static MongoClient mongoClient;
     private static DBCollection collection;
@@ -67,29 +70,39 @@ public class MongoDatabase implements Database{
 
     public void updateCompany(long id, Company updatedCompany) {
         BasicDBObject query = new BasicDBObject(COMPANY_ID, id);
+        updatedCompany.setId(id);
         collection.update(query, convertCompanyToDBObject(updatedCompany));
     }
 
     public DBObject convertCompanyToDBObject(Company company) {
-        return new BasicDBObject(COMPANY_ID, companyId)
+        return new BasicDBObject(COMPANY_ID, company.getId())
                 .append(COMPANY_NAME, company.getName())
                 .append(COMPANY_TAX_IDENTIFICATION_NUMBER, company.getTaxIdentificationNumber())
-                .append(COMPANY_ADDRESS, new BasicDBObject(POSTAL_CODE, company.getAddress().getPostalCode())
-                        .append(CITY, company.getAddress().getCity())
-                        .append(STREET_NAME, company.getAddress().getStreetName())
+                .append(COMPANY_ADDRESS, new BasicDBObject(STREET_NAME, company.getAddress().getStreetName())
                         .append(STREET_NUMBER, company.getAddress().getStreetNumber())
-                        .append(APARTMENT_NUMBER, company.getAddress().getApartmentNumber()));
+                        .append(APARTMENT_NUMBER, company.getAddress().getApartmentNumber())
+                        .append(POSTAL_CODE, company.getAddress().getPostalCode())
+                        .append(CITY, company.getAddress().getCity()));
     }
 
     public Company convertDBObjectToCompany(DBObject dbObject) {
-        return new Company((String)dbObject.get(TAX_IDENTIFICATION_NUMBER),
-                (String)dbObject.get(COMPANY_NAME),
-                (PostalAddress)dbObject.get(COMPANY_ADDRESS));
+        DBObject dbObjectPostalAddress = (DBObject) dbObject.get(COMPANY_ADDRESS);
+        Company company = new Company((String) dbObject.get(TAX_IDENTIFICATION_NUMBER),
+                (String) dbObject.get(COMPANY_NAME),
+                new PostalAddress((String) dbObjectPostalAddress.get(STREET_NAME),
+                        (String) dbObjectPostalAddress.get(STREET_NUMBER),
+                        (String) dbObjectPostalAddress.get(APARTMENT_NUMBER),
+                        (String) dbObjectPostalAddress.get(POSTAL_CODE),
+                        (String) dbObjectPostalAddress.get(CITY)));
+        company.setId((long) dbObject.get(COMPANY_ID));
+        return company;
     }
 
-    public static void initMongoDb() throws UnknownHostException {
+    @PostConstruct
+    private void initMongoDb() throws UnknownHostException {
         mongoClient = new MongoClient();
-        collection = mongoClient.getDB("CompanyDatabase")
-                .getCollection("Companies");
+        collection = mongoClient.getDB(MONGO_DB_NAME)
+                .getCollection(MONGO_DB_COLLECTION_NAME);
+        collection.drop();
     }
 }

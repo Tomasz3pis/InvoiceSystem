@@ -24,7 +24,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.futurecollars.invoices.model.Invoice;
 import pl.futurecollars.invoices.service.invoice.InvoiceController;
-import pl.futurecollars.invoices.service.taxcalculator.TaxCalculatorController;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -54,9 +53,9 @@ public class TaxServiceCalculatorControllerIntegrationTest {
 
     @AfterEach
     public void clearList() {
-       for (Invoice invoice : invoiceController.getInvoices("2000-01-01", "2020-12-12")) {
-           invoiceController.deleteInvoice(invoice.getId());
-       }
+        for (Invoice invoice : invoiceController.getInvoices("2000-01-01", "2020-12-12")) {
+            invoiceController.deleteInvoice(invoice.getId());
+        }
     }
 
     @Test
@@ -111,7 +110,7 @@ public class TaxServiceCalculatorControllerIntegrationTest {
                 .perform(get("/companies/incomevat/" + companyBuyMore().getTaxIdentificationNumber()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("6270.2")));
+                .andExpect(content().string(containsString("7045.5")));
     }
 
     @Test
@@ -120,7 +119,7 @@ public class TaxServiceCalculatorControllerIntegrationTest {
                 .perform(get("/companies/outcomevat/" + futureCollars().getTaxIdentificationNumber()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("6270.2")));
+                .andExpect(content().string(containsString("7045.5")));
     }
 
     @Test
@@ -129,7 +128,7 @@ public class TaxServiceCalculatorControllerIntegrationTest {
                 .perform(get("/companies/income/" + companyBuyMore().getTaxIdentificationNumber()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("1017.4")));
+                .andExpect(content().string(containsString("1668.5")));
     }
 
     @Test
@@ -138,7 +137,7 @@ public class TaxServiceCalculatorControllerIntegrationTest {
                 .perform(get("/companies/costs/" + futureCollars().getTaxIdentificationNumber()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("6270.2")));
+                .andExpect(content().string(containsString("9845.5")));
     }
 
     @Test
@@ -147,7 +146,7 @@ public class TaxServiceCalculatorControllerIntegrationTest {
                 .perform(get("/companies/incometocosts/" + futureCollars().getTaxIdentificationNumber()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("-6270.2")));
+                .andExpect(content().string(containsString("-9635.5")));
     }
 
     @Test
