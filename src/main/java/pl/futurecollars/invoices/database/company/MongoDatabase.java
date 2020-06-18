@@ -18,7 +18,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import pl.futurecollars.invoices.model.Company;
 import pl.futurecollars.invoices.model.PostalAddress;
@@ -31,7 +30,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.PostConstruct;
 
 @Repository
-@Primary
 public class MongoDatabase implements Database {
 
     private static MongoClient mongoClient;
