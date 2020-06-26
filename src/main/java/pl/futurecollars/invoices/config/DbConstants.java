@@ -14,4 +14,5 @@ public class DbConstants {
     public static final String APARTMENT_NUMBER = "apartment_number";
     public static final String MONGO_DB_NAME = "CompanyDatabase";
     public static final String MONGO_DB_COLLECTION_NAME = "Companies";
+    public static final String LAST_USED_ID = "last_used_id";
 }

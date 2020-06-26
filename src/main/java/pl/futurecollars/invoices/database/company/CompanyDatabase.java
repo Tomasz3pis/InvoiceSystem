@@ -1,7 +1,6 @@
 package pl.futurecollars.invoices.database.company;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import pl.futurecollars.invoices.model.Company;
 
@@ -11,7 +10,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Repository
-@Primary
 public class CompanyDatabase implements Database {
 
     @Autowired

@@ -6,6 +6,7 @@ import static pl.futurecollars.invoices.config.DbConstants.COMPANY_ADDRESS;
 import static pl.futurecollars.invoices.config.DbConstants.COMPANY_ID;
 import static pl.futurecollars.invoices.config.DbConstants.COMPANY_NAME;
 import static pl.futurecollars.invoices.config.DbConstants.COMPANY_TAX_IDENTIFICATION_NUMBER;
+import static pl.futurecollars.invoices.config.DbConstants.LAST_USED_ID;
 import static pl.futurecollars.invoices.config.DbConstants.MONGO_DB_COLLECTION_NAME;
 import static pl.futurecollars.invoices.config.DbConstants.MONGO_DB_NAME;
 import static pl.futurecollars.invoices.config.DbConstants.POSTAL_CODE;
@@ -18,11 +19,11 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import pl.futurecollars.invoices.model.Company;
 import pl.futurecollars.invoices.model.PostalAddress;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,14 +31,16 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.PostConstruct;
 
 @Repository
+@Primary
 public class MongoDatabase implements Database {
 
     private static MongoClient mongoClient;
     private static DBCollection collection;
-    private AtomicLong companyId = new AtomicLong();
+    private AtomicLong companyId = getLastUsedId();
 
     public long saveCompany(Company company) {
         company.setId(companyId.incrementAndGet());
+        saveLastId(companyId);
         collection.insert(convertCompanyToDBObject(company));
         return company.getId();
     }
@@ -96,8 +99,25 @@ public class MongoDatabase implements Database {
         return company;
     }
 
+    private AtomicLong getLastUsedId() {
+        if (companyId == null) {
+            return new AtomicLong();
+        }
+        BasicDBObject query = new BasicDBObject(LAST_USED_ID, companyId);
+        DBCursor dbObjects = collection.find(query);
+        AtomicLong id = null;
+        while (dbObjects.hasNext()) {
+            id = (AtomicLong) dbObjects.next();
+        }
+        return id;
+    }
+
+    private void saveLastId(AtomicLong companyId) {
+        collection.insert(new BasicDBObject(LAST_USED_ID, companyId));
+    }
+
     @PostConstruct
-    private void initMongoDb() throws UnknownHostException {
+    private void initMongoDb() {
         mongoClient = new MongoClient();
         collection = mongoClient.getDB(MONGO_DB_NAME)
                 .getCollection(MONGO_DB_COLLECTION_NAME);
