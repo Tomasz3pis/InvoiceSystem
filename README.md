@@ -1,10 +1,6 @@
 # Invoice System
 Web application to manage and store your invoices.
 
-## Table of contents
-* [General info](#general-info)
-* [Technologies](#technologies)
-
 ## General info
 This project is created to manage or issue an invoice, store it and correlated companies in database, calculate tax.
 Possibility to choose database type (SQL, noSQL, files)
